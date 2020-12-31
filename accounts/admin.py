@@ -1,20 +1,18 @@
 from django.contrib.admin.sites import site
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
-from .models import User,Address,Useremail,Shop
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
+from .models import User,Address,Useremail,Shop,Profile
 from django.utils.translation import ugettext_lazy as _
 
 # Register your models here.
 
 @admin.register(User)
 class userAdmin(BaseUserAdmin):
-    list_display = ('email','username','first_name','last_name','is_active', 'is_staff', 'is_superuser')
-    # list_filter = ('',)
+    list_display = ('email','is_active', 'is_staff', 'is_superuser')
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'avatar','mobile')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -41,3 +39,7 @@ class useremailAdmin(admin.ModelAdmin):
 @admin.register(Shop)
 class shopAdmin(admin.ModelAdmin):
     list_display = ('user','name','slug','discreption','image')
+
+@admin.register(Profile)
+class profileAdmin(admin.ModelAdmin):
+    list_display = ('first_name','last_name','address','phone_number','mobile_number')

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'products',
+    "orders",
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,4 @@ MEDIA_URL = '/media/'
 
 print("base-dir===",BASE_DIR)
 print("media-root===",MEDIA_ROOT)
+print("static-dir===", os.path.join(BASE_DIR, 'static'))

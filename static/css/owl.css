@@ -1,0 +1,74 @@
+body{
+    background: white;
+    font-family: poppins;
+}
+.wrapper{
+    width: 1170px;
+    margin: 0 auto;
+}
+.section-padding{
+    padding: 60px 0;
+}
+.testimonial-carousel{
+    margin: 5% auto 0;
+}
+.img-area{
+    width: 100px;
+    height: 100px;
+    display: block;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.img-area img{
+    width: 100%;
+}
+.single-testi{
+    background: #fff;
+    padding: 10%;
+    text-align: center;
+    border-radius: 100px 0 100px 0;
+}
+.img-text h2{
+    text-transform: uppercase;
+    margin: 20px 0 -15px;
+    color: #ff5257;
+}
+.img-text i{
+    color: #ff5257;
+}
+hr{
+    color: #ff5257;
+    background-color: blue;
+}
+.owl-dots{
+    text-align: center;
+}
+.owl-dot{
+    display: inline-block;
+    height: 15px !important;
+    width: 15px !important;
+    background-color: #fff;
+    opacity: 0.8;
+    border-radius: 50%;
+    margin: 50px 5px 0;
+}
+.owl-dot.active{
+    background-color:  #ff5257 !important;
+}
+/* responsive css */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .wrapper{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .wrapper{
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .wrapper{
+        width: 100%;
+    }
+}

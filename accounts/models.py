@@ -6,6 +6,7 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.conf import settings
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -25,27 +26,50 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(email, password, **extra_fields)
 
-class User(AbstractUser):
-    email =  models.EmailField(_("email"), max_length=254,blank=False,unique=True)
-    avatar = models.ImageField(_("avatar"), upload_to="user/avatar", height_field=None, width_field=None, max_length=None)
-    mobile = models.IntegerField(_("mobile"),blank=True, null=True)
-    EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-    objects = UserManager()
-    def clean(self):
-        self.email = self.__class__.objects.normalize_email(self.email)
-    def get_full_name(self):
-        return self.first_name+" "+self.last_name
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        send_mail(subject, message, from_email, [self.email], **kwargs)
-    class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
+class User(AbstractBaseUser, PermissionsMixin):
+        email = models.EmailField(_('email address'), unique=True, db_index=True)
+        avatar = models.ImageField(_("avatar"), upload_to='user/avatars', blank=True, )
+        date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+        is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+        )
+        is_superuser = models.BooleanField(
+        _('superuser status'),
+        default=False,
+        help_text=_('Designates whether the user is superuser this admin site.'),
+        )
+        is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+        'Designates whether this user should be treated as active. '
+        'Unselect this instead of deleting accounts.'
+        ),
+        )
+        EMAIL_FIELD = 'email'
+        USERNAME_FIELD = 'email'
+        objects = UserManager()
+        def clean(self):
+            self.email = self.__class__.objects.normalize_email(self.email)
+
+        def email_user(self, subject, message, from_email=None, **kwargs):
+            send_mail(subject, message, from_email, [self.email], **kwargs)
+        class Meta:
+            verbose_name = _('user')
+            verbose_name_plural = _('users')
 
 class Profile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "User"),related_name="user_profile", on_delete=models.SET_NULL, null=True, blank=True)
+    first_name = models.CharField(_("First_name"), max_length=50,null= True)
+    last_name = models.CharField(_("Last_name"), max_length=50,null=True)
+    avator = models.ImageField(_("Avatar"), upload_to="users/avatar", height_field=None, width_field=None, max_length=None,null=True)
+    address = models.ForeignKey("Address", verbose_name=_("Address"), on_delete=models.CASCADE,null=True)
+    phone_number = models.IntegerField(_("Phone_number"),null= True)
+    mobile_number = models.IntegerField(_("Mobile_number"),null= True)
+
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("Profiles")
