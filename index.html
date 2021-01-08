@@ -2,9 +2,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/owl.carousel.css">
+    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/css/owl.theme.default.css">
+    <link rel="stylesheet" href="static/css/owl.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>kalabuy</title>
 </head>
+<style>
+    body {
+        text-align: right;
+        font-family:btraffic;
+    }
+</style>
 <body>
-    
+    <div class="container mw-100 justify-content-between">
+        <div class="d-flex flex-row mw-100 text-white bg-danger justify-content-center align-items-center" style="height:10%; width:100%">
+            <h1>با ما همیشه برنده خواهید بود.</h1>
+        </div>
+        <div class="d-flex flex-row bg-light nav-bar  sticky-top  justify-content-between p-4 align-items-center" style="height:14%; width:100%;z-index:1000;">
+            <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-cart3 text-success" viewBox="0 0 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>
+        <div class="mw-100 "><input class="form-control rounded" required type="text" placeholder="ورود به حساب کاربری" style="width: 100%; height:80%" > </div>    
+        <div class="mw-100 col-8 d-flex justify-content-center"><input class="form-control rounded" required type="text" placeholder="اینجا دنبال کالایی که دنبالشید بگردید" style="width: 70%; height:80%;" >
+            <svg style="cursor: pointer; margin: 5px -30px;" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search text-info" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg> </div>
+        <div class="mw-100 "> <img src="static/kalabuy.png" alt="ads" width="100%" height="100%" ></div>
+    </div>
+        <div class="container" style="height:14%; width:100%">
+            <div class="menu">
+                <div class="menu-item current-menu-item">
+                  <h6>تماس با ما</h6>
+                  <div class="wee" style="left: 0px; width: 81.7188px;"></div>
+                </div>
+                <div class="menu-item">
+                  <h6>سفارش ویژه</h6>
+                </div>
+                <div class="menu-item">
+                  <h6>فروشگاهها</h6>
+                </div>
+                <div class="menu-item">
+                  <h6 id="sub-menu1">کالا و محصولات</h6>
+                </div>
+                <div class="menu-item">
+                  <h6>صفجه اصلی</h6>
+                </div>
+              </div>
+              <div class="bg-dark" id="sub-menu1-contain" style="position: absolute;display: none; height:30%; width:40%; z-index:100;"> گروه بندیها</div>
+              
+              <div class="me"><a href="https://github.com/cmdeveloped" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://twitter.com/collinscode_" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://codepen.io/collinscode" target="_blank"><i class="fab fa-codepen"></i></a>
+                <a href="https://linkedin.com/in/cmdeveloped" target="_blank"><i class="fab fa-linkedin-in"></i></a></div>
+</div>
+        
+        <div id="ads-contain" class="d-flex justify-content-center flex-row nav-bar border border-secondary" style="height:50%; width:100%">
+             <div id="owl-contain" class="col-4 border border-dark">
+                <img src="static/1231241.jpg" alt="ads" width="100%" height="100%" >
+            </div>
+           <div id="owl-contain" class="col-8 border border-warning">
+            <div id="demo" class="carousel slide" data-ride="carousel">
+                <ul class="carousel-indicators">
+                  <li data-target="#demo" data-slide-to="0" class="active"></li>
+                  <li data-target="#demo" data-slide-to="1"></li>
+                  <li data-target="#demo" data-slide-to="2"></li>
+                </ul>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="static/Lighthouse.jpg" alt="Los Angeles" width="1100" height="100%">
+                    <div class="carousel-caption">
+                      <h3>فانوس دریایی</h3>
+                      <p>بهترین جای دنیا کجاست؟</p>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <img src="static/333.jpg" alt="Chicago" width="1100" height="100%">
+                    <div class="carousel-caption">
+                      <h3>کرونا</h3>
+                      <p>خیابان‌های خالی و سفره‌هایی که نباید خالی بماند</p>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <img src="static/444.jpg" alt="New York" width="1100" height="100%">
+                    <div class="carousel-caption">
+                      <h3>تورنتو</h3>
+                      <p>دیدنیهای تورنتو</p>
+                    </div>   
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </a>
+              </div>
+            </div>
+
+        </div>
+        <div id="category-contain" class="d-flex justify-content-between align-items-center flex-row nav-bar border border-info" style="height:50%; width:100%">
+            <img src="static/30f43951b8de951f8077e8e157fa4cc34c746338_1608632933.jpg" alt="ads" width="24%" height="90%" >
+            <img src="static/3567da43c41c24b7ea9961cd906f3b91e27bc7dc_1609138461.jpg" alt="ads" width="24%" height="90%" >
+            <img src="static/61c4359d94bfdd202c8440c0f6f806ea4d43e011_1608633322.jpg" alt="ads" width="24%" height="90%" >
+            <img src="static/6ff6d91ec3bac4de70f4939a54eaebc787fe6795_1609078747.jpg" alt="ads" width="24%" height="90%" >
+        </div>
+        <div id="product-contain" class="d-flex justify-content-start bg-info align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
+            <div class="col-3 border border-info p-1 h-100"><div class="bg-light border border-info p-1 h-100"></div></div>
+            <div class="col-3 border border-info p-1 h-100"><div class="bg-light border border-info p-1 h-100"></div></div>
+            <div class="col-3 border border-info p-1 h-100"><div class="bg-light border border-info p-1 h-100"></div></div>
+            <div class="col-3 border border-info p-1 h-100"><div class="bg-light border border-info p-1 h-100"></div></div>
+        </div>
+        <div id="most-buy-contain" class="d-flex justify-content-start align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
+            <div class="col-2 border border-info m-1 h-100"></div>
+            <div class="col-2 border border-info m-1 h-100"></div>
+            <div class="col-2 border border-info m-1 h-100"></div>
+            <div class="col-2 border border-info m-1 h-100"></div>
+            <div class="col-2 border border-info m-1 h-100"></div>
+            <h2>پر فروش ترینها</h2>
+        </div>
+        <div id="newer-contain" class="d-flex justify-content-center align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
+            <div class="owl-carousel owl-theme owl-loaded owl-drag">
+                <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-3375px, 0px, 0px); transition: all 0s ease 0s; width: 6752px;"><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;">
+                    <div class="item">
+                    <h4>13</h4>
+                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>14</h4>
+                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>15</h4>
+                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>16</h4>
+                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>17</h4>
+                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>18</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>1</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>2</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>3</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>4</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>5</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>6</h4>
+                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>7</h4>
+                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>8</h4>
+                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>9</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>10</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>11</h4>
+                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
+                    <h4>12</h4>
+                  </div>
+                </div></div></div>
+        </div>
+        </div>
+    </div>
+        <div id="link-contain" class="d-flex justify-content-center align-items-center flex-row border border-warning mw-100" style="height:10%; width:100%">
+            ads
+        </div>
+        <div id="footer-contain" class="d-flex justify-content-center align-items-center flex-row border border-warning mw-100" style="height:10%; width:100%">
+            استفاده از مطالب فروشگاه اینترنتی دیجی‌کالا فقط برای مقاصد غیرتجاری و با ذکر منبع بلامانع است. کلیه حقوق این سایت متعلق به دانشجوی مکتب شریف می‌باشد.
+        </div>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/jquery-3.5.1.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/owl.carousel.min.js"></script>
+    <script src="static/js/owl.carousel.js"></script>
+    <script>
+        $(document).ready(function () {
+            // cool nav menu
+            $(window).on('load resize', function () {
+              var $thisnav = $('.current-menu-item').offset().left;
+          
+              $('.menu-item').hover(function () {
+                var $left = $(this).offset().left - $thisnav;
+                var $width = $(this).outerWidth();
+                var $start = 0;
+                $('.wee').css({ 'left': $left, 'width': $width });
+              }, function () {
+                var $initwidth = $('.current-menu-item').width();
+                $('.wee').css({ 'left': '0', 'width': $initwidth });
+              });
+            });
+          
+          });
+          //# sourceURL=pen.js
+              
+    </script>
+    <script>
+        $(document).ready(function(){
+          $(".owl-carousel").owlCarousel({
+              loop:true,
+            margin:20,
+            autoplay:true,
+          });
+        })
+        </script>
+    <script>
+        $(window).on('load resize', function () {
+            var this_pos = $('#sub-menu1').offset().left;
+            var this_width = $(this).outerWidth();
+        $('#sub-menu1').hover(function() {
+            var left = $(this).offset().left - this_pos
+            console.log(this_width,this_pos)
+            $('#sub-menu1-contain').css({'left': this_pos + this_width/64});
+            $('#sub-menu1-contain').show('#sub-menu1-contain');
+            }
+            );
+        $('#sub-menu1').mouseleave(function () {
+                setter = setTimeout(function () {
+                   console.log("hidden from foo")
+                   $('#sub-menu1-contain').hide('#sub-menu1-contain')
+               }, 100);
+           });
+        $('#sub-menu1-contain').mouseenter(function() {
+            clearTimeout(setter);
+            
+            }),
+        $('#sub-menu1-contain').mouseleave(function() {
+            $('#sub-menu1-contain').hide('#sub-menu1-contain');
+            });
+       });
+    </script>
 </body>
 </html>

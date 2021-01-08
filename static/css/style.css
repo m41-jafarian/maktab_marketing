@@ -1,4 +1,64 @@
-@font-face {
-    font-family: btraffic;
-    src: url(BTraffic.ttf);
-  }
+body {
+  text-align: right;
+  font-family:btraffic;
+}
+ .menu {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+ .menu .menu-item {
+  position: relative;
+  cursor: pointer;
+}
+ .menu .menu-item .wee {
+  height: 2px;
+  width: 100%;
+  background-color: #ee0000;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: 0.75s;
+}
+ .menu .menu-item h6 {
+  margin: 0;
+  padding: 0 1rem 1.5rem;
+  font-size: 1rem;
+  color: #232323;
+  transition: 0.75s;
+}
+ .menu .menu-item:hover h6 {
+  color: #002b75;
+}
+ .menu .current-menu-item h6 {
+  color: #002b75;
+}
+.me {
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.me a {
+  display: inline-block;
+  padding: 0.25rem;
+  margin: 0 0.25rem;
+  color: #232323;
+  font-size: 1.5rem;
+  transition: 0.75s;
+}
+.me a:hover {
+  color: #002b75;
+}
+
+.item {
+  background-color: aqua;
+  height: 80%;
+  margin-top: 30px;
+  padding: 10px;
+}
+
+svg:hover {
+  color: rgb(252, 38, 0);
+}
