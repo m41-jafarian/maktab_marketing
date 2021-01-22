@@ -1,0 +1,405 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block head %}
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/slideshow.css' %}">
+    <link rel="stylesheet" href="{% static 'css/zoombox.css' %}">
+<style>
+ .zoomcontainer { margin: 70px auto; max-width: 960px; }
+  .thumb { height: 60px; width: 60px; }
+
+#gallcontainer {
+    width:70%;
+    height:70%;
+    max-width:800px;
+    max-height:500px;
+    margin:100px auto;
+    position:relative;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+</style>
+{% endblock %}
+{% block title %}
+    محصولات
+{% endblock %}
+{% block body %}
+<div class="container d-flex  mw-100 border">
+<div class="container bg-light shadow border row mw-100 d-flex justify-content-between" style="height: 100%">
+    <div class="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+            <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg><br>
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+        </svg><br>
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+        </svg>
+    </div>
+    <div class="col-4 border" style="height: 75%"> <img src="{{ product.image.url }}" alt="{{ product.image.url }}" width="570px" height="400px"></div>
+    <div class="col-4 mh-100 border h5" style="height: 100%">{{ product.name }}<br> {{ product.brand }}
+    <br> {{ product.category }}<br>{{ product.detail }}</div>
+    <div class="col-3 mh-100 border h5" style="height: 100%">اطلاعات خرید <br>فروشنده: فروشگاه {{ min_shop }} <br> گارانتی اصالت و سلامت <br>قیمت: {{ min_prise }} <br>
+    <br>
+      {% if user.is_authenticated %}
+    <button onclick= "add_product({{ shp_id }})" class="w-75 btn-success">اضافه کردن به سبد کالا</button>
+          {% else %}
+    <div class="disabled-link"><button onclick= "add_product({{ shp_id }})" class="w-75 btn-success">اضافه کردن به سبد کالا</button></div>
+      <div class="h6 text-warning"> * برای اضافه کردن کالا وارد حساب کاربری شوید.</div>
+      {% endif %}
+    </div>
+    <div class="d-flex justify-content-between col-2 border p-1" style="height: 20%">
+        {% for gall in gallery %}
+            <div class="border"><a class="zoombox zgallery1" title="{{ gall.title }}" href="{{ gall.image.url }}"><img src="{{ gall.image.url }}"  class="thumb" width="60px" /></a> </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+</div>
+<div class="container" style="z-index: 100; height: 650px; width: 800px;left: 400px;top: 250px; position: absolute;">
+
+
+
+  <div class="zoomcontainer">
+{#    <h2>Image Gallery</h2>#}
+{#      {% for gall in gallery %}#}
+{#    <a class="zoombox zgallery1" title="This is an image" href="{{ gall.image.url }}"><img src="{{ gall.image.url }}" class="thumb" /></a>#}
+{#      {% endfor %}#}
+{#    <h2>HTML Content</h2>#}
+{#    <a href="#" onclick="$.zoombox.html('<strong>Hi !</strong><p>This is a HTML content !</p>',{width:600,height:50}); return false;">HTML Content</a>#}
+  </div>
+
+
+
+    <div class="text-light">hello</div>
+
+
+
+    <div id="gallcontainer" style="visibility: hidden" >
+            <div id="slideshow" class="fullscreen">
+                {% for gall in gallery %}
+                    {% if forloop.counter == 1 %}
+                        <div id="img-1" data-img-id="{{ forloop.counter }}" class="img-wrapper active" style="background-image: url('{{ gall.image.url }}')"></div>
+                    {% else %}
+                        <div id="img-2" data-img-id="{{ forloop.counter }}" class="img-wrapper" style="background-image: url('{{ gall.image.url }}')"></div>
+                    {% endif %}
+                {% endfor %}
+          <div class="thumbs-container bottom">
+
+
+                <div id="prev-btn" class="prev"> <i class="fa fa-chevron-left fa-3x"></i> </div>
+                    <ul class="thumbs">
+                    <div class="text-warning">close</div>
+                        {% for gall in gallery %}
+                            {% if forloop.counter == 1 %}
+                        <li data-thumb-id="{{ forloop.counter }}" class="thumb active" style="background-image: url('{{ gall.image.url }}')"></li>
+                            {% else %}
+                        <li data-thumb-id="{{ forloop.counter }}" class="thumb" style="background-image: url('{{ gall.image.url }}')"></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+              <div id="next-btn" class="next"> <i class="fa fa-chevron-right fa-3x"></i> </div>
+
+            </div>
+        </div>
+     </div>
+  </div>
+<div class="border   col-12">
+    <br>فروشنده ها:<br>
+    {% for shop in shops %}
+            <div class="container bg-light d-flex row col-12 justify-content-start align-items-center border h4 shadow h-25 p-5">
+            <div class="col-2"><img src="{{ shop.image.url }}" alt="{{ shop.image.url }}" height="100%"></div>
+                <div class="col-2 text-info">فروشگاه {{ shop }}</div>  <div class="col-4 text-warning">{{ shop.discreption }}
+                </div>
+                {% for shp in shops_product %}
+                    {% if shp.shop == shop %}
+                     <div class="col-2 text-info">قیمت: {{ shp.price }} تومان<br>
+                     موجودی : {{ shp.quantity }} </div>
+                        <button onclick= "add_product({{ shp.id }})" class="col-2 h-50 btn-success">اضافه کردن به سبد کالا</button>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+    {% endfor %}
+</div>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">نظرات</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')">مشخصات</button>
+  <button class="tablinks" onclick="openCity(event, 'Tokyo')">نقد و بررسی</button>
+</div>
+
+<div id="London" class="tabcontent">
+  <div class="d-flex justify-content-start">
+    <h3>نظرات</h3><br>
+
+                  {% if request.user.is_authenticated %}
+{#                        {% if settings.comment %}#}
+                            لطفا نظر خود را بنویسید:
+                            <div class="">
+                            <form id="form_comment" style="width:50%;">
+{#                                    {% csrf_token %}#}
+                                    {{ form.as_ul }}
+<div id="review" rating="true" style="color: rgb(252, 215, 3);">
+    <i class="fas fa-star" style="cursor: pointer;"></i>
+    <i class="fas fa-star" style="cursor: pointer;"></i>
+    <i class="fas fa-star" style="cursor: pointer;"></i>
+    <i class="far fa-star" style="cursor: pointer;"></i>
+    <i class="far fa-star" style="cursor: pointer;"></i>
+</div>
+                                <input type="hidden" readonly="" id="starsInput" class="form-control form-control-sm">
+                                <input type="submit" value="send">
+                                {% comment %} <button onclick='sendcomment({{ form.content.text }},{{post.id}})'> send {{post.id}}</button> {% endcomment %}
+                            </form>
+                        </div>
+                  {% endif %}
+    {% comment %} <input style="width:500px; border:0px;background-color:green;" name="content" type="text"> {% endcomment %}
+{#                        {% endif %}#}
+                        <div class="text-info">
+                                {% if 0 == comments.count %}
+                                    <div class="text-warning"> شما اولین دیدگاه را بنویسید </div>
+                                {% else %}
+                                    <div class="text-warning"> تعداد دیدگاهها: {{ comments.count }} دیدگاه </div>
+                                {% endif %}
+                        </div>
+</div>
+<div id="comment-div" class="float-right">
+    {% for comment in comments %}
+        rate:
+       {% with ''|center:5 as range %}
+        {% for i in range %}
+            {% if forloop.counter <= comment.rate %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-star" viewBox="0 0 16 16">
+                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                </svg>
+            {% endif %}
+        {% endfor %}<br>
+        {% endwith %}
+        {% for prof in profiles %}
+            {% if prof.user == comment.user %}
+            {{ prof }} :
+            {% else %}
+            ناشناس
+            {% endif %}
+        {% endfor %}
+        <p>{{ comment.text }}</p>
+        <div>{{ comment.created_at }}</div>
+    {% endfor %}
+</div>
+</div>
+
+<div id="Paris" class="tabcontent">
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p>
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <h3>نقد و بررسی:</h3>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/gallery.js'%}"></script>
+    <script src="{% static 'js/zoombox.js' %}"></script>
+{#   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>#}
+
+<script>
+  $('a.zoombox').zoombox();
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+   <script>
+        document.getElementById("form_comment").addEventListener("submit",function (event) {
+            event.preventDefault();
+            const text = $('#id_text').val();
+            const rate = $('#starsInput').val();
+            console.log(text,rate)
+            const data = JSON.stringify({text,rate,product_id:{{product.id}}})
+            console.log(data)
+            $.ajax({
+                type: "post",
+                url: "{% url 'create_comment' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response);
+                    console.log(data);
+                    {#window.location.reload();#}
+                    $('#comment-div').prepend( `
+                    ${ data.f_name } :
+                                        <div class="text-danger">
+                                            ${ data.text }
+                                            <div class="text-secondary float-left">  به تازگی
+                                                <div>
+                                                like<span id='like_count_container${ data.comment_id }'>${data.like_count}</span>
+
+                                                dislike<span id='dislike_count_container${ data.comment_id }'>${data.dislike_count}</span>
+
+                                                </div>
+                                                <button onclick= "likecomment(${ data.comment_id })">like</button>
+                                                <button onclick= "likecomment(${ data.comment_id }, false)">dislike</button>
+                                            </div>
+                                        </div>`
+                    );
+                },
+            });
+        }, false);
+    </script>
+<script src="{% static 'js/rating.js' %}"></script>
+<script>
+    $("#review").rating({
+        "value": 2,
+        "click": function (e) {
+            console.log(e);
+            $("#starsInput").val(e.stars);
+        }
+    });
+
+    $("#10starsReview").rating({
+        "stars": 10,
+        "click": function (e) {
+            console.log(e);
+            $("#10starsInput").val(e.stars);
+        }
+    });
+
+    $("#customstarsReview").rating({
+        "emptyStar": "far fa-play-circle",
+        "filledStar": "fas fa-play-circle",
+        "color": "#4c71ff",
+        "click": function (e) {
+            console.log(e);
+            $("#customstarsInput").val(e.stars);
+        }
+    });
+
+    $("#halfstarsReview").rating({
+        "half": true,
+        "click": function (e) {
+            console.log(e);
+            $("#halfstarsInput").val(e.stars);
+        }
+    });
+
+    $("#unrealisticReview").rating({
+        value: 3,
+        stars: 7,
+        emptyStar: "far fa-arrow-alt-circle-left",
+        halfStar: "far fa-angry",
+        filledStar: "fas fa-arrow-alt-circle-right",
+        color: "#ff3ef9",
+        half: true,
+        click: function (e) {
+            console.log(e);
+            $("#unrealisticInput").val(e.stars);
+        }
+    });
+</script>
+    <script>
+        function add_product(shpID) {
+            const data = JSON.stringify({shp_id:shpID})
+            $.ajax({
+                type: "post",
+                url: "{% url 'add_product' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response)
+                    {#const cell1 = $('#like_count_container' + data.commentID);#}
+                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
+                    {#$(cell1).text(data.like_count);#}
+                    {#$(cell2).text(data.dislike_count);#}
+                    alert("کالا به سبد خرید اضاقه شد")
+                    window.location.reload();
+                    {% comment %} $('"#like_count_container').text(data.like_count);
+                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                }
+            });
+        }
+    </script>
+
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+{% endblock %}

@@ -18,14 +18,18 @@ from django.urls import path, include
 # from django.contrib.staticfiles.urls import static
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from orders.views import BasketView, OrderItemsView
 from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products', include('products.urls')),
+    path('products/', include('products.urls')),
     path('accounts/', include('accounts.urls')),
     path('orders/', include('orders.urls')),
-    path('', include('siteview.urls'))
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', include('siteview.urls')),
+    path('cart/', BasketView.as_view(), name='cart'),
+    path('shipping/', OrderItemsView.as_view(), name='shipping'),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 print("urlpaterns ===",urlpatterns)

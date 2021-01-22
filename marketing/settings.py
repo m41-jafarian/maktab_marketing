@@ -124,10 +124,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'asset')
 
-STATICFILES_DIR = (BASE_DIR / "static",)
+STATICFILES_DIRS = (BASE_DIR / "static",)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGOUT_REDIRECT_URL = 'home_index'
 
 print("base-dir===",BASE_DIR)
 print("media-root===",MEDIA_ROOT)

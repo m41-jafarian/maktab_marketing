@@ -1,4 +1,9 @@
+@font-face {
+    font-family: btraffic;
+    src: url(BTraffic.ttf);
+  }
 body {
+  direction: rtl;
   text-align: right;
   font-family:btraffic;
 }

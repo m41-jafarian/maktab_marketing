@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import auth
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
@@ -16,6 +19,8 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        profile = Profile.objects.create(user=user)
+        profile.save()
         return user
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
@@ -28,7 +33,6 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
         email = models.EmailField(_('email address'), unique=True, db_index=True)
-        avatar = models.ImageField(_("avatar"), upload_to='user/avatars', blank=True, )
         date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
         is_staff = models.BooleanField(
         _('staff status'),
@@ -60,23 +64,41 @@ class User(AbstractBaseUser, PermissionsMixin):
             verbose_name = _('user')
             verbose_name_plural = _('users')
 
+        def __str__(self):
+            return self.email
+
 class Profile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
-        "User"),related_name="user_profile", on_delete=models.SET_NULL, null=True, blank=True)
-    first_name = models.CharField(_("First_name"), max_length=50,null= True)
-    last_name = models.CharField(_("Last_name"), max_length=50,null=True)
-    avator = models.ImageField(_("Avatar"), upload_to="users/avatar", height_field=None, width_field=None, max_length=None,null=True)
-    address = models.ForeignKey("Address", verbose_name=_("Address"), on_delete=models.CASCADE,null=True)
-    phone_number = models.IntegerField(_("Phone_number"),null= True)
-    mobile_number = models.IntegerField(_("Mobile_number"),null= True)
+        "User"),related_name="profile", on_delete=models.SET_NULL, null=True, blank=True)
+    first_name = models.CharField(_("First_name"), max_length=50,null= True, blank=True,default="")
+    last_name = models.CharField(_("Last_name"), max_length=50,null=True, blank=True,default="")
+    avatar = models.ImageField(_("Avatar"), upload_to="users/avatar", height_field=None, width_field=None, max_length=None,null=True,blank=True)
+    address = models.ForeignKey("Address", verbose_name=_("Address"), on_delete=models.CASCADE,null=True, blank=True,default="")
+    phone_number = models.IntegerField(_("Phone_number"),null= True, blank=True,default="")
+    mobile_number = models.IntegerField(_("Mobile_number"),null= True, blank=True,default="")
 
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("Profiles")
+
     def __str__(self):
-        return self.user
+        return self.first_name + " " + self.last_name
+
     def get_absolute_url(self):
         return reverse("Profile_detail", kwargs={"pk": self.pk})
+
+
+def create_profile(sender, **kwargs):
+    user = kwargs["instance"]
+    if kwargs["created"]:
+        user_profile = Profile(user=user, phone_number='021', mobile_number='09')
+        user_profile.save()
+
+
+post_save.connect(create_profile, sender=User)
+
+
+
 
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
@@ -89,7 +111,7 @@ class Address(models.Model):
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
     def __str__(self):
-        return self.city
+        return self.city +" خیابان "+self.street +" کوچه "+self.allay+ " کدپستی " + str(self.zip_code)
 
     def get_absolute_url(self):
         return reverse("Address_detail", kwargs={"pk": self.pk})
@@ -110,12 +132,15 @@ class Shop(models.Model):
         "User"),related_name="user_shop", on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(_("Name"), max_length=50)
     slug = models.SlugField(_("Slug"), db_index=True, unique=True)
-    discreption = models.TextField(_("Descreption")) 
+    discreption = models.TextField(_("Description"))
     image = models.ImageField(_("Image"), upload_to="shop/image", height_field=None, width_field=None, max_length=None)
+
     class Meta:
         verbose_name = _("Shop")
         verbose_name_plural = _("Shops")
+
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse("Shop_detail", kwargs={"pk": self.pk})

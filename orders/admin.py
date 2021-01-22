@@ -14,7 +14,7 @@ class basketAdmin(admin.ModelAdmin):
 
 @admin.register(BasketItems)
 class basketItemsAdmin(admin.ModelAdmin):
-    list_display = ('id','basket','shop_product')
+    list_display = ('id','basket','shop_product' , 'count')
 
 @admin.register(Order)
 class orderAdmin(admin.ModelAdmin):

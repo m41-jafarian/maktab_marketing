@@ -10,5 +10,9 @@ class SlideShow(models.Model):
     action_text = models.CharField(_("action text"), max_length=50)
     action_url = models.URLField(_("action url"), default='http://127.0.0.1:8000')
 
+    class Meta:
+        verbose_name = _("SlideShow")
+        verbose_name_plural = _("SlideShows")
+
     def __str__(self):
         return self.title

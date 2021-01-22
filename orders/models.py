@@ -1,8 +1,9 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
-User= get_user_model()
+User = get_user_model()
 
 # Create your models here.
 
@@ -16,21 +17,25 @@ class Basket(models.Model):
         verbose_name_plural = _("Baskets")
 
     def __str__(self):
-        return self.name
+        return self.user.email
 
     def get_absolute_url(self):
         return reverse("Basket_detail", kwargs={"pk": self.pk})
 
 class BasketItems(models.Model):
-    basket = models.ForeignKey("Basket", verbose_name=_("Basket"), on_delete=models.CASCADE)
-    shop_product = models.ForeignKey("products.ShopProduct", verbose_name=_("Shop_product"), on_delete=models.CASCADE)
-    
+    basket = models.ForeignKey("Basket", verbose_name=_("Basket"), related_name="basket", on_delete=models.CASCADE)
+    shop_product = models.ForeignKey("products.ShopProduct", verbose_name=_("Shop_product"),
+                                     related_name="shop_product", on_delete=models.CASCADE)
+    count = models.IntegerField(_("Count"),default=1)
+
+
     class Meta:
         verbose_name = _("BasketItem")
         verbose_name_plural = _("BasketItems")
+        unique_together = ('basket', 'shop_product',)
 
     def __str__(self):
-        return self.name
+        return self.shop_product.product.name
 
     def get_absolute_url(self):
         return reverse("BasketItems_detail", kwargs={"pk": self.pk})
@@ -47,7 +52,7 @@ class Order(models.Model):
         verbose_name_plural = _("Orders")
 
     def __str__(self):
-        return self.name
+        return self.user.email
 
     def get_absolute_url(self):
         return reverse("Order_detail", kwargs={"pk": self.pk})

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -43,13 +44,14 @@ class GalleryImage(models.Model):
     product = models.ForeignKey("Product", verbose_name=_(
         "Product"),related_name="product_gallery", on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(_("Image"), upload_to="product/gallery", height_field=None, width_field=None, max_length=None)
+    title = models.CharField(_("Title"),max_length=50,null=True,blank=True)
 
     class Meta:
         verbose_name = _("GalleryImage")
         verbose_name_plural = _("GalleryImages")
 
     def __str__(self):
-        return self.name
+        return self.product.name
 
     def get_absolute_url(self):
         return reverse("Galleryimage_detail", kwargs={"pk": self.pk})
@@ -72,20 +74,23 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse("Category_detail", kwargs={"pk": self.pk})
 
-class comment(models.Model):
+
+class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
-        "User"),related_name="user_comment", on_delete=models.SET_NULL, null=True, blank=True)
+        "User"),related_name="author", on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ForeignKey("Product", verbose_name=_(
-        "Product"),related_name="product_comment", on_delete=models.SET_NULL, null=True, blank=True)
+        "Product"),related_name="comments", on_delete=models.SET_NULL, null=True, blank=True)
     text = models.TextField(_("Content"))
-    rate = models.IntegerField(_("Rate"))
+    rate = models.IntegerField(_("Rate"), null=True, blank=True)
+    created_at = models.DateTimeField(_('Created_at'),auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated_at'),auto_now=True)
 
     class Meta:
         verbose_name = _("comment")
         verbose_name_plural = _("comments")
 
     def __str__(self):
-        return self.name
+        return self.text
 
     def get_absolute_url(self):
         return reverse("comment_detail", kwargs={"pk": self.pk})
@@ -94,8 +99,8 @@ class comment(models.Model):
 
 
 class ShopProduct(models.Model):
-    shop = models.ForeignKey("accounts.Shop", verbose_name=_("Shop"), on_delete=models.CASCADE)
-    product = models.ForeignKey("Product", verbose_name=_("Product"), on_delete=models.CASCADE)
+    shop = models.ForeignKey("accounts.Shop",related_name="shop", verbose_name=_("Shop"), on_delete=models.CASCADE)
+    product = models.ForeignKey("Product", verbose_name=_("Product"),related_name="product", on_delete=models.CASCADE)
     price = models.IntegerField(_("Price"))
     quantity = models.IntegerField(_("Quantity"))
 
@@ -104,7 +109,7 @@ class ShopProduct(models.Model):
         verbose_name_plural = _("ShopProducts")
 
     def __str__(self):
-        return self.name
+        return self.product.name
 
     def get_absolute_url(self):
         return reverse("Shopproduct_detail", kwargs={"pk": self.pk})
@@ -119,7 +124,7 @@ class ProductMeta(models.Model):
         verbose_name_plural = _("ProductMetaes")
 
     def __str__(self):
-        return self.name
+        return self.product.name
 
     def get_absolute_url(self):
         return reverse("ProductMeta_detail", kwargs={"pk": self.pk})
@@ -134,7 +139,7 @@ class Like(models.Model):
         verbose_name_plural = _("Likes")
 
     def __str__(self):
-        return self.name
+        return self.product.name
 
     def get_absolute_url(self):
         return reverse("Like_detail", kwargs={"pk": self.pk})
