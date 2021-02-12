@@ -19,17 +19,28 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from orders.views import BasketView, OrderItemsView
+from orders.views import BasketView, OrderItemsView, InformatinView, pay_amount, PaymentView
 from . import settings
+# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework import routers
+
+routers = routers.DefaultRouter()
 
 urlpatterns = [
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
     path('accounts/', include('accounts.urls')),
     path('orders/', include('orders.urls')),
     path('', include('siteview.urls')),
     path('cart/', BasketView.as_view(), name='cart'),
-    path('shipping/', OrderItemsView.as_view(), name='shipping'),
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('shipping/', InformatinView.as_view(), name='shipping'),
+    path('payment/', PaymentView.as_view(), name='payment'),
+
+    path('api/', include(routers.urls)),
+    path('api-auth/', include('rest_framework.urls')),  ## این برای لاگین کردن ای پی آی هست
+
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 print("urlpaterns ===",urlpatterns)

@@ -5,12 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/aos-styles.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/aos-main.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.default.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/owl.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="{% static 'css/chart.css' %}">
     <link rel="stylesheet" href="{% static 'css/chart.min.css' %}">
     {% block css %}{% endblock %}
@@ -54,6 +58,7 @@ div.sticky {
         text-decoration: none;
         color: grey;
     }
+.pointer {cursor: pointer;}
 </style>
 </head>
 <body>
@@ -71,7 +76,7 @@ div.sticky {
           <a class="nav-link" href="{% url 'logout' %}"> خروج </a>
       </p>
     </div>
-    <div id="foo" style=" position: fixed; bottom: 20px; right: 20px; ">
+    <div id="foo" style=" position: fixed; bottom: 20px; right: 20px; z-index: 1000">
         <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
       <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"></path>
       <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
@@ -89,8 +94,11 @@ div.sticky {
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/owl.carousel.js'%}"></script>
+<script src="{% static 'js/aos-highlight.min.js'%}"></script>
+<script src="{% static 'js/aos.js'%}"></script>
 <script src="{% static 'js/chart.js'%}"></script>
 <script src="{% static 'js/chart.min.js'%}"></script>
+
 {% block javascript %}{% endblock %}
     <script>
         {#$(document).ready(function () {#}
@@ -109,33 +117,46 @@ div.sticky {
                 $('.wee').hide();
               });
             });
-
          // });
           //# sourceURL=pen.js
-
     </script>
-<script>
-    var wrap = $("#main-header");
 
-wrap.on("scroll", function(e) {
-    console.log(this.scrollTop)
-  if (this.scrollTop > 147) {
-    wrap.addClass("fix-search");
-  } else {
-    wrap.removeClass("fix-search");
-  }
-
-});
-</script>
     <script>
-        $(document).ready(function(){
-          $(".owl-carousel").owlCarousel({
-              loop:true,
-            margin:20,
-            autoplay:true,
-          });
-        })
-        </script>
+        $(window).scroll(function() {
+            var scroll = $(window).scrollTop();
+            if (scroll >= 150 && scroll<200) {
+                $("#main_bar").css("display","none")}
+            if (scroll >= 200) {
+                $("#main_bar").css("position","fixed");
+                $("#main_bar").delay(1000).show();
+                $("#basket_contain").css("top","110px");
+            } else {
+                $("#main_bar").css("position","relative");
+                $("#basket_contain").css("top","210px");
+            }
+        });
+    </script>
+
+    <script>
+        function show_cat_image(cat_id) {
+            select_cell = "#cat_image"+cat_id
+            select_cell2 = "#cat_menu"+cat_id
+            console.log(select_cell)
+            $(select_cell).show(select_cell)
+            $(select_cell2).mouseout(
+                $(select_cell).hide()
+            )}
+    </script>
+
+{#    <script>#}
+{#        $(document).ready(function(){#}
+{#          $(".owl-carousel").owlCarousel({#}
+{#              loop:true,#}
+{#            margin:20,#}
+{#            autoplay:true,#}
+{#          });#}
+{#        })#}
+{#    </script>#}
     <script>
         $(window).on('load resize', function () {
             var this_pos = $('#sub-menu1').offset().left;
@@ -154,6 +175,7 @@ wrap.on("scroll", function(e) {
                }, 100);
            });
         $('#sub-menu1-contain').mouseenter(function() {
+            console.log("mouse over sub menu")
             clearTimeout(setter);
 
             }),
@@ -162,70 +184,79 @@ wrap.on("scroll", function(e) {
             });
        });
     </script>
-<script>
-    $(document).ready(function () {
-        $('#foo').mouseenter(function () {
-            console.log("show")
-            console.log("clear timeout")
-            clearTimeout(setter);
-            $('#profile_contain').fadeIn('#profile_contain')
+    <script>
+        $(document).ready(function () {
+            $('#foo').mouseenter(function () {
+                console.log("show")
+                console.log("clear timeout")
+                clearTimeout(setter);
+                $('#profile_contain').fadeIn('#profile_contain')
+            })
         })
-    })
-</script>
-<script>
-    var setter;
-        $('#foo').mouseleave(function () {
-             setter = setTimeout(function () {
-                console.log("hidden from foo")
-                $('#profile_contain').fadeOut('#profile_contain')
-            }, 2000);
-        });
-        $('#profile_contain').mouseenter(function () {
-            console.log("clear timeout")
-            clearTimeout(setter);
-        })
-        $('#profile_contain').mouseleave(function () {
+    </script>
+    <script>
+        var setter;
+            $('#foo').mouseleave(function () {
                  setter = setTimeout(function () {
-                console.log("hidden from profile")
-                $('#profile_contain').fadeOut('#profile_contain')
-            }, 2000);
-        });
-</script>
+                    console.log("hidden from foo")
+                    $('#profile_contain').fadeOut('#profile_contain')
+                }, 2000);
+            });
+            $('#profile_contain').mouseenter(function () {
+                console.log("clear timeout")
+                clearTimeout(setter);
+            })
+            $('#profile_contain').mouseleave(function () {
+                     setter = setTimeout(function () {
+                    console.log("hidden from profile")
+                    $('#profile_contain').fadeOut('#profile_contain')
+                }, 2000);
+            });
+    </script>
 
-<script>
-    $(document).ready(function () {
-        $('#shoo').mouseenter(function () {
-            console.log("show")
-            console.log("clear timeout")
-            clearTimeout(setter);
-            $('#basket_contain').css({
-                    'visibility': 'visible'
-                })
-        })
-    })
-</script>
-<script>
-    var setter;
-        $('#shoo').mouseleave(function () {
-             setter = setTimeout(function () {
-                console.log("hidden from foo")
+    <script>
+        $(document).ready(function () {
+            $('#shoo').mouseenter(function () {
+                console.log("show")
+                console.log("clear timeout")
+                clearTimeout(setter);
                 $('#basket_contain').css({
-                    'visibility': 'hidden'
-                })
-            }, 2000);
-        });
-        $('#basket_contain').mouseenter(function () {
-            console.log("clear timeout")
-            clearTimeout(setter);
+                        'visibility': 'visible'
+                    })
+            })
         })
-        $('#basket_contain').mouseleave(function () {
+    </script>
+    <script>
+        var setter;
+            $('#shoo').mouseleave(function () {
                  setter = setTimeout(function () {
-                console.log("hidden from profile")
-                $('#basket_contain').css({
-                    'visibility': 'hidden'
-                })
-            }, 2000);
-        });
-</script>
+                    console.log("hidden from foo")
+                    $('#basket_contain').css({
+                        'visibility': 'hidden'
+                    })
+                }, 2000);
+            });
+            $('#basket_contain').mouseenter(function () {
+                console.log("clear timeout")
+                clearTimeout(setter);
+            })
+            $('#basket_contain').mouseleave(function () {
+                     setter = setTimeout(function () {
+                    console.log("hidden from profile")
+                    $('#basket_contain').css({
+                        'visibility': 'hidden'
+                    })
+                }, 2000);
+            });
+    </script>
+    <script>
+     $(document).ready(() => {
+    $(".cat_sel").hover(function(){
+       $(this).css("opacity", "1.0");
+    }, function(){
+       $(this).css("opacity", "0.4");
+    });
+});
+    </script>
 </body>
 </html>

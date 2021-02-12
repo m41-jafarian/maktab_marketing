@@ -17,10 +17,10 @@ class LoginForm(forms.ModelForm):
         fields = ('email', 'password')
 
 
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ('first_name','last_name','avatar','address','phone_number','mobile_number')
+# class ProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = ('first_name','last_name','avatar','address','phone_number','mobile_number')
 
 
 class UserForm(forms.ModelForm):
@@ -29,5 +29,9 @@ class UserForm(forms.ModelForm):
         fields = ('email', 'password')
 
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields =('avatar',)
 
 

@@ -8,8 +8,11 @@ from .validators import validate_username, validate_password
 User = get_user_model()
 
 class UserRegistrationForm(forms.ModelForm):
+    email = forms.EmailField(widget=forms.TextInput(attrs={'style': 'border-color: orange;width:100%;padding:5px'}))
+    password = forms.CharField(
+        label=_('password'), widget=forms.PasswordInput(attrs={'style': 'border-color: orange;width:100%;padding:5px'}), required=True)
     password2 = forms.CharField(
-        label=_('repeat password'), widget=forms.PasswordInput, required=True)
+        label=_('repeat password'), widget=forms.PasswordInput(attrs={'style': 'border-color: orange;width:100%;padding:5px'}), required=True)
     print('injaa form register to form ')
 
     class Meta:
@@ -18,8 +21,9 @@ class UserRegistrationForm(forms.ModelForm):
         help_texts = {'email': _('please enter a valid email'),
                       'password': _('enter a password')}
         labels = {
-            "Email": "*Email",
-            "password": "*Password"
+            "email": "ایمیل:",
+            "password": "رمز عبور:",
+            "password2": "رمزمجدد:"
         }
         widgets = {
             "Email":  EmailInput(attrs={'placeholder': 'ex:test', 'autocomplete': 'off'}),

@@ -1,5 +1,6 @@
 {% extends 'base/base2.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block css %}
     <style>
@@ -38,37 +39,178 @@
     مراحل پرداخت
 {% endblock %}
 {% block body %}
+ <div id="London" class="tabcontent">
+     <div class="d-flex col-12 bg-info justify-content-around align-items-center mt-5 mb-0 h4 shadow" style="height: 15%"><a href="{% url 'home_index' %}"><img src="{% static '/kalabuy.png' %}"></a> </div>
+     <div class="d-flex col-12  justify-content-around align-items-center  h4">
+        <div style="color: #0041ff">اطلاعات ارسال</div><div>پرداخت</div><div>اتمام خرید</div>
+     </div>
+     <div class="container d-flex col-12 justify-content-center align-items-center mb-3">
+         <div class="pay_circle_blue tablinks" onclick="openCity(event, 'London')" id="defaultOpen"></div>
+         <div class="pay_line"></div>
+         <div class="pay_circle tablinks" onclick="openCity(event, 'Paris')"></div>
+         <div class="pay_line"></div>
+         <div class="pay_circle tablinks" onclick="openCity(event, 'Tokyo')"></div>
+     </div>
+    <div class="container d-flex flex-wrap mw-100 border border-info">
+        <div id="info1-div" class="col-sm-12 col-md-9 container row d-flex justify-content-between align-items-end" style="height: 100%">
+            {% if basketitems %}
+                <div class="col-12">
+                    <div>{{ profile }}</div>
+                    <div class="col-12"> آدرس محل تحویل:  </div>
+                    <select class="address">
+                    {% for address in addresses %}
+                        <option value="{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}">{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                {% for item in basketitems %}
+                    <div class="d-flex align-items-center justify-content-between bg-light shadow border col-12 d-flex my-1">
+                        <div class="col-3 border" style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
+                        <div class="col-5 border" style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
+                        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+                     </div>
+                {% endfor %}
+                <div>زمان تحویل از دو روز کاری</div>
+                <div class="radiolist container d-flex justify-content-between">
+                روز :
+                <form>
+                  <input type="radio" id="day1" checked name="day" value="day1">
+                  <label id="day1-lable" for="male">2021-02-03</label><br>
+                  <input type="radio" id="day2" name="day" value="day2">
+                  <label id="day2-lable" for="female">2021-02-04</label><br>
+                  <input type="radio" id="day3" name="day" value="day3">
+                  <label id="day3-lable" for="other">2021-02-05</label>
+                </form>
+                    ساعت:
+                <form>
+                  <input type="radio" id="hour1" checked name="hour" value="8 - 12">
+                  <label for="male">8 - 12</label><br>
+                  <input type="radio" id="hour2" name="hour" value="12 - 14">
+                  <label for="female">12 - 14</label><br>
+                  <input type="radio" id="hour3" name="hour" value="15 - 18">
+                  <label for="other">15 - 18</label>
+                  <input type="radio" id="hour4" name="hour" value="19 - 21">
+                  <label for="other">19 - 21</label>
+                </form>
+                </div>
+            {% else %}
+                <div>سبد شما خالی است. برای دیدن یا اضافه کردن کالا حتما باید وارد شوید</div>
+            {% endif %}
+        </div>
+        <div class="container col-sm-12 col-md-3 border  align-items-center " style="height: 100%">تعداد کالا: {{ goods_count }} <br>
+            <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total|intcomma }} تومان</div>
+            <div onclick="openCity(event, 'Paris')" class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">
+    {#        <a href="{% url 'payment' %}">ادامه فرایند خرید</a>#}
+                ادامه فرایند خرید
+            </div>
+        </div>
+    </div>
+ </div>
+ <div id="Paris" class="tabcontent">
     <div class="d-flex col-12 bg-info justify-content-around align-items-center mt-5 mb-0 h4 shadow" style="height: 15%"><a href="{% url 'home_index' %}"><img src="{% static '/kalabuy.png' %}"></a> </div>
     <div class="d-flex col-12  justify-content-around align-items-center  h4">
-    <div style="color: #0041ff">اطلاعات ارسال</div><div>پرداخت</div><div>اتمام خرید</div>
+    <div style="color: #0041ff">اطلاعات ارسال</div><div style="color: #0041ff">پرداخت</div><div>اتمام خرید</div>
     </div>
     <div class="container d-flex col-12 justify-content-center align-items-center mb-3">
-        <div class="pay_circle_blue" ></div><div class="pay_line"></div>
-        <div class="pay_circle"></div><div class="pay_line"></div>
-        <div class="pay_circle"></div></div>
-    <div class="container d-flex  mw-100 border border-info">
-<div id="cart-div" class="col-9 container border border-danger row  d-flex justify-content-between align-items-center" style="height: 100%">
-
-{% if orderitems %}
+          <div class="pay_circle_blue tablinks" onclick="openCity(event, 'London')" id="defaultOpen"" ></div>
+         <div class="pay_line_blue"></div>
+         <div class="pay_circle_blue tablinks" onclick="openCity(event, 'Paris')"></div>
+         <div class="pay_line"></div>
+         <div class="pay_circle tablinks" onclick="openCity(event, 'Tokyo')"></div>
+    </div>
+    <div class="container d-flex flex-wrap mw-100 border border-info">
+<div id="info2-div" class="col-sm-12 col-md-9 container row d-flex justify-content-between align-items-end" style="height: 100%">
+{% if basketitems %}
     <div class="col-12">
         <div>{{ profile }}</div>
-        <div class="col-12"> آدرس محل تحویل:  {{ profile.address }}</div>
+        <div class="col-12 text-warning h4"> آدرس محل تحویل انتخاب شده:  </div>
+    <div id="selected_address" class="text-success h4">
+
+    </div>
+        <div class="col-12 text-warning h4"> زمان تحویل گرفتن انتخاب شده:  </div>
+    <div id="selected_time" class="text-success h4">
+
+    </div>
     </div>
 
 
-    {% for item in orderitems %}
-        <div class="col-3 border" style="height: 75%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"></div>
+    {% for item in basketitems %}
+     <div class="d-flex align-items-center justify-content-between bg-light shadow border col-12 d-flex my-1">
+        <div class="col-3 border" style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
         <div class="col-5 border" style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
-        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.price }}  <br></div>
+        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+     </div>
     {% endfor %}
     {% else %}
         <div>سبد شما خالی است. برای دیدن یا اضافه کردن کالا حتما باید وارد شوید</div>
 {% endif %}
 </div>
-<div class="container col-3 border  align-items-center " style="height: 100%">تعداد کالا: {{ goods_count }} <br>
-    <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total }} تومان</div>
-    <div class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target"><a href="{% url 'shipping' %}">ادامه فرایند خرید</a></div>
-</div>
+    <div class="container col-sm-12 col-md-3 border  align-items-center " style="height: 100%">
+        تعداد کالا: {{ goods_count }} <br>
+        <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total|intcomma }} تومان</div>
+        <a href="{% url 'payment' %}">
+            <div class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">
+                پرداخت
+            </div>
+        </a>
+    </div>
 
 </div>
+ </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  var selectedAddress = $(".address").children("option:selected").val();
+  $('#selected_address').html(selectedAddress)
+
+  var selected_day = $("input[name='day']:checked").val();
+  var selected_hour = $("input[name='hour']:checked").val();
+  $('#selected_time').html(" روز " + selected_day + " ساعت " + selected_hour)
+    {#alert(selectedAddress)#}
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+    <script>
+$(document).ready(function(){
+    $("select.address").change(function(){
+        var selectedAddress = $(this).children("option:selected").val();
+        alert("You have selected the country - " + selectedAddress);
+        $('#selected_address').html(selectedAddress)
+    });
+});
+</script>
+
+    <script>
+   $( document ).ready(function() {
+              var todayDate = new Date();
+        var tomorrow = new Date(todayDate.setDate(todayDate .getDate() + 1));
+        var tomorrow2 = new Date(todayDate.setDate(todayDate .getDate() + 1));
+        var tomorrow3 = new Date(todayDate.setDate(todayDate .getDate() + 1));
+        var tomorrow = tomorrow.getFullYear() + '-' +('0' + (tomorrow.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow.getDate()).slice(-2) + '-' + ('0' + tomorrow.getUTCDay()).slice(-2);
+        var tomorrow2 = tomorrow2.getFullYear() + '-' +('0' + (tomorrow2.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow2.getDate()).slice(-2);
+        var tomorrow3 = tomorrow3.getFullYear() + '-' +('0' + (tomorrow3.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow3.getDate()).slice(-2);
+        console.log(tomorrow,tomorrow2,tomorrow3)
+        $('#day1-lable').text(tomorrow);
+        $('#day2-lable').text(tomorrow2);
+        $('#day3-lable').text(tomorrow3);
+        $('#day1').val(tomorrow);
+        $('#day2').val(tomorrow2);
+        $('#day3').val(tomorrow3);
+    });
+    </script>
 {% endblock %}

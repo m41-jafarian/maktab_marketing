@@ -70,27 +70,214 @@
     اطلاعات پروفایل
 {% endblock %}
 {% block body %}
-<div class="container d-flex  border border-danger row mw-100">
-    <div class="d-flex col-12">پروفایل:{{ profile }}</div>
-    {% if profile.avatar.url is not null %}
-    <div class="col-4 border"> تصویر : <img src="{{ profile.avatar.url }}" alt="{{ profile }}" height="300px" width="300px" ></div>
-    {% else %}
-    <div class="col-4 border"> تصویر : <img src="{% static '/personal.png' %}" alt="{{ profile }}" hei  ght="300px" width="300px" ></div>
-    {% endif %}
-    <div class="d-flex border border-info flex-wrap">
-        <div class="col-4 border"> نام : {{ profile.first_name }}</div>
-        <div class="col-4 border"> نام خانوادگی: {{ profile.last_name }}</div>
-        <div class="col-4 border"> کدملی : </div>
-        <div class="col-4 border"> آدرس : {{ profile.address }}</div>
-        <div class="col-4 border"> شماره تلفن: : {{ profile.phone_number }}</div>
-        <div class="col-4 border"> شماره موبایل : {{ profile.mobile_number }}</div>
-    </div>
-    </div>
+<div class="container d-flex justify-content-between row mw-100">
+        <div class="d-flex h1 col-12">پروفایل:{{ profile }}</div>
+<div class="col-sm-12 col-md-6 col-lg-3">
+        {% if profile.avatar.url is not null %}
+         تصویر : <img src="{{ profile.avatar.url }}" alt="{{ profile }}" height="300px" width="300px" >
+        {% else %}
+         تصویر : <img src="{% static '/personal.png' %}" alt="{{ profile }}" hei  ght="300px" width="300px" >
+        {% endif %}
+ <form method="post" action="{% url 'update_avatar' %}" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                <input id="image_url" name="avatar" type="file" accept="image/*">
+{#                        {{ form }} {{ form.label_tag }}#}
+{#                        {{ form.errors }} {{ form.help_text| safe}}#}
+                <input class="btn-info float-left" type="submit" value="     save changes     ">
+ </form>
+</div>
+<form class="col-lg-8 col-md-6 col-sm-12" id="form_profile" >
+        <div class="d-flex bg-light shadow flex-wrap">
+
+            <div class="col-6 border">
+                        <svg onclick="enable_field_profile('f_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                نام :{{ profile.first_name }}
+               <input class="mx-2" id="f_nam" hidden value="{{ profile.first_name }}" type="text" placeholder="first name"></div>
+            <div class="col-6 border">
+                        <svg onclick="enable_field_profile('l_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                نام خانوادگی: {{ profile.last_name }}
+               <input id="l_nam" hidden value="{{ profile.last_name }}" type="text" placeholder="last name"></div>
+            <div class="col-6 border"> کدملی :
+            </div>
+            <div class="col-6 border">
+                        <svg onclick="enable_field_profile('ph_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                شماره تلفن: : {{ profile.phone_number }}
+               <input id="ph_number" hidden value="{{ profile.phone_number }}" type="number" placeholder="phone numer"></div>
+          <div class="col-6 border">
+                        <svg onclick="enable_field_profile('mob_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+              شماره موبایل : {{ profile.mobile_number }}
+               <input id="mob_number" hidden value="{{ profile.mobile_number }}" type="number" placeholder="mobile number"></div>
+               <input id="sub_profile" onclick="edit_profile()" type="submit" hidden value="ثبت اطلاعات">
+
+        </div>
+ </form>
+            <div class="col-lg-12 border bg-light  shadow">آدرس ها:
+            {% for address in addresses %}
+                       <form>
+                       <svg onclick="enable_field({{ address.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+
+                           {{ forloop.counter }}- <input class="border-0" id="city{{ address.id }}"     disabled value=" {{ address.city }}" type="text" placeholder="first name">
+                                               خیابان <input class="border-0" id="street{{ address.id }}"   disabled value="{{ address.street }}" type="text" placeholder="last name">
+                                                  کوچه<input class="border-0" id="allay{{ address.id }}"    disabled value="{{ address.allay }}" type="text" placeholder="phone numer">
+                                               کدپستی <input class="border-0" id="zip_code{{ address.id }}" disabled value="{{ address.zip_code }}" type="number" placeholder="mobile number">
+                           <input id="sub{{ address.id }}" onclick="edit_address({{ address.id }})" type="submit" hidden value="ثبت اطلاعات">
+                           <div>
+                         </div>
+                       </form>
+            {% endfor %}
+                        <svg onclick="open_new_address()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                آدرس جدید:
+                <div id="new_address" style="display: none">
+                    <form>
+                          - <input id="city0" value="" type="text"  placeholder="city">
+                     خیابان <input id="street0" value="" type="text" placeholder="street">
+                        کوچه<input id="allay0" value="" type="text" placeholder="allay">
+                     کدپستی <input id="zip_code0" value="" type="number" placeholder="zip code">
+                           <input onclick="edit_address(0)" type="submit" value="ثبت اطلاعات">
+                           <div>
+                         </div>
+                    </form>
+                </div>
+            </div>
 </div>
 
 {% endblock %}
 
 {% block javascript %}
+ <script>
+    function open_new_address() {
+        $('#new_address').show()
+    }
+ </script>
+       <script>
+        function edit_profile() {
+            const f_name = $('#f_nam').val()
+            const l_name = $('#l_nam').val()
+            const ph_number = $('#ph_number').val()
+            const mob_number = $('#mob_number').val()
+            console.log(f_name,l_name,ph_number,mob_number)
+            const data = JSON.stringify({f_name,l_name,ph_number,mob_number})
+            $('#f_nam').prop('hidden', true);
+            $('#l_nam').prop('hidden', true);
+            $('#ph_number').prop('hidden', true);
+            $('#mob_number').prop('hidden', true);
+            $('#sub_profile').prop('hidden', true);
+            $.ajax({
+                type: "post",
+                url: "{% url 'edit_profile' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response)
+                    {#const cell1 = $('#like_count_container' + data.commentID);#}
+                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
+                    {#$(cell1).text(data.like_count);#}
+                    {#$(cell2).text(data.dislike_count);#}
+
+                    {% comment %} $('"#like_count_container').text(data.like_count);
+                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                }
+            });
+        }
+    </script>
+
+          <script>
+        function edit_address(addressId) {
+            const address_id = addressId
+            const cell1 = '#city'+address_id
+            const cell2 = '#street'+address_id
+            const cell3 = '#allay'+address_id
+            const cell4 = '#zip_code'+address_id
+            const cell5 = '#sub'+address_id
+
+            const city = $(cell1).val()
+            const street = $(cell2).val()
+            const allay = $(cell3).val()
+            const zip_code = $(cell4).val()
+            const data = JSON.stringify({address_id,city,street,allay,zip_code})
+
+            $(cell1).prop('disabled', true);
+            $(cell2).prop('disabled', true);
+            $(cell3).prop('disabled', true);
+            $(cell4).prop('disabled', true);
+           $(cell5).prop('hidden', true);
+           $('#new_address').hide()
+            $.ajax({
+                type: "post",
+                url: "{% url 'edit_address' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response)
+                    {#const cell1 = $('#like_count_container' + data.commentID);#}
+                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
+                    {#$(cell1).text(data.like_count);#}
+                    {#$(cell2).text(data.dislike_count);#}
+
+                    {% comment %} $('"#like_count_container').text(data.like_count);
+                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                }
+            });
+        }
+    </script>
+    <script>
+        function enable_field(addressId) {
+            const address_id = addressId
+            const cell1 = '#city' + address_id
+            const cell2 = '#street' + address_id
+            const cell3 = '#allay' + address_id
+            const cell4 = '#zip_code' + address_id
+            const cell5 = '#sub'+address_id
+
+            const city = $(cell1).prop('disabled', false);
+            const street = $(cell2).prop('disabled', false);
+            const allay = $(cell3).prop('disabled', false);
+            const zip_code = $(cell4).prop('disabled', false);
+            const sub = $(cell5).prop('hidden', false);
+        }
+    </script>
+        <script>
+        function enable_field_profile(field_name) {
+            const cell1 = '#'+field_name
+            $(cell1).prop('hidden', false);
+            $('#sub_profile').prop('hidden', false);
+        }
+    </script>
+    <script>
+        function change_avatar() {
+            const f_name = $('#f_nam').val()
+            const l_name = $('#l_nam').val()
+            const ph_number = $('#ph_number').val()
+            const mob_number = $('#mob_number').val()
+            console.log(f_name,l_name,ph_number,mob_number)
+            const data = JSON.stringify({f_name,l_name,ph_number,mob_number})
+            $.ajax({
+                type: "post",
+                url: "{% url 'edit_profile' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response)
+                    {#const cell1 = $('#like_count_container' + data.commentID);#}
+                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
+                    {#$(cell1).text(data.like_count);#}
+                    {#$(cell2).text(data.dislike_count);#}
+
+                    {% comment %} $('"#like_count_container').text(data.like_count);
+                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                }
+            });
+        }
+    </script>
     <script>
      $(document).ready(() => {
     $(".cat_sel").hover(function(){

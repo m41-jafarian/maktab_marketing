@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% comment %} {% load crispy_forms_tags %} {% endcomment %}
+{% block title %}
+    Create Product
+{% endblock title %}
+
+{% block body %}
+  <style>
+.btnn {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition: 0.3s;
+}
+
+.btnn:hover {
+  background-color: #3e8e41;
+  color: white;
+}
+</style>
+<div class="container d-flex justify-content-around mw-100">
+        <div class="mw-100 col-8 m-5 border d-flex justify-content-center align-content-center" >
+            <form method="post" action="#" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {% comment %} {{ form.as_ul }} {% endcomment %}
+
+                {{ form.non_field_errors }}
+                <div class="form-group container bg-light shadow d-flex flex-wrap mt-2 rounded-3">
+                   {% for field in form %}
+                            <div class="col-2 ">{{field.label_tag}}</div>
+                            <div class="col-4 ">{{ field }}
+                            <small>{% if field.help_text %}
+                                <small class="help">{{ field.help_text| safe}} </small>
+                            {% endif %}</small>
+                            </div>
+                            {{ field.errors }}
+                    {% endfor %}
+                </div>
+
+                {{ form.non_field_errors }}
+                <div class="d-flex justify-content-center shadow">
+                    <input class="d-flex w-50 p-2 justify-content-center btn-info " type="submit" value="      ثبت اطلاعات      "></input>
+                </div>
+            </form>
+        </div>
+        <div class="col-2 bg-light shadow">
+            <a href="{% url 'create' %}"><div class="card-link btnn"> اضافه کردن محصول جدید</div></a>
+            <a href="{% url 'createshopproduct' %}"><div class="card-link btnn"> اضافه کردن محصول فروشگاهی جدید</div></a>
+            <a href="{% url 'createCategory' %}"><div class="card-link btnn"> اضافه کردن طبقه بندی جدید</div></a>
+            <a href="{% url 'createBrand' %}"><div class="card-link btnn"> اضافه کردن برند جدید</div></a>
+            <a href="{% url 'createShop' %}"><div class="card-link btnn"> اضافه کردن مفازه جدید</div></a>
+            <a href="{% url 'createProductMeta' %}"><div class="card-link btnn"> اضافه کردن ویژگی محصول جدید</div></a>
+        </div>
+    </div>
+
+{% endblock body %}

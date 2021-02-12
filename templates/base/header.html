@@ -1,148 +1,120 @@
 {% load static %}
-<style>
-    .wrap {
-  width: 320px;
-  border: 1px solid #ccc;
-  height: 480px;
-  overflow: auto;
-  position: relative;
-}
-.top-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 320px;
-  height: 60px;
-  .menu-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 18px 20px;
-  }
-  .fix-search & {
-    background: #eee;
-  }
-}
-
-.search {
-  position: absolute;
-  top: 155px;
-  left: 20px;
-  right: 20px;
-  input {
-    width: 265px;
-    border: 1px solid #ccc;
-    padding: 8px;
-    font-size: 15px;
-    transition: width 0.2s;
-    -webkit-appearance: none;
-  }
-  .fix-search & {
-    position: fixed;
-    top: 10px;
-    input {
-      width: 250px;
-    }
-  }
-}
-
-.top {
-  height: 250px;
-  padding-top: 40px;
-}
-.hero {
-  width: 200px;
-  height: 100px;
-  background: #ccc;
-  margin: 0 auto;
-}
-
-</style>
 
 
-<div class="container mw-100 justify-content-between">
-            <div class="d-flex flex-row mw-100 text-white bg-danger justify-content-center align-items-center"  style="height:10%; width:100%">
-                <h1 id="textdiv">با ما همیشه برنده خواهید بود.</h1>
-            </div>
-
-
-        <div class="d-flex flex-row bg-light nav-bar justify-content-between p-4 align-items-center" style="height:14%; width:100%;z-index:1000;">
-            <div class="mw-100 "> <a href="{% url 'home_index' %}"><img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="100%" height="100%" ></a>
-            </div>
-                <div class="mw-100 col-8 d-flex justify-content-center"><input class="form-control rounded" required type="text" placeholder="اینجا دنبال کالایی که دنبالشید بگردید" style="width: 70%; height:80%;" >
-                    <svg style="cursor: pointer; margin: 5px -30px;" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search text-info" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
-                </div>
-                     <div class="col-2 d-flex">
-                          {% csrf_token %}
-                          {% if request.user.is_authenticated %}
-                              <a class="nav-link" href="{% url 'logout' %}"> خروج </a>
-                              {% if profile %}
-                                  <a href="{% url 'profile' profile.user.id %}">
-                                  {% if profile.avatar.url is not null %}
-                                <img class="" style="width:50px;height:60px;" src="{{ profile.avatar.url }}" alt="{{ profile.avatar.url }}">
-                              {% else %}
-                                <img style="width:50px;height:60px;" src="{% static '/personal.png' %}" alt="personal">
-                              {% endif %}
-
-                             {{ profile }}
-                               </a>
-                           {% endif %}
-
-                        {% else %}
-                            <a class="nav-link border rounded" href="{% url 'login' %}">ورود به حساب کاربری</a>
-                        {% endif %}
-
-                    <a href="{% url 'cart' %}">
-                        <svg id="shoo" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-cart3 text-success" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                        </svg>
-                    </a>
-{#                    {% if basketitems %}<div class="bg-danger text-light" style="z-index: 100;">{{ basketitems.count }}</div>{% endif %}#}
-                    </div>
+<div class=" mw-100 justify-content-between">
+    <div class="d-flex flex-row mw-100 text-white bg-danger justify-content-center align-items-center"  style="height:10%; width:100%">
+        <h1 id="textdiv">با ما همیشه برنده خواهید بود.</h1>
+    </div>
+    <div id="main_bar" class="d-flex flex-row flex-wrap bg-light nav-bar justify-content-between p-4 align-items-center sticky-top" >
+        <div class="mw-100 col-sm-12 col-md-4 col-lg-2">
+            <a href="{% url 'home_index' %}">
+                <img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="100%" height="100%" >
+            </a>
         </div>
-    {% if basketitems %}
-        <div id="basket_contain" class="container bg-light card-body border shadow d-flex justify-content-start flex-wrap" style=" position: fixed; top: 210px; left: 20px;width: 18%; z-index: 100;visibility: hidden; ">
-            {% for item in basketitems %}
-              <div class="container border row col-12 d-flex">
+        <div class="container mw-100 col-sm-12 col-md-8 col-lg-6 justify-content-center">
+            <form class="form-inline my-1 my-lg-4 " type="get" action="{% url 'search_what' %}">
+                <input class="form-control rounded mw-100" required id="search_box" name="search_box" type="text" placeholder="اینجا دنبال کالایی که دنبالشید بگردید" style="width: 80%;margin-left: -15px" >
+                   <label>
+                       <input type="submit" style="display: none;">
+                       <svg  style="cursor: pointer; margin: 5px -50px;" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search text-info" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                       </svg>
+                   </label>
+            </form>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-3 d-flex">
+                          {% csrf_token %}
+            {% if request.user.is_authenticated %}
+
+                {% if profile %}
+                    <a href="{% url 'profile' profile.user.id %}">
+                        {% if profile.avatar.url is not null %}
+                                <img class="my-3" style="width:40px;height:50px;" src="{{ profile.avatar.url }}" alt="{{ profile.avatar.url }}">
+                        {% else %}
+                                <img class="my-3" style="width:40px;height:50px;" src="{% static '/personal.png' %}" alt="personal">
+                        {% endif %}
+                           <div class="btn btn-success my-3">{{ profile }}</div>
+                    </a>
+                    <a class="btn btn-danger my-4" href="{% url 'logout' %}"> خروج </a>
+                {% endif %}
+            {% else %}
+                <a class="nav-link border rounded" href="{% url 'login' %}">ورود به حساب کاربری</a>
+            {% endif %}
+        </div>
+        <div class="border-right border-success col-sm-1">
+            <a href="{% url 'cart' %}">
+                <svg id="shoo" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-cart3 text-success" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="container d-none d-lg-block float-right align-content-start" style="height:14%; width:100%">
+        <div class="menu">
+            <div class="menu-item current-menu-item">
+                <a href="{% url 'home_index' %}"><h6>صفحه اصلی</h6></a>
+                <div class="wee .d-none" style="left: 0px; width: 81.7188px;display: none"></div>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'create' %}"><h6>سفارش ویژه</h6></a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'shop' %}"> <h6>فروشگاهها</h6></a>
+            </div>
+            <div class="menu-item">
+                <h6 id="sub-menu1">کالا و محصولات</h6>
+            </div>
+            <div class="menu-item">
+                <h6>تماس با ما</h6>
+            </div>
+        </div>
+        <div class="bg-light border shadow" id="sub-menu1-contain" style="position: absolute;display: none;  width:40%; z-index:2000;"> گروه بندیها
+            <ul>
+                {% for category in category_list %}
+                    {% if category.parent is None %}
+                        <li class="card-title">
+                            <a href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
+
+                        {% if 0 < category.child.count  %}
+{#                            - {{category.name}} - {{category.child.count }}#}
+                            <ul>
+                                {% for sub in category.child.all %}
+                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+
+        {% for category in category_list %}
+            <div id="cat_image{{ category.id }}" class="bg-danger" style="width: 50%;height: 100%; position: absolute; top: 0;left: 0;display: none">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}"  width="100%" height="100%">
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% if basketitems %}
+    <div id="basket_contain" class="container bg-light card-body border shadow d-flex justify-content-start flex-wrap" style="position: fixed; top: 210px; left: 20px;width: 18%; z-index: 100;visibility: hidden; ">
+        {% for item in basketitems %}
+            <div class="container border row col-12 d-flex">
                 <div class="" > <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}" width="60px" height="50px"></div>
                 <div class="col-3" >{{ item }} {{ item.count }} عدد</div>
-                <div class="col-3" >فروشنده: {{ item.shop_product.shop.name }} قیمت:{{ item.shop_product.price }}</div>
-              </div>
-            {% endfor %}
-                <div class="container border row col-12 d-flex justify-content-between" style="height: 100%">تعداد کالا: {{ goods_count }} <br>
-                    <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total }} تومان</div>
-                     <a href="{% url 'shipping' %}"><div class="button rounded btn-success shadow  d-flex justify-content-end btn w-100 btn-success" id="target">ادامه فرایند خرید</div></a>
-                </div>
-        </div>
-    {% endif %}
-            <div class="container float-right align-content-start" style="height:14%; width:100%">
-                <div class="menu">
-                    <div class="menu-item current-menu-item">
-                        <a href="{% url 'home_index' %}"><h6>صفحه اصلی</h6></a>
-                      <div class="wee .d-none" style="left: 0px; width: 81.7188px;display: none"></div>
-                    </div>
-                    <div class="menu-item">
-                      <h6>سفارش ویژه</h6>
-                    </div>
-                    <div class="menu-item">
-                      <h6>فروشگاهها</h6>
-                    </div>
-                    <div class="menu-item">
-                      <h6 id="sub-menu1">کالا و محصولات</h6>
-                    </div>
-                    <div class="menu-item">
-                      <h6>تماس با ما</h6>
-                    </div>
-                </div>
-                  <div class="bg-light border shadow" id="sub-menu1-contain" style="position: absolute;display: none;  width:40%; z-index:100;"> گروه بندیها
-                   {% for category in category_list %}
-                      <div class="h5 menu-item nav-item "><a href="{% url 'category_id' category.slug %}">{{ category.name }}</a></div>
-                   {% endfor %}
-                  </div>
+                <div class="col-3" >فروشنده: {{ item.shop_product.shop.name }} قیمت:{{ item.shop_product.net_price }}</div>
             </div>
-</div>
+        {% endfor %}
+        <div class="container border row col-12 d-flex justify-content-between" style="height: 100%">تعداد کالا: {{ goods_count }} <br>
+            <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total }} تومان</div>
+            <a href="{% url 'shipping' %}"><div class="button rounded btn-success shadow  d-flex justify-content-end btn w-100 btn-success" id="target">ادامه فرایند خرید</div></a>
+        </div>
+    </div>
+{% endif %}
+
 
 {#              <div class="me"><a href="https://github.com/cmdeveloped" target="_blank"><i class="fab fa-github"></i></a>#}
 {#                <a href="https://twitter.com/collinscode_" target="_blank"><i class="fab fa-twitter"></i></a>#}

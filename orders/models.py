@@ -82,6 +82,8 @@ class Payment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "User"),related_name="user_payment", on_delete=models.SET_NULL, null=True, blank=True)
     amount = models.IntegerField(_("Amount"))
+    create_at = models.DateTimeField(_("Create_at"), auto_now_add=True)
+    update_at = models.DateTimeField(_("Update_at"), auto_now=True)
 
     class Meta:
         verbose_name = _("Payment")

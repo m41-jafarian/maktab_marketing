@@ -1,0 +1,81 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+    <style>
+    .pay_circle_blue{ height: 20px;
+  width: 1.5%;  background-color: #005acb; border-radius: 50%
+    }
+    .pay_circle{ height: 20px;
+  width: 1.5%;  background-color: #868181; border-radius: 50%
+    }
+       .pay_circle:hover{ height: 20px;
+  width: 1.5%;  background-color: #2d2d2d; border-radius: 50%
+    }
+    .pay_line{
+         height: 6px;
+  width: 31%;  background-color: #868181;
+    }
+ .pay_line:hover {
+         height: 6px;
+  width: 31%;  background-color: #2d2d2d;
+    }
+    .pay_line_blue{
+         height: 6px;
+  width: 31%;  background-color: #005acb;
+    }
+    .pay_circle_blue:hover{
+       background-color: #00f7ff;
+        height: 20px;
+        width: 1.5%;
+        cursor: pointer;
+        transform: scale(1.5,1.5);
+        transition: ease-in;
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    مراحل پرداخت
+{% endblock %}
+{% block body %}
+    <div class="d-flex col-12 bg-info justify-content-around align-items-center mt-5 mb-0 h4 shadow" style="height: 15%"><a href="{% url 'home_index' %}"><img src="{% static '/kalabuy.png' %}"></a> </div>
+    <div class="d-flex col-12  justify-content-around align-items-center  h4">
+    <div style="color: #0041ff">اطلاعات ارسال</div><div style="color: #0041ff">پرداخت</div><div>اتمام خرید</div>
+    </div>
+    <div class="container d-flex col-12 justify-content-center align-items-center mb-3">
+        <div class="pay_circle_blue" ></div><div class="pay_line_blue"></div>
+        <div class="pay_circle_blue"></div><div class="pay_line"></div>
+        <div class="pay_circle"></div></div>
+    <div class="container d-flex  mw-100 border border-info">
+<div id="cart-div" class="col-9 container border border-danger row  d-flex justify-content-between align-items-center" style="height: 100%">
+
+{% if orderitems %}
+    <div class="col-12">
+        <div>{{ profile }}</div>
+        <div class="col-12"> آدرس محل تحویل:  </div>
+    <select name="lvl4_{{ ticket.0 }}">
+       {% for address in addresses %}
+        <option>{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}</option>
+       {% endfor %}
+    </select>
+
+    </div>
+
+
+    {% for item in orderitems %}
+        <div class="col-3 border" style="height: 75%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"></div>
+        <div class="col-5 border" style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
+        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+    {% endfor %}
+    {% else %}
+        <div>سبد شما خالی است. برای دیدن یا اضافه کردن کالا حتما باید وارد شوید</div>
+{% endif %}
+</div>
+<div class="container col-3 border  align-items-center " style="height: 100%">تعداد کالا: {{ goods_count }} <br>
+    <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total|intcomma }} تومان</div>
+    <div class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target"><a href="{% url 'shipping' %}">پرداخت</a></div>
+</div>
+
+</div>
+{% endblock %}

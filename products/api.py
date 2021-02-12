@@ -1,13 +1,18 @@
 from django.http import JsonResponse, HttpResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.viewsets import ModelViewSet
-from .models import Post, Category, Comment
-from .serializers import PostSerializer, CategorySerializer, CommentSerializer
+from .models import Category, Product, Comment, ShopProduct
+from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, ShopProductSerializer
 
 
-class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ShopProductViewSet(ModelViewSet):
+    queryset = ShopProduct.objects.all()
+    serializer_class = ShopProductSerializer
 
 
 class CategoryViewSet(ModelViewSet):
@@ -22,12 +27,12 @@ class CommentViewSet(ModelViewSet):
 
 def post_list(request):
     if request.method == 'GET':
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        posts = Product.objects.all()
+        serializer = ProductSerializer(posts, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = PostSerializer(data=data)
+        serializer = ProductSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
@@ -36,15 +41,15 @@ def post_list(request):
 
 def post_detail(request, pk):
     try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
+        post = Product.objects.get(pk=pk)
+    except Product.DoesNotExist:
         return HttpResponse(status=404)
     if request.method == 'GET':
-        serializer = PostSerializer(post)
+        serializer = ProductSerializer(post)
         return JsonResponse(serializer.data)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = PostSerializer(post, data=data)
+        serializer = ProductSerializer(post, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)

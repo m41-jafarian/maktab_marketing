@@ -1,43 +1,47 @@
 {% extends 'base/base.html' %}
 {% load static %}
-
+{% load humanize %}
 
 {% block title %}
     سبد خرید
 {% endblock %}
 {% block body %}
-<div class="container d-flex  mw-100 border border-info">
-<div id="cart-div" class="col-9 container border border-danger row  d-flex justify-content-between align-items-center" style="height: 100%">
+<div class="container d-flex flex-wrap mw-100 border border-info">
+<div id="cart-div" class="col-sm-12 col-md-9 container row d-flex justify-content-between align-items-end" style="height: 100%">
 {% if basketitem_list %}
     {% for item in basketitem_list %}
-        <div class="col-3 border" style="height: 75%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"></div>
-        <div class="col-5 border" style="height: 100%">نام محصول:{{ item }}<br>تعداد کالا:
-            <svg onclick="add_product({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
+      <div class="d-flex align-items-center justify-content-between bg-light shadow border col-12 d-flex my-1">
+        <div class="col-3"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}" height="80px" width="100px"></div>
+        <div class="col-5 d-flex flex-wrap justify-content-center"> <div class="col-12 h4">نام محصول: {{ item }} </div>
+            <div class="d-flex h5 justify-content-between"> تعداد کالا:
+           <div class="pointer"><svg onclick="add_product({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"/>
                 <path d="M10.273 2.513l-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
-            </svg>
-                    {{ item.count }}
-            <svg onclick="del_item({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-minus" viewBox="0 0 16 16">
+           </svg></div>
+                   <div>{{ item.count }}</div>
+            <div class="pointer"><svg onclick="del_item({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-minus" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
                 <path d="M10.273 2.513l-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
-            </svg>
-            <br></div>
-        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.price }}  <br></div>
-        <svg onclick= "del_item({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            </svg></div>
+            </div>
+        </div>
+        <div class="col-3" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+        <div class="pointer"><svg onclick= "del_item({{ item.shop_product.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
           <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
           <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-        </svg>
+        </svg></div>
+      </div>
     {% endfor %}
     {% else %}
         <div>سبد شما خالی است. برای دیدن یا اضافه کردن کالا حتما باید وارد شوید</div>
 {% endif %}
 </div>
-<div class="container col-3 border  align-items-center " style="height: 100%">
+<div class="container col-sm-12 col-md-3 border  align-items-center " style="height: 100%">
     تعداد کل کالا: {{ goods_count }}
     <br>
-    <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total }} تومان</div>
+    <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total|intcomma }} تومان</div>
     <div class="button rounded btn-danger shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">خالی کردن سبد</div>
-    <div class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target"><a href="{% url 'shipping' %}">ادامه فرایند خرید</a></div>
+    <a href="{% url 'shipping' %}"><div class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">ادامه فرایند خرید</div></a>
 </div>
 
 </div>

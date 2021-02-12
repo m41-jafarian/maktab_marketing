@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block css %}
+{#    <link rel="stylesheet" href="range<a href="https://www.jqueryscript.net/slider/">Slider</a>.css" />#}
+    <link rel="stylesheet" href="{% static 'css/range-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rangeSlider.css' %}">
 <style>
 .divsel {
   height:220px;
@@ -64,45 +67,319 @@
 	0% {transform:translateX(-100%);}
 	100% {transform:translateX(100%);}
 }
+
+.container {
+  overflow: hidden;
+}
+
+.filterDiv {
+  {#float: left;#}
+  {#background-color: #2196F3;#}
+  {#color: #ffffff;#}
+  {#width: 100px;#}
+  {#line-height: 100px;#}
+  {#text-align: center;#}
+  {#margin: 2px;#}
+  display: none; /* Hidden by default */
+}
+
+/* The "show" class is added to the filtered elements */
+.show {
+  display: block;
+}
+
+/* Style the buttons */
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Add a light grey background on mouse-over */
+.btn:hover {
+  background-color: #ddd;
+}
+
+/* Add a dark background to the active button */
+.btn.active {
+  background-color: #666;
+  color: white;
+}
 </style>
 {% endblock %}
 {% block title %}
     گروهها
 {% endblock %}
 {% block body %}
-          <div id="category-contain" class="d-flex justify-content-center  align-content-center align-items-center flex-row nav-bar" style="height:40%; width:100%">
+    <div CLASS="container mw-100 d-flex row">
+        <div class="col-2 border px-1 bg-light shadow rounded">
+            <div> گروهها:
+ <ul>
+                {% for category in category_list %}
+                    <li class="">
+                        {% if category.parent is None %}
+                            <div class="text-danger h5"><a href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
+                            </div>
+                        {% endif %}
+                        {% if 0 < category.child.count  %}
+{#                            - {{category.name}} - {{category.child.count }}#}
+                            <ul>
+                                {% for sub in category.child.all %}
+                                    <li><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            <form action="{% url 'search_what' %}" method="get">
+                 <div>برندها:
+                    {% for brand in brands %}
+                       <div class="pr-3">
+                            <input class="pointer" type="checkbox" value="{{ brand.slug }}" id="{{ brand.slug }}" name="brands"  {% if brand.slug in request.get_full_path %} checked{% endif %}>{{ brand }}
+{#                            {% if '{{ brand.slug }}' in 'brands' %} checked {% else %} هیچی {% endif %}#}
+                       </div>
+                    {% endfor %}
+{#                    <div class="d-flex mw-100 justify-content-center"><input type="submit" value="filter"></div>#}
+                </div>
+                <div>فروشگاهها:
+    {#                <form action="{% url 'search_what' %}" method="get">#}
+                        {% for shop in shops %}
+                           <div class="pr-3">
+                                <input type="checkbox" value="{{ shop.slug }}" id="{{ shop.slug }}" name="shops"  {% if shop.slug in request.get_full_path %} checked{% endif %}>{{ shop }}
+    {#                            {% if '{{ brand.slug }}' in 'brands' %} checked {% else %} هیچی {% endif %}#}
+                           </div>
+                        {% endfor %}
+                        <div class="d-flex mw-100 justify-content-center"><input type="submit" value="filter"></div>
+                </div>
+            </form>
+                <div id="example"></div>
+        </div>
+<div id="product-contain" class="container col-10 d-flex flex-wrap" >
+            <div>
+                <div id="myBtnContainer">
+                  <button class="btn active" onclick="filterSelection('all')"> همه</button>
             {% for category in category_list %}
-                <div class="col-2 border  p-1 h-75 justify-content-center ">
-                    <div class="bg-light border border-info p-1 h-100 align-content-center">
-                    <div class="cat_sel" style="opacity: 0.4; cursor: pointer;  "><a href="{% url 'category_id' category.slug %}"> <img src="{{ category.image.url }}" alt="category name" width="100%" height="100%" ></a>
+                  <button class="btn" onclick="filterSelection('{{ category.slug }}')">{{ category.name }}</button>
+            {% endfor %}
+{#                  <button class="btn" onclick="filterSelection('mobile')"> mobile</button>#}
+{#                  <button class="btn" onclick="filterSelection('electronic')"> Animals</button>#}
+{#                  <button class="btn" onclick="filterSelection('gameconsule')"> gameconsule</button>#}
+{#                  <button class="btn" onclick="filterSelection('colors')"> Colors</button>#}
+                </div>
+            </div>
+    <div class="col-12 container d-flex flex-wrap mw-100">
+            {% if products is not None %}
+                {% for product in products %}
+{#                   {% if product.net_price > min_val and product.net_price < max_val %}#}
+                    <div id="productCard{{ forloop.counter }}" class=" col-sm-12 col-md-4 col-lg-3 bg-light border shadow m-1 filterDiv {{ product.product.category.slug }}">
+                        <a href="{% url 'product_id' product.id %}">
+                        <div class="d-inline">
+                        <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="100%"  ></div>
+                        {{ product.product.name }}<br>
+                        برند: {{ product.product.brand }}
+                         <br>  فروشگاه {{ product.shop.name }}
+                            قیمت:{{ product.price }} تخفیف: %{{ product.discount }} قیمت {{ product.net_price }}
+                        </div>
+                             <span class="product-price">
+                                   {{ product.net_price }}
+                             </span>
+                        </a>
                     </div>
-                    <div>{{ category.name }} </div>
+{#                    {% endif %}#}
+                {% endfor %}
+            {% else %}
+                <div>موردی یافت نشد</div>
+            {% endif %}
+    </div>
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                {% if is_paginated %}
+                  <ul class="pagination">
+                      {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}">&laquo;</a>
+                          </li>
+                      {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#">&laquo;</a>
+                          </li>
+                      {% endif %}
+                      {% for i in paginator.page_range %}
+                          {% if page_obj.number == i %}
+                            <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                          {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                          {% endif %}
+                      {% endfor %}
+                      {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.next_page_number}}" class="page-link">&raquo;</a>
+                            </li>
+                      {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&raquo;</a>
+                            </li>
+                      {% endif %}
+                  </ul>
+                {% endif %}
+            </nav>
+        </div>
+        </div>
+    </div>
+
+
+          <div id="category-contain" class="container overflow-auto d-flex col-12 flex-wrap justify-content-center align-content-center" >
+            {% for category in category_list %}
+                <div class=" d-flex col-sm-12 col-md-6 col-lg-3 col-xl-1 justify-content-center border border-danger">
+                    <div class="bg-light align-content-center">
+                        <div class="cat_sel" style="opacity: 0.4; cursor: pointer;">
+                            <a href="{% url 'category_slug' category.slug %}">
+                                <img src="{{ category.image.url }}" alt="category name" height="50%" width="100%" >
+                            </a>
+                        </div>
+                        <div>{{ category.name }} </div>
                     </div>
                 </div>
             {% endfor %}
-        </div>
-        <div id="most-buy-contain" class="d-flex justify-content-start align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
-            {% for product in products %}
-                <a href="{% url 'product_id' product.id %}">
-                <div class="col-2 border border-info m-1 h-100 d-inline py-4">
-                <div><img src="{{ product.image.url }}" alt="{{ product.name }}" width="100%" height="60%" ></div>
-                {{ product.name }}
-                brand: {{ product.brand }}
-            </div></a>
-            {% endfor %}
+          </div>
 
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascript %}
+{#    <script src="{% static 'js/range-common.js'%}"></script>#}
+    <script src="{% static 'js/rangeSlider.js'%}"></script>
+<script>
+$('#example').rangeSlider(
+
+  {    // or 'vertical'horizontal
+    direction:"vertical",
+    // or 'interval'single
+    type:"interval",
+    // or 'red'green
+    skin:"red",
+    // shows settings panel
+    settings:false,
+    // shows range bar
+    bar:true,
+    // shows labels
+    tip:true,
+    // shows scales
+    scale:false,
+  },
+  {
+    // slider settings here
+        // min value
+        min: 0,
+        // max value
+        max: 50000000,
+        // step size
+        step: 100,
+        // predefined range
+        values: [0, 300000]
+  }
+
+);
+</script>
+
     <script>
-     $(document).ready(() => {
-    $(".cat_sel").hover(function(){
-       $(this).css("opacity", "1.0");
-    }, function(){
-       $(this).css("opacity", "0.4");
-    });
-});
+     $("#example").rangeSlider("onChange", (event,ui) => {
+         {#console.log(event.detail.values[1]);#}
+             min_val =event.detail.values[0];
+             max_val =event.detail.values[1];
+             console.log((min_val))
+            {# fetch('/?value='+max_val).then(function(response) {#}
+            {#console.log(response.status);})#}
+        let cardPriceSpan = $('.product-price')
+
+        {#let priceRange = $('#price-range')#}
+        {#priceRange = priceRange.val().split(',')#}
+        {#let less = +priceRange[0];#}
+        {#let more = +priceRange[1];#}
+        let less = min_val;
+        let more = max_val;
+        for (let i = 0; i < cardPriceSpan.length;i++){
+            let productCart = $(`#productCard${i+1}`)
+        if (less > parseInt(cardPriceSpan[i].innerHTML) || parseInt(cardPriceSpan[i].innerHTML) > more) {                console.log('ok');
+                productCart.hide()
+            } else {
+                productCart.show()
+            }
+        }
+     });
+    </script>
+
+    <script>
+    filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+// Show filtered elements
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {
+      element.className += " " + arr2[i];
+    }
+  }
+}
+
+// Hide elements that are not selected
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current control button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+    </script>
+    <script>
+    let cardPriceSpan = $('.product-price')
+
+    function priceRangeFilter() {
+        let priceRange = $('#price-range')
+        priceRange = priceRange.val().split()
+        let less = +priceRange[0];
+        let more = +priceRange[1];
+        for (let i = 0; i < cardPriceSpan.maxLength();i++){
+            let productCart = $('#productCard')
+            if (less > parseInt((cardPriceSpan)) && more<parseInt((cardPriceSpan)) ) {
+                console.log('ok');
+                productCart.hide()
+            } else {
+                productCart.show()
+            }
+        }
+    }
     </script>
 {% endblock %}

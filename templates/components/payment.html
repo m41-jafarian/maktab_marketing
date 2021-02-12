@@ -1,0 +1,308 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+        <link rel="stylesheet" href="{% static 'css/jquery.ui.pinpad.css' %}">
+    <style>
+    body, html
+        {
+            font-family: Calibri, Arial, Tahoma,  serif;
+            background-color:white;
+        }
+        #mainBody
+        {
+            background-color:lightgray;
+            border-radius: 15px;
+            width: 800px;
+            height: 100%;
+            position: relative;
+            left: 19%;
+            margin-top: 5%;
+            padding: 20px;
+            padding-top: 10px;
+        }
+
+        .headContainer
+        {
+            height: 10px;
+            border: 5px solid grey;
+        }
+        h1
+        {
+            font-family: "Tahoma";
+            font-size:  50px;
+            color:crimson;
+            Text-decoration : underline;
+            text-decoration-color: inherent;
+            text-decoration-style: dotted;
+            padding-bottom: 0px;
+        }
+        #title
+        {
+            font-family: "Tahoma";
+            font-size: 20px;
+            color: white;
+            text-align: left;
+            font-weight: bold;
+            padding-left: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color: gray
+        }
+       .btnTable
+        {
+            top: 0px;
+            width: 50%;
+            height: 50%;
+            padding-top: 0px;
+            margin-left: 25%;
+            position:inherit;
+        }
+        .btnLogIn
+        {
+            background-color: lime;
+            height: 136px;
+            margin-left: 15px;
+            margin-top: 10px;
+            border: 1px solid lime;
+            font-weight: 800;
+            color: white
+
+        }
+        .btn
+        {
+            height: 35px;
+            width: 35px;
+            margin-left: 15px;
+            margin-top: 10px;
+            font-weight: 700
+
+        }
+        .btnDC
+        {
+            height: 35px;
+            width: 35px;
+            margin-left: 15px;
+            margin-top: 10px;
+            padding-right: 1px;
+            font-size: 11px;
+            padding-left: 0px;
+            background-color: red;
+            border: none;
+            cursor: pointer;
+            font-weight: 700
+
+
+        }
+        label
+        {
+            display:inline-block;
+            margin:10px;
+            font-weight:600;
+        }
+        label.check
+        {
+            display:inline-block;
+            margin:0px;
+            font-weight:100;
+        }
+        input[type=text], input[type=password]
+        {
+            background-color: white;
+            width:93%;
+            height: 28px;
+            margin-left: 15px;
+            padding-left: 5px;
+
+
+        }
+        p
+        {
+            font-weight: 700;
+            text-align: center;
+        }
+
+        p.info
+        {
+            text-align: center;
+            font-weight: 100;
+
+        }
+
+    </style>
+{% endblock %}
+{% block title %}
+     پرداخت
+{% endblock %}
+{% block body %}
+<body onload="load();">
+        <div class="d-flex col-12 bg-info justify-content-around align-items-center mt-5 mb-0 h4 shadow" style="height: 15%"><a href="{% url 'home_index' %}"><img src="{% static '/kalabuy.png' %}"></a> </div>
+
+ <div class="container d-flex h-100 mw-100 mt-5 justify-content-center">
+    <div class="col-4 ">
+        اطلاعات کارت <br>
+        <input class="w-100 m-2 p-2 rounded" type="number" placeholder="xxxx-xxxx-xxxx-xxxx">
+        <input id="pinpad1" class="w-100 m-2 p-2 rounded" type="text" placeholder="CVV2">
+        <input class="w-100 m-2 p-2 rounded" type="text" placeholder="تاریخ انفضاء">
+        <input class="w-100 m-2 p-2 rounded" type="number" placeholder="عبارت امنیتی">
+        <input class="w-100 m-2 p-2 rounded" type="password" id="psword"  disabled  maxlength="10" placeholder="رمز دوم">
+        <input class="w-100 m-2 p-2 rounded" type="number" placeholder="ایمیل(اختیاری)">
+        <input class="w-50 p-2 rounded btn-success" type="submit" >
+        <input class="w-25 p-2 rounded btn-danger" type="reset" >
+    </div>
+    <div id="number_set" class="container d-flex flex-wrap col-3 ">
+     <div id="mainBody">
+
+
+ <div id="container">
+      <form>
+
+        <table border="0" class="btnTable">
+{#            <tr><td><label for="userId">User ID:</label></td>#}
+{#                <td  colspan="5"><input type="text" id="userId"/></td></tr>#}
+
+{#            <tr><td><label for="psword">Password:</label></td>#}
+{#            <td  colspan="5"><input type="password" id="psword"  disabled  maxlength="10" />#}
+
+
+                </td>
+
+            </tr>
+           <tr>
+            <td></td>
+            <td><input type="button" id="num0" class="btn border" value="1"  onclick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num1" class="btn border" value="2" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num2" class="btn border" value="3" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="Clr" class="btnDC  border" value="CLR" onclick ="clearPassword()"/></td>
+{#            <td rowspan="3"><input type="submit" id="logIn  border" class="btnLogIn" value="log in"/></td>#}
+            </tr>
+            <tr>
+            <td></td>
+            <td><input type="button" id="num3" class="btn  border" value="4" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num4" class="btn  border" value="5" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num5" class="btn  border" value="6" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="Del" class="btnDC  border" value="DEL" onClick="deleteChar()"/></td>
+            </tr>
+            <tr>
+            <td></td>
+            <td><input type="button" id="num6" class="btn border" value="7" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num7" class="btn border" value="8" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num8" class="btn border" value="9" onClick="showClickedButton(this.value);"/></td>
+            <td><input type="button" id="num9" class="btn border" value="0" onClick="showClickedButton(this.value);"/></td>
+            </tr>
+            <tr><td></td><td colspan="5"><input type="checkbox" id="plainPsWord" onChange="displayPassword()"><label for="plainPsWord" class="check">Display password</label>
+
+                </td></tr>
+            <tr><td></td><td colspan="5"><a href="#btnTable" onClick="init()">Refresh keypad</a></td></tr>
+            </table>
+
+    </form>
+
+
+
+
+    </div>
+
+
+
+
+    </div>
+
+    </div>
+    <div class="container h4 h-50 d-flex flex-wrap align-content-center justify-content-center col-3">
+        <div class="col-12 p-2 border"> قابل پرداخت:</div>
+        <div class="col-12 p-2 border">2000000{{ amount }}</div>
+        <div class="col-6 p-2 border">نوع عملیات</div>
+        <div class="col-6 p-2 border">خرید</div>
+        <div class="col-6 p-2 border">نام فروشگاه</div>
+        <div class="col-6 p-2 border">بلالا{{ shop }}</div>
+        <div class="col-6 p-2 border">شماره ترمینال</div>
+        <div class="col-6 p-2 border">65765657</div>
+        <div class="col-6 p-2 border">شماره پذیرنده</div>
+        <div class="col-6 p-2 border">7585853</div>
+        <div class="border">وبسایت</div>
+    </div>
+     <div onclick="pay_amount(orderID=1,shopProductList=1,amount=1000000)" class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">
+        پرداخت
+    </div>
+ </div>
+{% endblock %}
+
+{% block javascript %}
+        <script src="{% static 'js/jquery-ui.js'%}"></script>
+        <script src="{% static 'js/jquery.ui.pinpad.js'%}"></script>
+    <script>
+    $("input#pinpad1").pinpad();
+    </script>
+       <script>
+    $("input#pinpad2").pinpad();
+    </script>
+
+    <script>
+        var nonChar = ""
+window.onload=init;
+function init()   {
+    var char = "0123456789";
+    keyValue = "";
+    for (i=0 ; keyValue.length < 10; i++){
+        rand = Math.round(Math.random()*10);
+        if(keyValue.indexOf(rand)>-1) continue;
+        keyValue += char.substring(rand, rand+1);
+        }
+      console.log(keyValue);
+    counter = -1;
+    while(counter < 10){
+    counter++
+    document.querySelector("#num"+counter).value = keyValue[counter];
+    }
+
+ }
+function showClickedButton(btn){
+    clickedButton(nonChar+=btn)
+ }
+
+function clearPassword() {
+  clickedButton(nonChar ="")
+ }
+function deleteChar(){
+    clickedButton(nonChar = nonChar.substring(0,nonChar.length-1))
+}
+
+function clickedButton(btn){
+   psword.value = btn;
+}
+function displayPassword(){
+  box = document.querySelector("#plainPsWord");
+    if (box.checked ==false){
+    psword.type = "password";
+}
+else{
+    psword.type = "text"
+}
+}
+
+    </script>
+    <script>
+        function pay_amount(orderID,shopProductList,amount) {
+            const data = JSON.stringify({order_id:orderID,shopProductList:shopProductList,user_id:userID,amount:amount})
+            $.ajax({
+                type: "post",
+                url: "{% url 'payment' %}",
+                data: data,
+                success: function (response) {
+                    const data = JSON.parse(response)
+                    {#const cell1 = $('#like_count_container' + data.commentID);#}
+                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
+                    {#$(cell1).text(data.like_count);#}
+                    {#$(cell2).text(data.dislike_count);#}
+                    alert("پرداخت انجام شد")
+                    window.location.reload();
+                    {% comment %} $('"#like_count_container').text(data.like_count);
+                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                }
+            });
+        }
+    </script>
+{% endblock %}

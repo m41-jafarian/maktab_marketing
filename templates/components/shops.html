@@ -1,0 +1,123 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+.divsel {
+  height:220px;
+  width:100%;
+  background:#59cce0;
+  z-index:0;
+  position: relative;
+}
+
+/* text */
+.spansel,.asel {
+  color:#fff;
+  left:50%;
+  transform:translate(-50%,-50%);
+  position: absolute;
+  display: inline-block;
+  font-size:30px;
+  font-family:'open sans',sans-serif;
+  letter-spacing:-1px;
+  font-weight:bold;
+}
+.spansel {
+  top:50%;
+}
+.asel {
+  color:#bbb;
+  font-size:11px;
+  bottom:20px;
+  font-weight:400;
+  text-transform:uppercase;
+  text-decoration:none;
+  letter-spacing:1px;
+}
+/* Shine */
+.divsel:after {
+	content:'';
+  top:0;
+	transform:translateX(100%);
+	width:100%;
+	height:220px;
+	position: absolute;
+	z-index:1;
+	animation: slide 1s infinite;
+
+  /*
+  CSS Gradient - complete browser support from http://www.colorzilla.com/gradient-editor/
+  */
+  background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(128,186,232,0) 99%, rgba(125,185,232,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(50%,rgba(255,255,255,0.8)), color-stop(99%,rgba(128,186,232,0)), color-stop(100%,rgba(125,185,232,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* IE10+ */
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#007db9e8',GradientType=1 ); /* IE6-9 */
+}
+
+/* animation */
+
+@keyframes slide {
+	0% {transform:translateX(-100%);}
+	100% {transform:translateX(100%);}
+}
+</style>
+{% endblock %}
+{% block title %}
+    گروهها
+{% endblock %}
+{% block body %}
+    <div CLASS="container mw-100 d-flex row">
+        <div class="col-2 border px-1 shadow bg-light rounded">
+            <div> گروهها:
+                {% for category in category_list %}
+                    <div class="pr-3">
+                        <a href="{% url 'category_slug' category.slug %}"> {{ category.name }} </a>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div id="product-contain" class="container d-flex flex-wrap nav-bar " style="height:30%; width:100%">
+            {% for shop in shop_list %}
+                <div class="col-3 bg-light border mh-100">
+                    <a href="{% url 'shop_slug' shop.slug %}">
+                    <div class=" h-100 d-inline">
+                    <div><img src="{{ shop.image.url }}" alt="{{ shop.name }}" width="260px" height="180px" ></div>
+                    {{ shop.name }}<br>{{ shop.discreption }}
+
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+          <div id="category-contain" class="d-flex justify-content-center  align-content-center align-items-center flex-row nav-bar" style="height:40%; width:100%">
+            {% for category in category_list %}
+                <div class="col-2 border  p-1 h-75 justify-content-center ">
+                    <div class="bg-light border border-info p-1 h-100 align-content-center">
+                    <div class="cat_sel" style="opacity: 0.4; cursor: pointer;  "><a href="{% url 'category_slug' category.slug %}"> <img src="{{ category.image.url }}" alt="category name" width="100%" height="100%" ></a>
+                    </div>
+                    <div>{{ category.name }} </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+     $(document).ready(() => {
+    $(".cat_sel").hover(function(){
+       $(this).css("opacity", "1.0");
+    }, function(){
+       $(this).css("opacity", "0.4");
+    });
+});
+    </script>
+{% endblock %}

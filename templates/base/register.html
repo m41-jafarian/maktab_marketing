@@ -7,11 +7,11 @@
 
 {% block body %}
 <div class="container bg-img mh-100 d-flex justify-content-center my-auto align-items-center" id = "div-move" style="height: 100%">
-    <div class="row m-5 border shadow justify-content-center">
+    <div class="row m-5 border bg-light shadow justify-content-center">
      <div class="d-flex justify-content-center">
                     <img src="{% static 'kalabuy.png' %}">
         </div>
-        <div class="col-sm-3 col-md-6 col-lg-12 m-5 " style="..." >
+        <div class="col-sm-3 col-md-6 col-lg-12 m-5 rounded shadow" style="..." >
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
                 {% comment %} {{ form.as_ul }} {% endcomment %}
@@ -20,7 +20,8 @@
                 {% for field in form %}
                     <div class="form-group">
                         {{ field.errors }}
-                        {{field.label_tag}} {{ field }} <br>
+                        {{field.label_tag}}
+                        <div class="d-flex col-sm-12 shadow border border-danger bg-danger">  {{ field }} </div><br>
                         {% if field.help_text %}
                             <small class="help">{{ field.help_text| safe}} </small>
                         {% endif %}
@@ -28,7 +29,7 @@
                 {% endfor %}
 
                 {% comment %} {{ form|crispy }} {% endcomment %}
-                <input class="btn-info float-left" type="submit" value="      register      "></input>
+                <input class="btn-info float-left w-100" type="submit" value="      register      "></input>
             </form>
         </div>
     </div>

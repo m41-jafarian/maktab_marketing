@@ -1,8 +1,23 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block css %}
 <style>
+* {
+  box-sizing: border-box;
+}
+.item {
+  width: 200px;
+  height: 200px;
+  margin: 50px auto;
+  padding-top: 75px;
+  background: #ccc;
+  text-align: center;
+  color: #FFF;
+  font-size: 3em;
+}
+
 .divsel {
   height:220px;
   width:100%;
@@ -64,31 +79,58 @@
 	0% {transform:translateX(-100%);}
 	100% {transform:translateX(100%);}
 }
+
+.product_over:hover {
+    transition: ease-in;
+    background-color: rgba(123,144,324,.2);
+    animation: alternate;
+    transform: scale(1.2);
+    box-shadow: #0B0A0A;
+    color: #b21f2d;
+}
+.mobile_over:hover {
+    transition: ease-in-out;
+    background-color: rgba(002,112,114,.3);
+    animation: ease-in-out;
+    transform: rotate(5deg);
+    box-shadow: #0B0A0A;
+    color: #dc2743;
+    z-index: 100;
+}
+.book_over:hover {
+    transition: ease-out;
+    background-color: rgba(002,112,114,.3);
+    animation: ease;
+    transform: scale(1.3);
+    box-shadow: #0B0A0A;
+    color: #dc2743;
+    z-index: 100;
+}
 </style>
 {% endblock %}
 {% block title %}
    صفحه اصلی کالابای
 {% endblock %}
 {% block body %}
-  <div id="ads-contain" class="d-flex justify-content-center flex-row nav-bar border border-secondary" style="height:50%; width:100%">
-             <div id="owl-contain" class=".hidden-sm-down col-4 border border-dark">
-                <img src="../static/1231241.jpg" alt="ads" width="100%" height="100%" >
-            </div>
-           <div id="owl-contain" class="col-8 border border-warning">
-            <div id="demo" class="carousel slide" data-ride="carousel">
-                <ul class="carousel-indicators">
+  <div id="ads-contain" class="container d-flex flex-wrap mw-100 justify-content-between" style="height: 50%">
+      <div id="owl-contain" class="d-flex d-none d-md-flex col-md-12 col-lg-4">
+          <img src="../static/1231241.jpg" alt="ads" width="100%" >
+      </div>
+      <div id="owl-contain" class="col-8 w-100">
+          <div id="demo" class="carousel slide" data-ride="carousel">
+              <ul class="carousel-indicators">
                   <li data-target="#demo" data-slide-to="0" class="active"></li>
                   <li data-target="#demo" data-slide-to="1"></li>
                   <li data-target="#demo" data-slide-to="2"></li>
-                </ul>
-                <div class="carousel-inner">
+              </ul>
+              <div class="carousel-inner">
                  {% for slide in slides %}
                      {% if forloop.first %}
                      <div class="carousel-item active">
                         <img src="{{ slide.background.url }}" alt="{{ slide.background.url }}" width="1100" height="100%">
                         <div class="carousel-caption">
-                          <h3>{{ slide.title }}</h3>
-                          <p>{{ slide.subtitle }}</p>
+                            <h3>{{ slide.title }}</h3>
+                            <p>{{ slide.subtitle }}</p>
                             <a class="btn btn-outline-success" href="{{ slide.action_url }}">{{ slide.action_text }}</a>
                         </div>
                      </div>
@@ -96,110 +138,286 @@
                         <div class="carousel-item">
                             <img src="{{ slide.background.url }}" alt="{{ slide.background.url }}" width="1100" height="100%">
                             <div class="carousel-caption">
-                              <h3>{{ slide.title }}</h3>
-                              <p>{{ slide.subtitle }} </p>
+                                <h3>{{ slide.title }}</h3>
+                                <p>{{ slide.subtitle }} </p>
                                 <a class="btn btn-outline-success" href="{{ slide.action_url }}">{{ slide.action_text }}</a>
                             </div>
                         </div>
                      {% endif %}
                   {% endfor %}
-                </div>
+              </div>
                 <a class="carousel-control-prev" href="#demo" data-slide="prev">
                   <span class="carousel-control-prev-icon"></span>
                 </a>
                 <a class="carousel-control-next" href="#demo" data-slide="next">
                   <span class="carousel-control-next-icon"></span>
                 </a>
-              </div>
-            </div>
+          </div>
+      </div>
 
-        </div>
-        <div id="product-contain" class="d-flex justify-content-between align-items-center flex-row flex-sm-wrap nav-bar border border-info" style="height:50%; width:100%">
-            <img src="{% static '/30f43951b8de951f8077e8e157fa4cc34c746338_1608632933.jpg' %}" alt="ads" width="24%" height="90%" >
-            <img src="{% static '/3567da43c41c24b7ea9961cd906f3b91e27bc7dc_1609138461.jpg' %}" alt="ads" width="24%" height="90%" >
-            <img src="{% static '/61c4359d94bfdd202c8440c0f6f806ea4d43e011_1608633322.jpg' %}" alt="ads" width="24%" height="90%" >
-            <img src="{% static '/6ff6d91ec3bac4de70f4939a54eaebc787fe6795_1609078747.jpg' %}" alt="ads" width="24%" height="90%" >
-        </div>
-        <div id="category-contain" class="d-flex justify-content-center  align-content-center align-items-center flex-row nav-bar" style="height:40%; width:100%">
+  </div>
+<div id="office-contain" class="container d-flex flex-wrap mw-100 justify-content-center" >
+            {% for product in office_products %}
+                 <a class="justify-content-center col-sm-12 col-md-6 col-lg-3" href="{% url 'product_id' product.product.id %}">
+                     <div class="book_over px-1 py-1 justify-content-center"  data-aos="zoom-in">
+                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}"></div>
+                                <div class="d-flex flex-wrap justify-content-center">
+                                        <div class="col-12">{{ product.product.name }}</div>
+                                        <div class="col-12">برند:{{ product.product.brand }}</div>
+                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>
+                                        <div class="col-12"> گارانتی اصالت و سلامت</div>
+                                    {% if product.discount > 0  %}
+                                        <div class="text-black-50 col-6">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>
+                                        <div class="bg-danger col-2 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>
+                                        <div class="d-flex col-12 justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>
+                                    {% else %}
+                                        <div class="text-black col-12">
+                                        قیمت فروشنده:{{ product.price|intcomma }}</div>
+                                    {% endif %}
+                                </div>
+                     </div>
+                 </a>
+            {% endfor %}
+</div>
+<div id="category-contain" class="container d-flex flex-wrap justify-content-center  align-content-center align-items-center flex-row nav-bar">
             {% for category in category_list %}
-                <div class="col-2 border  p-1 h-75 justify-content-center ">
-                    <div class="bg-light border border-info p-1 h-100 align-content-center">
-                    <div class="cat_sel" style="opacity: 0.4; cursor: pointer;  "><a href="{% url 'category_id' category.slug %}"> <img src="{{ category.image.url }}" alt="category name" width="100%" height="100%" ></a>
+                {% if category.parent is None %}
+                <div class="d-flex col-sm-12 col-md-6 col-lg-4 p-1 h-75  justify-content-center ">
+                    <div class=" p-1 h-100 align-content-center" data-aos="fade-right" >
+                    <div class="cat_sel" style="opacity: 0.4; cursor: pointer;  "><a href="{% url 'category_slug' category.slug %}"> <img src="{{ category.image.url }}" alt="category name" width="100%" height="100%" ></a>
                     </div>
-                    <div>{{ category.name }} </div>
+                    <div >{{ category.name }} </div>
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
-        </div>
-        <div id="most-buy-contain" class="border border-danger d-flex justify-content-start align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
+</div>
+<div id="mobile-contain" class="container d-flex flex-wrap justify-content-center mw-100">
+            {% for product in mobile_products %}
+                 <a class="col-sm-12 col-md-6 col-lg-2" href="{% url 'product_id' product.product.id %}">
+                     <div class="mobile_over px-1 py-1" data-aos="flip-up">
+                            <div class="  ">
+                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="100%"></div>
+                                <div class="d-flex row justify-content-center">
+                                        <div class="col-12">{{ product.product.name }}</div>
+                                        <div class="col-12">برند:{{ product.product.brand }}</div>
+                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>
+                                        <div class="col-12"> گارانتی اصالت و سلامت</div>
+                                    {% if product.discount > 0  %}
+                                        <div class="text-black-50">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>
+                                        <div class="bg-danger w-25 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>
+                                        <div class="d-flex justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>
+                                    {% else %}
+                                        <div class="text-black"><br>
+                                        قیمت فروشنده:{{ product.price|intcomma }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                     </div>
+                 </a>
+            {% endfor %}
+           <div class="col-sm-12 col-md-2 m-1"><h2>موبایل ها</h2></div>
+</div>
+<div id="cloth-contain" class="container d-flex flex-wrap justify-content-start">
+           <div class="col-sm-12 col-md-2"><h2>پوشاک</h2></div>
+            {% for product in cloth_products %}
+                 <a class="col-sm-12 col-md-6 col-lg-3 m-1" href="{% url 'product_id' product.product.id %}">
+                     <div class="product_over px-1 py-1" data-aos="flip-down">
+                            <div class="  ">
+                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="100%" height="50%"></div>
+                                <div class="  bg-light d-flex row justify-content-center">
+                                        <div class="col-12">{{ product.product.name }}</div>
+                                        <div class="col-12">برند:{{ product.product.brand }}</div>
+                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>
+                                        <div class="col-12"> گارانتی اصالت و سلامت</div>
+                                    {% if product.discount > 0  %}
+                                        <div class="text-black-50">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>
+                                        <div class="bg-danger w-25 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>
+                                        <div class="d-flex justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>
+                                    {% else %}
+                                        <div class="text-black"><br>
+                                        قیمت فروشنده:{{ product.price|intcomma }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                     </div>
+                 </a>
+            {% endfor %}
 
-            {% for product in products %}
-                <div class="d-flex col-3 bg-light border mh-100">
-                    <a href="{% url 'product_id' product.id %}">
-                    <div class=" h-100 d-inline">
-                    <div><img src="{{ product.image.url }}" alt="{{ product.name }}" " ></div>
-                    {{ product.name }}<br>
-                    برند: {{ product.brand }}
-                    </div>
-                    </a>
+</div>
+        <div class="col-sm-12 h3">جدید ترینها</div>
+<div class="container row mw-100">
+
+     <div class="owl-carousel owl-two owl-rtl owl-theme  owl-loaded">
+            <div class="owl-stage-outer">
+                <div class="owl-stage">
+                     {% for product in shop_products %}
+                         {% if forloop.counter <= 5 %}
+                             <div class="owl-item active">
+                                 <div class="container d-flex mw-100 bg-light border shadow">
+                                     <a href="{% url 'product_id' product.id %}">
+                                             <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="300px" height="280px"></div>
+                                             <div>{{ product.product.name }}<br>
+                                             قیمت {{ product.net_price }}</div>
+                                     </a>
+                                 </div>
+                             </div>
+                         {% endif %}
+                         {% if forloop.counter > 5 %}
+                             <div class="owl-item">
+                                 <div class="container d-flex justify-content-center mw-100 bg-light border shadow">
+                                     <a href="{% url 'product_id' product.id %}">
+                                         <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="300px" height="280px"></div>
+                                         <div>{{ product.product.name }}</div>
+                                         <div> قیمت{{ product.net_price }}</div>
+                                     </a>
+                                 </div>
+                             </div>
+                         {% endif %}
+                     {% endfor %}
                 </div>
-            {% endfor %}
-            <h2>پر فروش ترینها</h2>
-        </div>
-        <div id="newer-contain" class="d-flex justify-content-center align-items-center flex-row nav-bar border border-info" style="height:40%; width:100%">
-            <div class="owl-carousel owl-theme owl-loaded owl-drag">
-                <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-3375px, 0px, 0px); transition: all 0s ease 0s; width: 6752px;"><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;">
-                    <div class="item">
-                    <h4>13</h4>
-                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>14</h4>
-                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>15</h4>
-                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>16</h4>
-                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>17</h4>
-                  </div></div><div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>18</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>1</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>2</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>3</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>4</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>5</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>6</h4>
-                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>7</h4>
-                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>8</h4>
-                  </div></div><div class="owl-item active" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>9</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>10</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>11</h4>
-                  </div></div><div class="owl-item" style="width: 271.333px; margin-right: 10px;"><div class="item">
-                    <h4>12</h4>
-                  </div>
-                </div></div></div>
-        </div>
-        </div>
-    </div>
+            </div>
+     </div>
+</div>
+
 {% endblock %}
 
 {% block javascript %}
     <script>
-     $(document).ready(() => {
-    $(".cat_sel").hover(function(){
-       $(this).css("opacity", "1.0");
-    }, function(){
-       $(this).css("opacity", "0.4");
+$(document).ready(function() {
+    $(".owl-two").owlCarousel({
+        rtl: true,
+        nav: true,
+        items: 5,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 7000,
+        autoplaySpeed: 1400,
+        autoplayHoverPause: true,
+        navigation: true,
+        slideSpeed: 300,
+        paginationSpeed: 400,
+        singleItem: false,
+        autoHeight: false,
+         responsiveClass:true,
+    responsive:{
+        0:{
+            items:1,
+            nav:true
+        },
+        600:{
+            items:3,
+            nav:true
+        },
+        1000:{
+            items:5,
+            nav:true,
+            loop:true
+        }
+    }
     });
-});
+})
+    </script>
+    <script>
+        AOS.init({
+          duration: 1200,
+        })
     </script>
 {% endblock %}
+
+
+{#    <div class="item" data-aos="fade-up">1</div>#}
+{#<div class="item" data-aos="fade-down">2</div>#}
+{#<div class="item" data-aos="fade-right">3</div>#}
+{#<div class="item" data-aos="fade-left">4</div>#}
+{##}
+{#<div class="item" data-aos="zoom-in">5</div>#}
+{#<div class="item" data-aos="zoom-out">6</div>#}
+{##}
+{#<div class="item" data-aos="slide-up">7</div>#}
+{##}
+{#<div class="item" data-aos="flip-up">8</div>#}
+{#<div class="item" data-aos="flip-down">9</div>#}
+{#<div class="item" data-aos="flip-right">10</div>#}
+{#<div class="item" data-aos="flip-left">11</div>#}
+
+
+{#                        {% for product in shop_products %}#}
+{#                          {% if forloop.counter <= 3 %}#}
+{#                            <div class="owl-item active" style="width: 271.333px; margin-right: 10px;">#}
+{#                                <div class="item">#}
+{#                 <a class="nav-link" href="{% url 'product_id' product.product.id %}">#}
+{#                     <div class="d-flex col-3 bg-light">#}
+{#                            <div class="  ">#}
+{#                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}"></div>#}
+{#                                <div class="  bg-light d-flex row justify-content-center">#}
+{#                                        <div class="col-12">{{ product.product.name }}</div>#}
+{#                                        <div class="col-12">برند:{{ product.product.brand }}</div>#}
+{#                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>#}
+{#                                        <div class="col-12"> گارانتی اصالت و سلامت</div>#}
+{#                                    {% if product.discount > 0  %}#}
+{#                                        <div class="text-black-50">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>#}
+{#                                        <div class="bg-danger w-25 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>#}
+{#                                        <div class="d-flex justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>#}
+{#                                    {% else %}#}
+{#                                        <div class="text-black"><br><br>#}
+{#                                        قیمت فروشنده:{{ product.price|intcomma }}</div>#}
+{#                                    {% endif %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                     </div>#}
+{#                 </a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                          {% elif forloop.counter > 3 and forloop.conter < 8 %}#}
+{#                            <div class="owl-item" style="width: 271.333px; margin-right: 10px;">#}
+{#                                <div class="item">#}
+{#                 <a class="nav-link" href="{% url 'product_id' product.product.id %}">#}
+{#                     <div class="d-flex col-3 bg-light">#}
+{#                            <div class="  ">#}
+{#                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}"></div>#}
+{#                                <div class="  bg-light d-flex row justify-content-center">#}
+{#                                        <div class="col-12">{{ product.product.name }}</div>#}
+{#                                        <div class="col-12">برند:{{ product.product.brand }}</div>#}
+{#                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>#}
+{#                                        <div class="col-12"> گارانتی اصالت و سلامت</div>#}
+{#                                    {% if product.discount > 0  %}#}
+{#                                        <div class="text-black-50">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>#}
+{#                                        <div class="bg-danger w-25 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>#}
+{#                                        <div class="d-flex justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>#}
+{#                                    {% else %}#}
+{#                                        <div class="text-black"><br><br>#}
+{#                                        قیمت فروشنده:{{ product.price|intcomma }}</div>#}
+{#                                    {% endif %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                     </div>#}
+{#                 </a>                                </div>#}
+{#                            </div>#}
+{#                          {% else %}#}
+{#                            <div class="owl-item cloned" style="width: 271.333px; margin-right: 10px;">#}
+{#                                <div class="item">#}
+{#                 <a class="nav-link" href="{% url 'product_id' product.product.id %}">#}
+{#                     <div class="d-flex col-3 bg-light">#}
+{#                            <div class="  ">#}
+{#                                <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}"></div>#}
+{#                                <div class="  bg-light d-flex row justify-content-center">#}
+{#                                        <div class="col-12">{{ product.product.name }}</div>#}
+{#                                        <div class="col-12">برند:{{ product.product.brand }}</div>#}
+{#                                        <div class="col-12">فروشنده: فروشگاه {{ product.shop }}</div>#}
+{#                                        <div class="col-12"> گارانتی اصالت و سلامت</div>#}
+{#                                    {% if product.discount > 0  %}#}
+{#                                        <div class="text-black-50">قیمت فروشنده:<del>{{ product.price|intcomma }}</del></div>#}
+{#                                        <div class="bg-danger w-25 rounded-pill text-light d-flex    justify-content-center"> %{{ product.discount }}</div>#}
+{#                                        <div class="d-flex justify-content-center"> مبلغ : {{ product.net_price|intcomma }} تومان </div>#}
+{#                                    {% else %}#}
+{#                                        <div class="text-black"><br><br>#}
+{#                                        قیمت فروشنده:{{ product.price|intcomma }}</div>#}
+{#                                    {% endif %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                     </div>#}
+{#                 </a>                                </div>#}
+{#                            </div>#}
+{#                          {% endif %}#}
+{#                        {% endfor %}#}
