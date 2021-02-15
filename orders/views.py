@@ -167,26 +167,30 @@ def delete_basket_item(request):
         return HttpResponse('bad request', status=404)
 
 
-class OrderItemsView(ListView):
-    model = OrderItems
-    template_name = "components/shipping.html"
+class PaymentView(ListView):
+    model = Payment
+    template_name = "components/payment.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         basketitems = BasketItems.objects.filter(basket__user=self.request.user)
-        try:
-            order = Order.objects.get(user=self.request.user)
-        except Order.DoesNotExist:
-            order = Order.objects.create(user=self.request.user)
+        # try:
+        #     order = Order.objects.get(user=self.request.user)
+        # except Order.DoesNotExist:
+        order = Order.objects.create(user=self.request.user)
         total=0
         goods_count = 0
-        # OrderItems.objects.filter(order=order).delete()
         for item in basketitems:
             orderItems = OrderItems.objects.create(order=order,shop_product=item.shop_product,price=item.shop_product.net_price,
                                                    count=item.count)
             total += item.shop_product.net_price * item.count
             goods_count += 1 * item.count
             orderItems.save()
+        empty_basket = BasketItems.objects.filter(basket__user=self.request.user).delete()
+        orderItems = OrderItems.objects.filter(order=order)
+        for item in orderItems:
+            payment = Payment.objects.create(order=order,shop_product=item.shop_product,user=self.request.user,amount=total)
         context['orderitems'] = OrderItems.objects.filter(order=order)
         context['total'] = total
         context['goods_count'] = goods_count
@@ -200,8 +204,47 @@ class OrderItemsView(ListView):
                 pass
         return context
 
-class PaymentView(TemplateView):
-    template_name = "components/payment.html"
+
+class ResultView(ListView):
+    model = OrderItems
+    template_name = "components/shipping2.html"
+
+    def get_queryset(self):
+        order = Order.objects.filter(user=self.request.user).last()
+        payment = Payment.objects.filter(user=self.request.user).last()
+        order.result = True
+        payment.result = True
+        order.save()
+        payment.save()
+        queryset = OrderItems.objects.filter(order=order)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_list'] = Category.objects.all()
+        order = Order.objects.filter(user=self.request.user).last()
+        orderitems =  OrderItems.objects.filter(order=order)
+        context['orderitems'] = orderitems
+        total=0
+        goods_count = 0
+        for item in orderitems:
+            total += item.shop_product.net_price * item.count
+            goods_count += 1 * item.count
+        context['total'] = total
+        context['goods_count'] = goods_count
+        if self.request.user.is_authenticated:
+            try:
+                profile = Profile.objects.get(user=self.request.user)
+                context['profile'] = profile
+                addresses = Address.objects.filter(user=self.request.user).first()
+                context['addresses'] = addresses
+            except:
+                pass
+        return context
+
+
+# class PaymentView(TemplateView):
+#     template_name = "components/payment.html"
 
 
 def pay_amount(request):

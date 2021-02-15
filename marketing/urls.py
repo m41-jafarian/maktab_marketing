@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from orders.views import BasketView, OrderItemsView, InformatinView, pay_amount, PaymentView
+from orders.views import BasketView, InformatinView, pay_amount, PaymentView
 from . import settings
 # from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers

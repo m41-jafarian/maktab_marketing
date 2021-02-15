@@ -1,0 +1,439 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+{#    <link rel="stylesheet" href="range<a href="https://www.jqueryscript.net/slider/">Slider</a>.css" />#}
+    <link rel="stylesheet" href="{% static 'css/range-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rangeSlider.css' %}">
+<style>
+.divsel {
+  height:220px;
+  width:100%;
+  background:#59cce0;
+  z-index:0;
+  position: relative;
+}
+
+/* text */
+.spansel,.asel {
+  color:#fff;
+  left:50%;
+  transform:translate(-50%,-50%);
+  position: absolute;
+  display: inline-block;
+  font-size:30px;
+  font-family:'open sans',sans-serif;
+  letter-spacing:-1px;
+  font-weight:bold;
+}
+.spansel {
+  top:50%;
+}
+.asel {
+  color:#bbb;
+  font-size:11px;
+  bottom:20px;
+  font-weight:400;
+  text-transform:uppercase;
+  text-decoration:none;
+  letter-spacing:1px;
+}
+/* Shine */
+.divsel:after {
+	content:'';
+  top:0;
+	transform:translateX(100%);
+	width:100%;
+	height:220px;
+	position: absolute;
+	z-index:1;
+	animation: slide 1s infinite;
+
+  /*
+  CSS Gradient - complete browser support from http://www.colorzilla.com/gradient-editor/
+  */
+  background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(128,186,232,0) 99%, rgba(125,185,232,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(50%,rgba(255,255,255,0.8)), color-stop(99%,rgba(128,186,232,0)), color-stop(100%,rgba(125,185,232,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* IE10+ */
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#007db9e8',GradientType=1 ); /* IE6-9 */
+}
+
+/* animation */
+
+@keyframes slide {
+	0% {transform:translateX(-100%);}
+	100% {transform:translateX(100%);}
+}
+
+.container {
+  overflow: hidden;
+}
+
+.filterDiv {
+  {#float: left;#}
+  {#background-color: #2196F3;#}
+  {#color: #ffffff;#}
+  {#width: 100px;#}
+  {#line-height: 100px;#}
+  {#text-align: center;#}
+  {#margin: 2px;#}
+  display: none; /* Hidden by default */
+}
+
+/* The "show" class is added to the filtered elements */
+.show {
+  display: block;
+}
+
+/* Style the buttons */
+.btn {
+  border: none;
+  outline: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Add a light grey background on mouse-over */
+.btn:hover {
+  background-color: #ddd;
+}
+
+/* Add a dark background to the active button */
+.btn.active {
+  background-color: #666;
+  color: white;
+}
+
+.btn.actived {
+  background-color: #2bc403;
+  color: #fa0000;
+}
+</style>
+{% endblock %}
+{% block title %}
+    {{ shop.name }}
+{% endblock %}
+{% block body %}
+    <div CLASS="container mw-100 d-flex row">
+        <div class="col-2 border px-1 bg-light shadow rounded">
+            <div> گروهها:
+ <div>
+                {% for category in category_list %}
+                    <div class="mr-2">
+                        {% if category.parent is None %}
+                            <div class="text-black mr-1"><a class="text-dark font-weight-bold" href="{% url 'category_slug' category.slug %}">{{ category.name }}></a>
+                            </div>
+                        {% endif %}
+                        {% if 0 < category.child.count  %}
+{#                            - {{category.name}} - {{category.child.count }}#}
+                            <div>
+                                {% for sub in category.child.all %}
+                                    <div class="btn mr-3"><a class="text-dark" href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+        <hr>
+            <form action="{% url 'search_what' %}" method="get">
+                 <div>برندها:
+                    {% for brand in brands %}
+                       <div class="pr-3">
+                            <input class="pointer" type="checkbox" value="{{ brand.slug }}" id="{{ brand.slug }}" name="brands"  {% if brand.slug in request.get_full_path %} checked{% endif %}>{{ brand }}
+{#                            {% if '{{ brand.slug }}' in 'brands' %} checked {% else %} هیچی {% endif %}#}
+                       </div>
+                    {% endfor %}
+{#                    <div class="d-flex mw-100 justify-content-center"><input type="submit" value="filter"></div>#}
+                </div>
+            <hr>
+                <div>فروشگاهها:
+    {#                <form action="{% url 'search_what' %}" method="get">#}
+                        {% for shop in shops %}
+                           <div class="pr-3">
+                                <input type="checkbox" value="{{ shop.slug }}" id="{{ shop.slug }}" name="shops"  {% if shop.slug in request.get_full_path %} checked{% endif %}>{{ shop }}
+    {#                            {% if '{{ brand.slug }}' in 'brands' %} checked {% else %} هیچی {% endif %}#}
+                           </div>
+                        {% endfor %}
+                        <div class="d-flex mw-100 justify-content-center"><input type="submit" value="filter"></div>
+                </div>
+            </form>
+        <hr>
+                <div id="example"></div>
+        </div>
+<div id="product-contain" class="container col-10 d-flex flex-wrap" >
+            <div>
+                <div id="myBtnContainer">
+                  <button class="btn active" onclick="filterSelection('all')"> همه</button>
+            {% for category in sub_categories %}
+                  <button class="btn" onclick="filterSelection('{{ category.slug }}')">{{ category.name }}</button>
+            {% endfor %}
+            <div>
+                <form  class="container d-flex col-12 justify-content-center  pt-3" method="get" action="{% url 'sort' %}">
+                 مرتب سازی بر اساس:
+                    <label {% if '-created_at' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault1" >جدیدترین</label>
+                    <input type="radio" style="visibility: hidden" id="flexRadioDefault1" name="sort" value="-created_at">
+                    <label {% if '=-price' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault2" >گران ترین</label>
+                    <input type="radio" style="visibility: hidden" id="flexRadioDefault2" name="sort" value="-price">
+                    <label {% if '=price' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault3" >ارزان ترین</label>
+                    <input type="radio" style="visibility: hidden" id="flexRadioDefault3" name="sort" value="price">
+                    <input class="btn-success rounded-pill px-2 py-2" type="submit" value="مرتب سازی">
+                </form>
+            </div>
+                </div>
+            </div>
+    <div class="col-12 container d-flex flex-wrap mw-100">
+        {% if shop.user == request.user %}
+                <div class="d-flex flex-wrap col-12 justify-content-center bg-light border mh-100">
+                    <h1 class="d-flex justify-content-center col-12"> فروشگاه {{ shop.name }}</h1>
+                    <div class="col-6 h3">صاحب فروشگاه{{ shop.user }} </div>
+                    <a href="{% url 'shop_slug' shop.slug %}">
+                    <div class="d-flex col-4">
+                        <div class="col-12"><img src="{{ shop.image.url }}" alt="{{ shop.name }}"></div>
+                        <div class="col-12">{{ shop.name }}</div>
+                    </div>
+
+                    <div class="col-12">{{ shop.discreption }}</div>
+                    </a>
+
+                <a class="btn-success rounded-pill d-flex justify-content-center py-2 col-4" href="{% url 'create' %}" >مدیریت فروشگاه</a>
+                </div>
+                    {% if products is not None %}
+                {% for product in shop_products %}
+{#                   {% if product.net_price > min_val and product.net_price < max_val %}#}
+                    <div id="productCard{{ forloop.counter }}" class=" col-sm-12 col-md-4 col-lg-3 bg-light border shadow m-1 filterDiv {{ product.product.category.slug }}">
+                        <a href="{% url 'product_id' product.id %}">
+                        <div class="d-inline">
+                        <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="100%"  ></div>
+                        {{ product.product.name }}<br>
+                        برند: {{ product.product.brand }}
+                         <br>  فروشگاه {{ product.shop.name }}
+                            قیمت:{{ product.price }} تخفیف: %{{ product.discount }} قیمت {{ product.net_price }}
+                        </div>
+                             <span class="product-price">
+                                   {{ product.net_price }}
+                             </span>
+                        </a>
+                    </div>
+{#                    {% endif %}#}
+                {% endfor %}
+            {% else %}
+                <div>موردی یافت نشد</div>
+            {% endif %}
+    </div>
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                {% if is_paginated %}
+                  <ul class="pagination">
+                      {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}">&laquo;</a>
+                          </li>
+                      {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#">&laquo;</a>
+                          </li>
+                      {% endif %}
+                      {% for i in paginator.page_range %}
+                          {% if page_obj.number == i %}
+                            <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                          {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                          {% endif %}
+                      {% endfor %}
+                      {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.next_page_number}}" class="page-link">&raquo;</a>
+                            </li>
+                      {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&raquo;</a>
+                            </li>
+                      {% endif %}
+                  </ul>
+                {% endif %}
+            </nav>
+        </div>
+        {% else %}
+                ببخشید شما به این فروشگاه دسترسی ندارید
+        {% endif %}
+        </div>
+    </div>
+
+
+          <div id="category-contain" class="container overflow-auto d-flex col-12 flex-wrap justify-content-center align-content-center" >
+            {% for category in category_list %}
+                <div class=" d-flex col-sm-12 col-md-6 col-lg-3 col-xl-1 justify-content-center border border-danger">
+                    <div class="bg-light align-content-center">
+                        <div class="cat_sel" style="opacity: 0.4; cursor: pointer;">
+                            <a href="{% url 'category_slug' category.slug %}">
+                                <img src="{{ category.image.url }}" alt="category name" height="50%" width="100%" >
+                            </a>
+                        </div>
+                        <div>{{ category.name }} </div>
+                    </div>
+                </div>
+            {% endfor %}
+          </div>
+
+{% endblock %}
+
+{% block javascript %}
+{#    <script src="{% static 'js/range-common.js'%}"></script>#}
+    <script src="{% static 'js/rangeSlider.js'%}"></script>
+<script>
+$('#example').rangeSlider(
+
+  {    // or 'vertical'horizontal
+    direction:"horizontal",
+    // or 'interval'single
+    type:"interval",
+    // or 'red'green
+    skin:"red",
+    // shows settings panel
+    settings:false,
+    // shows range bar
+    bar:true,
+    // shows labels
+    tip:true,
+    // shows scales
+    scale:false,
+  },
+  {
+    // slider settings here
+        // min value
+        min: 0,
+        // max value
+        max: 50000000,
+        // step size
+        step: 100,
+        // predefined range
+        values: [0, 300000]
+  }
+
+);
+</script>
+<script>
+    function order_by(orderItem) {
+            {#const f_name = $('#f_nam').val()#}
+            var orderitem = orderItem
+            console.log(orderItem)
+            {#const data = JSON.stringify({orderItem})#}
+            $.ajax({
+                type: "post",
+                url: "{% url 'category_slug' 'electronic' %}",
+                data: {
+                'orderItem': orderitem
+                },
+                success: function (response) {
+                    const data = response
+                    console.log(data)
+
+                }
+            });
+        }
+</script>
+
+
+    <script>
+     $("#example").rangeSlider("onChange", (event,ui) => {
+         {#console.log(event.detail.values[1]);#}
+             min_val =event.detail.values[0];
+             max_val =event.detail.values[1];
+             console.log((min_val))
+            {# fetch('/?value='+max_val).then(function(response) {#}
+            {#console.log(response.status);})#}
+        let cardPriceSpan = $('.product-price')
+
+        {#let priceRange = $('#price-range')#}
+        {#priceRange = priceRange.val().split(',')#}
+        {#let less = +priceRange[0];#}
+        {#let more = +priceRange[1];#}
+        let less = min_val;
+        let more = max_val;
+        for (let i = 0; i < cardPriceSpan.length;i++){
+            let productCart = $(`#productCard${i+1}`)
+        if (less > parseInt(cardPriceSpan[i].innerHTML) || parseInt(cardPriceSpan[i].innerHTML) > more) {                console.log('ok');
+                productCart.hide()
+            } else {
+                productCart.show()
+            }
+        }
+     });
+    </script>
+
+    <script>
+    filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+// Show filtered elements
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {
+      element.className += " " + arr2[i];
+    }
+  }
+}
+
+// Hide elements that are not selected
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current control button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+    </script>
+    <script>
+    let cardPriceSpan = $('.product-price')
+
+    function priceRangeFilter() {
+        let priceRange = $('#price-range')
+        priceRange = priceRange.val().split()
+        let less = +priceRange[0];
+        let more = +priceRange[1];
+        for (let i = 0; i < cardPriceSpan.maxLength();i++){
+            let productCart = $('#productCard')
+            if (less > parseInt((cardPriceSpan)) && more<parseInt((cardPriceSpan)) ) {
+                console.log('ok');
+                productCart.hide()
+            } else {
+                productCart.show()
+            }
+        }
+    }
+    </script>
+{% endblock %}

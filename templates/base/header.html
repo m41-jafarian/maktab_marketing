@@ -1,11 +1,146 @@
 {% load static %}
+<style>
 
+.wrapper {
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 542px;
+  width: 797px;
+  position: relative;
+  background-color: #000;
+}
+
+.wrapper .nav-container {
+  list-style: none;
+  display: block;
+  float: left;
+  width: 100%;
+  height: 542px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.wrapper .nav-container .bg0 { background-image: url(https://unsplash.it/800/542?image=823); }
+
+.wrapper .nav-container .bg1 { background-image: url(https://unsplash.it/800/542?image=822); }
+
+.wrapper .nav-container .bg2 { background-image: url(https://unsplash.it/800/542?image=821); }
+
+.wrapper .nav-container .list-item {
+  background-color: transparent;
+  height: 542px;
+  border: 1px #000 solid;
+  padding: 0;
+  position: relative;
+}
+
+.wrapper .nav-container .menu-wrapper {
+  position: absolute;
+  bottom: 85px;
+  left: 0;
+  width: 100%;
+}
+
+.wrapper .nav-container .menu-wrapper > ul {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0;
+  list-style: none;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block {
+  width: 265px;
+  float: left;
+  display: block;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block .link {
+  padding: 0;
+  width: 100%;
+  float: left;
+  display: block;
+  background-color: transparent;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block .link a {
+  color: #f0f0f0;
+  background-color: #000;
+  text-decoration: none;
+  width: 100%;
+  line-height: 40px;
+  display: block;
+  font-family: tt-r;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 1px transparent;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block .link .menu {
+  list-style: none;
+  padding: 0;
+  width: 265px;
+  display: none;
+  position: absolute;
+  left: 0;
+  z-index: 1600;
+  bottom: 40px;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block .link .menu li {
+  height: 40px;
+  text-align: center;
+  color: #f0f0f0;
+  line-height: 38px;
+  font-family: tt-r;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 1px transparent;
+}
+
+.wrapper .nav-container .menu-wrapper > ul .menu-block.active .menu { display: block; }
+
+.moving-block {
+  background-color: #80ffce;
+  left: 0;
+  z-index: 1500;
+  display: block;
+  position: absolute;
+  bottom: 40px;
+  width: 265px;
+  height: 160px;
+  opacity: 0.4;
+  display: none;
+}
+
+.moving-block.color-one { background-color: #80ffce; }
+
+.moving-block.color-two { background-color: #6fa2ff; }
+
+.moving-block.color-three { background-color: #fffb8f; }
+</style>
 
 <div class=" mw-100 justify-content-between">
-    <div class="d-flex flex-row mw-100 text-white bg-danger justify-content-center align-items-center"  style="height:10%; width:100%">
+    <div class="d-flex flex-row text-white bg-danger justify-content-center align-items-center"  style="height:10%; width:100%">
         <h1 id="textdiv">با ما همیشه برنده خواهید بود.</h1>
     </div>
-    <div id="main_bar" class="d-flex flex-row flex-wrap bg-light nav-bar justify-content-between p-4 align-items-center sticky-top" >
+    <div id="main_bar" class="container d-flex mw-100 flex-row flex-wrap bg-light nav-bar justify-content-between p-4 align-items-center sticky-top" >
         <div class="mw-100 col-sm-12 col-md-4 col-lg-2">
             <a href="{% url 'home_index' %}">
                 <img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="100%" height="100%" >
@@ -22,7 +157,7 @@
                    </label>
             </form>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-3 d-flex">
+        <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-around">
                           {% csrf_token %}
             {% if request.user.is_authenticated %}
 
@@ -56,7 +191,11 @@
                 <div class="wee .d-none" style="left: 0px; width: 81.7188px;display: none"></div>
             </div>
             <div class="menu-item">
+                {% if request.user.is_superuser %}
                 <a href="{% url 'create' %}"><h6>سفارش ویژه</h6></a>
+                {% else %}
+                <h6>سفارش ویژه</h6></a>
+                {% endif %}
             </div>
             <div class="menu-item">
                 <a href="{% url 'shop' %}"> <h6>فروشگاهها</h6></a>
@@ -68,32 +207,102 @@
                 <h6>تماس با ما</h6>
             </div>
         </div>
-        <div class="bg-light border shadow" id="sub-menu1-contain" style="position: absolute;display: none;  width:40%; z-index:2000;"> گروه بندیها
-            <ul>
-                {% for category in category_list %}
-                    {% if category.parent is None %}
-                        <li class="card-title">
-                            <a href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
+        <div class="shadow" id="sub-menu1-contain" style="position: absolute;display: none; z-index:2000;"> گروه بندیها
 
-                        {% if 0 < category.child.count  %}
-{#                            - {{category.name}} - {{category.child.count }}#}
-                            <ul>
+
+    <div class="wrapper">
+        <ul class="nav-container row">
+  <li class="col-sm-4 list-item active bg1">
+  </li>
+  <li class="col-sm-4 list-item bg1">
+  </li>
+  <li class="col-sm-4 list-item bg1">
+  </li>
+  <div class="menu-wrapper">
+    <ul>
+        {% for category in category_list %}
+            {% if forloop.counter <= 3 %}
+        <li class="menu-block">
+            <div class="link">
+               {% if 0 < category.child.count  %}
+                   {% if forloop.counter == 1 %}
+                        <ul class="menu color-one">
                                 {% for sub in category.child.all %}
                                     <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
                                 {% endfor %}
-                            </ul>
-                        {% endif %}
-                        </li>
+                        </ul>
                     {% endif %}
-                {% endfor %}
-            </ul>
-
-
-        {% for category in category_list %}
-            <div id="cat_image{{ category.id }}" class="bg-danger" style="width: 50%;height: 100%; position: absolute; top: 0;left: 0;display: none">
-                <img src="{{ category.image.url }}" alt="{{ category.name }}"  width="100%" height="100%">
+                   {% if forloop.counter == 2 %}
+                        <ul class="menu color-two">
+                                {% for sub in category.child.all %}
+                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
+                                {% endfor %}
+                        </ul>
+                    {% endif %}
+                   {% if forloop.counter == 3 %}
+                        <ul class="menu color-three">
+                                {% for sub in category.child.all %}
+                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
+                                {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
+{#                <a href="#" class="navigation-header">Category 1</a>#}
+                <a class="navigation-header" href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
             </div>
+        </li>
+{#        <li class="menu-block">#}
+{#            <div class="link">#}
+{#                <ul class="menu color-two">#}
+{#                    <li>Link 1</li>#}
+{#                    <li>Link 2</li>#}
+{#                    <li>Link 3</li>#}
+{#                    <li>Link 4</li>#}
+{#                </ul>#}
+{#                <a href="#" class="navigation-header">Category 2</a>#}
+{#            </div>#}
+{#        </li>#}
+{#        <li class="menu-block">#}
+{#            <div class="link">#}
+{#                <ul class="menu color-three">#}
+{#                    <li>Link 1</li>#}
+{#                    <li>Link 2</li>#}
+{#                    <li>Link 3</li>#}
+{#                    <li>Link 4</li>#}
+{#                </ul>#}
+{#                <a href="#" class="navigation-header">Category 3</a>#}
+{#            </div>#}
+{#        </li>#}
+            {% endif %}
         {% endfor %}
+    </ul>
+    <div class="moving-block"></div>
+  </div>
+</ul>
+    </div>
+{##}
+{#            <ul>#}
+{#                {% for category in category_list %}#}
+{#                    {% if category.parent is None %}#}
+{#                        <li class="card-title">#}
+{#                            <a href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>#}
+{##}
+{#                        {% if 0 < category.child.count  %}#}
+{#                            <ul>#}
+{#                                {% for sub in category.child.all %}#}
+{#                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
+{#                        {% endif %}#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        {% for category in category_list %}#}
+{#            <div id="cat_image{{ category.id }}" class="bg-danger" style="width: 50%;height: 100%; position: absolute; top: 0;left: 0;display: none">#}
+{#                <img src="{{ category.image.url }}" alt="{{ category.name }}"  width="100%" height="100%">#}
+{#            </div>#}
+{#        {% endfor %}#}
         </div>
     </div>
 </div>
@@ -121,3 +330,4 @@
 {#                <a href="https://codepen.io/collinscode" target="_blank"><i class="fab fa-codepen"></i></a>#}
 {#                <a href="https://linkedin.com/in/cmdeveloped" target="_blank"><i class="fab fa-linkedin-in"></i></a>#}
 {#              </div>#}
+

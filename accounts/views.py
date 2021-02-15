@@ -13,6 +13,7 @@ from accounts.forms import ProfileForm, UserForm
 from accounts.models import Profile, Address, Shop
 from django.contrib.auth import get_user_model
 
+from orders.models import Order, Payment
 from products.models import Category, ShopProduct
 from siteview.views import get_all_context
 
@@ -27,6 +28,7 @@ class ProfileView(ListView):
         context['profile'] = Profile.objects.get(user=self.request.user)
         context['category_list'] = Category.objects.all()
         context['addresses'] = Address.objects.filter(user=self.request.user)
+        context['payments'] = Payment.objects.filter(user=self.request.user)[:10]
         print("context======",context)
         form = ProfileForm()
         context["form"]: form
@@ -143,7 +145,7 @@ class ShopView(ListView):
 
 class ShopDetailView(DetailView):
     model = Shop
-    template_name = 'components/shop.html'
+    template_name = 'components/shop2.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -173,6 +173,36 @@ class ProductMeta(models.Model):
     def get_absolute_url(self):
         return reverse("ProductMeta_detail", kwargs={"pk": self.pk})
 
+
+class CategoryMeta(models.Model):
+    category = models.ForeignKey("Category", verbose_name=_("Category"),related_name="category_meta", on_delete=models.CASCADE)
+    label = models.CharField(_("Label"), max_length=50)
+
+    class Meta:
+        verbose_name = _("CategoryMeta")
+        verbose_name_plural = _("CategoryMetas")
+
+    def __str__(self):
+        return self.label
+
+    def get_absolute_url(self):
+        return reverse("CategoryMeta_detail", kwargs={"pk": self.pk})
+
+
+class CategoryMetaValue(models.Model):
+    label = models.ForeignKey("CategoryMeta", verbose_name=_("Product"),related_name="label_category_meta" ,on_delete=models.CASCADE)
+    value = models.CharField(_("Label"), max_length=50)
+
+    class Meta:
+        verbose_name = _("CategoryMetaValue")
+        verbose_name_plural = _("CategoryMetaValues")
+
+    def __str__(self):
+        return self.value
+
+    def get_absolute_url(self):
+        return reverse("CategoryMetaValue_detail", kwargs={"pk": self.pk})
+
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "User"),related_name="user_like", on_delete=models.SET_NULL, null=True, blank=True)

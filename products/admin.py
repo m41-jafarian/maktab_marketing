@@ -1,6 +1,7 @@
 from django.contrib.admin.sites import site
 from django.contrib import admin
-from .models import Product, Brand, Category, GalleryImage, Comment, ShopProduct, ProductMeta, CommentLike
+from .models import Product, Brand, Category, GalleryImage, Comment, ShopProduct, ProductMeta, CommentLike, \
+    CategoryMeta, CategoryMetaValue
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -49,6 +50,16 @@ class shopProductAdmin(admin.ModelAdmin):
 @admin.register(ProductMeta)
 class shopProductAdmin(admin.ModelAdmin):
     list_display = ('product', 'id', 'label', 'value')
+
+
+class categoryValueInline(admin.TabularInline):
+    model = CategoryMetaValue
+
+@admin.register(CategoryMeta)
+class categoryMetaAdmin(admin.ModelAdmin):
+    list_display = ('category', 'id', 'label')
+    inlines = (categoryValueInline,)
+
 
 @admin.register(CommentLike)
 class commentAdmin(admin.ModelAdmin):

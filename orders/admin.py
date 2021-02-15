@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 @admin.register(Payment)
 class paymentAdmin(admin.ModelAdmin):
-    list_display = ('id','order','user','amount')
+    list_display = ('id','order','user','amount','result')
 
 @admin.register(Basket)
 class basketAdmin(admin.ModelAdmin):
@@ -16,9 +16,14 @@ class basketAdmin(admin.ModelAdmin):
 class basketItemsAdmin(admin.ModelAdmin):
     list_display = ('id','basket','shop_product' , 'count')
 
+class OrderItemsInline(admin.TabularInline):
+    model = OrderItems
+
 @admin.register(Order)
 class orderAdmin(admin.ModelAdmin):
-    list_display = ('id','user','create_at','update_at','description')
+    list_display = ('id','user','create_at','update_at','description','result')
+    inlines = (OrderItemsInline,)
+
 
 @admin.register(OrderItems)
 class orderItemsAdmin(admin.ModelAdmin):

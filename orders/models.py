@@ -46,6 +46,12 @@ class Order(models.Model):
     create_at = models.DateTimeField(_("Create_at"), auto_now_add=True)
     update_at = models.DateTimeField(_("Update_at"), auto_now=True)
     description = models.CharField(_("Description"), max_length=255)
+    result = models.BooleanField(_("result"),default=False)
+
+    @property
+    def get_total_price(self):
+        total = self.orderitem.get_total_price()
+        return total
 
     class Meta:
         verbose_name = _("Order")
@@ -58,7 +64,7 @@ class Order(models.Model):
         return reverse("Order_detail", kwargs={"pk": self.pk})
 
 class OrderItems(models.Model):
-    order = models.ForeignKey("Order", verbose_name=_("Order"), on_delete=models.CASCADE)
+    order = models.ForeignKey("Order", verbose_name=_("Order"),related_name="orderitem", on_delete=models.CASCADE)
     shop_product = models.ForeignKey("products.ShopProduct", verbose_name=_("Shop_product_orderItems"), on_delete=models.CASCADE)
     count = models.IntegerField(_("Count"))
     price = models.IntegerField(_("Price"))
@@ -67,7 +73,7 @@ class OrderItems(models.Model):
         verbose_name = _("OrderItem")
         verbose_name_plural = _("OrdersItems")
 
-    def total_price(self):
+    def get_total_price(self):
         return self.count * self.price
 
     def __str__(self):
@@ -77,13 +83,15 @@ class OrderItems(models.Model):
         return reverse("OrderItems_detail", kwargs={"pk": self.pk})
 
 class Payment(models.Model):
-    order = models.ForeignKey("Order", verbose_name=_("Order"), on_delete=models.CASCADE)
-    shop_product = models.ForeignKey("products.ShopProduct", verbose_name=_("Shop_product_orderItems"), on_delete=models.CASCADE)
+    order = models.ForeignKey("Order", verbose_name=_("Order"),related_name='order', on_delete=models.CASCADE)
+    shop_product = models.ForeignKey("products.ShopProduct",related_name='shopproduct', verbose_name=_("Shop_product_orderItems"), on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "User"),related_name="user_payment", on_delete=models.SET_NULL, null=True, blank=True)
     amount = models.IntegerField(_("Amount"))
     create_at = models.DateTimeField(_("Create_at"), auto_now_add=True)
     update_at = models.DateTimeField(_("Update_at"), auto_now=True)
+    result = models.BooleanField(_("result"),default=False)
+
 
     class Meta:
         verbose_name = _("Payment")

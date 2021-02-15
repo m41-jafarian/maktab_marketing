@@ -16,7 +16,7 @@ from orders.models import BasketItems
 from products.forms import CommentForm, ProductCreateForm, ShopProductCreateForm, CategoryCreateForm, BrandCreateForm, \
     ShopCreateForm, ProductMetaCreateForm
 from products.models import Category, Product, ShopProduct, GalleryImage, Comment, Brand, ProductMeta, Favorite, \
-    CommentLike
+    CommentLike, CategoryMeta, CategoryMetaValue
 from django.contrib.auth import get_user_model
 
 from siteview.views import get_all_context
@@ -76,7 +76,15 @@ class ProductView(DetailView):
             context['shp_id'] = shp_id
             if favorite != "":
                 context['favorite'] = favorite.favorite
-
+        categorymeta = CategoryMeta.objects.filter(category=product.category)
+        # categoryvalues_id = categorymeta.values_list('category__categorymeta__label', flat=True).distinct()
+        categoryvalues = CategoryMetaValue.objects.filter(label__in=categorymeta)
+        # for catmeta in categorymeta:
+        #     print(catmeta.label.count())
+        print("========================  categorymeta  ======================",categorymeta)
+        print("========================  categoryvalues  ======================",categoryvalues)
+        context['categorymeta'] = categorymeta
+        context['categoryvalues'] = categoryvalues
         productmeta = ProductMeta.objects.filter(product=product)
         context['productmeta'] = productmeta
         context2 = get_all_context(self.request)
@@ -85,12 +93,59 @@ class ProductView(DetailView):
         print(context2)
         return context2
 
+# @csrf_exempt
+# def reviews(request):
+#         data = request.body
+#         print(data)
+#         products = ShopProduct.objects.all.order_by(data)
+#         print(products)
+#         # response = {"ok":"ok"}
+#         # return HttpResponse(response, status='201')
+#         context = {
+#             'products': products
+#         }
+#         return render(request, 'components/category.html', context)
+
+class Reviews(ListView):
+    model = ShopProduct
+    context_object_name = 'products'
+    paginate_by = 6
+    template_name = "components/category.html"
+    queryset = ShopProduct.objects.all().order_by('price')
+
+    def get_queryset(self):
+        ordering = self.request.GET.get('sort', None)
+        # validate ordering here
+        print(ordering)
+        queryset = ShopProduct.objects.all().order_by(ordering)
+        print(queryset)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_list'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['shops'] = Shop.objects.all()
+        if self.request.user.is_authenticated:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+        context['min_val'] = 0
+        context['max_val'] = 300000
+        context2 = get_all_context(self.request)
+        context2.update(context)
+        return context2
+
 
 class CategorySingle(ListView):
     model = Product
-    paginate_by = 4
+    paginate_by = 6
     context_object_name = 'products'
     template_name = 'components/category.html'
+
+    def post(self, *args, **kwargs):
+        if self.request.is_ajax and self.request.method == "POST":
+            order = self.request.GET.get['orderItem']
+            print(order)
+
 
     def get_queryset(self):
         # self.slug = get_object_or_404(Category, slug=self.kwargs['slug'])
@@ -114,6 +169,8 @@ class CategorySingle(ListView):
         cat = self.kwargs['slug']
         cate = Category.objects.get(slug=cat)
         context['brands'] = Brand.objects.filter(category=cate)
+        if cate.child.count() > 0:
+            context['sub_categories'] = Category.objects.filter(parent=cate)
         context['shops'] = Shop.objects.all()
         if self.request.user.is_authenticated:
             context['profile'] = Profile.objects.get(user=self.request.user)
@@ -131,7 +188,6 @@ class CategorySingle(ListView):
     #     ccc = ShopProduct.objects.filter(price__gte=5000000,price__lte=20000000)
     #     context['products'] = ccc
     #     return context
-
 
 @csrf_exempt
 def create_comment(request):
