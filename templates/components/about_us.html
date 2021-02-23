@@ -1,0 +1,256 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+.test {
+  color: red; }
+
+.main-shadow {
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3); }
+
+.main-gradient, body {
+  background: linear-gradient(45deg, #70c5f4 0%, #846bf7 100%); }
+
+.second-gradient {
+  background: linear-gradient(45deg, #ffa9af 0%, #f871be 100%); }
+
+.main-font {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: none;
+  color: #1F1D3B; }
+
+.main-font-bold {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: none;
+  color: #1F1D3B; }
+
+.main-font-black {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: none;
+  color: #5947E4; }
+
+.parallax {
+  overflow: hidden; }
+
+body .parallax {
+  position: relative; }
+  body .parallax .parallax-layer {
+    position: absolute;
+    transition-duration: 500ms;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+    body .parallax .parallax-layer .layer__item {
+      position: absolute; }
+  body .parallax .position_t_l {
+    top: 0;
+    left: 0; }
+  body .parallax .position_t_c {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0); }
+  body .parallax .position_t_r {
+    top: 0;
+    right: 0; }
+  body .parallax .position_m_l {
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%); }
+  body .parallax .position_m_c {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+  body .parallax .position_m_r {
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%); }
+  body .parallax .position_b_l {
+    bottom: 0;
+    left: 0; }
+  body .parallax .position_b_c {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0); }
+  body .parallax .position_b_r {
+    bottom: 0;
+    right: 0; }
+
+body {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden; }
+
+.parallax {
+  width: 1301px;
+  height: 867px;
+  border: 2px solid red; }
+
+.parallax .parallax-layer {
+  width: 1301px;
+  height: 867px; }
+
+.parallax .layer_1 .item_1 {
+  width: 900px;
+  height: 219px; }
+
+.parallax .layer_2 .item_1 {
+  width: 1166px;
+  height: 436px; }
+
+.parallax .layer_3 .item_1 {
+  width: 676px;
+  height: 277px; }
+
+.parallax .layer_4 .item_1 {
+  width: 880px;
+  height: 145px; }
+
+.parallax .layer_5 .item_1 {
+  width: 899px;
+  height: 184px; }
+
+.parallax .layer_6 .item_1 {
+  width: 1721px;
+  height: 302px; }
+
+.parallax .layer_7 .item_1 {
+  width: 1164px;
+  height: 320px; }
+
+.parallax .layer_8 .item_1 {
+  width: 1597px;
+  height: 915px; }
+
+.parallax .layer_9 .item_1 {
+  width: 1480px;
+  height: 227px; }
+
+.parallax .layer_10 .item_1 {
+  width: 1163px;
+  height: 258px; }
+
+.parallax {
+  background: URL("{% static './img/0_layer.png' %}") center center no-repeat; }
+  .parallax .layer_1 .item_1 {
+    background: URL("{% static './img/1_layer.png' %}") center center no-repeat; }
+  .parallax .layer_2 .item_1 {
+    background: URL("{% static './img/2_layer.png' %}") center center no-repeat; }
+  .parallax .layer_3 .item_1 {
+    background: URL("{% static './img/3_layer.png' %}") center center no-repeat; }
+  .parallax .layer_4 .item_1 {
+    background: URL("{% static './img/4_layer.png' %}") center center no-repeat; }
+  .parallax .layer_5 .item_1 {
+    background: URL("{% static './img/5_layer.png' %}") center center no-repeat; }
+  .parallax .layer_6 .item_1 {
+    background: URL("{% static './img/6_layer.png' %}") center center no-repeat; }
+  .parallax .layer_7 .item_1 {
+    background: URL("{% static './img/7_layer.png' %}") center center no-repeat; }
+  .parallax .layer_8 .item_1 {
+    background: URL("{% static './img/8_layer.png' %}") center center no-repeat; }
+  .parallax .layer_9 .item_1 {
+    background: URL("{% static './img/9_layer.png' %}") center center no-repeat; }
+  .parallax .layer_10 .item_1 {
+    background: URL("{% static './img/10_layer.png' %}") center center no-repeat; }
+
+.parallax .layer_1 .item_1 {
+  bottom: 580px;
+  left: 115px; }
+
+.parallax .layer_2 .item_1 {
+  bottom: 205px;
+  left: -235px; }
+
+.parallax .layer_3 .item_1 {
+  bottom: 225px;
+  left: 805px; }
+
+.parallax .layer_4 .item_1 {
+  bottom: 165px;
+  left: 730px; }
+
+.parallax .layer_5 .item_1 {
+  bottom: 165px;
+  left: -190px; }
+
+.parallax .layer_6 .item_1 {
+  bottom: 15px;
+  left: -300px; }
+
+.parallax .layer_7 .item_1 {
+  bottom: -95px;
+  left: -150px; }
+
+.parallax .layer_8 .item_1 {
+  bottom: -115px;
+  left: 180px; }
+
+.parallax .layer_9 .item_1 {
+  bottom: -52px;
+  left: -103px; }
+
+.parallax .layer_10 .item_1 {
+  bottom: -80px;
+  left: 55px; }
+
+/*# sourceMappingURL=index.css.map */
+
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="parallax">
+      <div class="parallax-layer layer_1" data-perspective-depth="10">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_2" data-perspective-depth="30">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_3" data-perspective-depth="90">
+
+                <img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="100%" height="100%" >
+
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_4" data-perspective-depth="120">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_5" data-perspective-depth="160">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_6" data-perspective-depth="180">
+        <div class="layer__item item_1"></div>
+      </div><div class="h3 layer__item item_1">طراح و توسعه دهنده پایتون : مهدی جعفریان - دانش آموخته مکتب شریف</div>
+      <div class="parallax-layer layer_7" data-perspective-depth="310">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_8" data-perspective-depth="360">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_9" data-perspective-depth="380">
+        <div class="layer__item item_1"></div>
+      </div>
+      <div class="parallax-layer layer_10" data-perspective-depth="400">
+        <div class="layer__item item_1"></div>
+      </div>
+    </div><a href="{% url 'home_index' %}"><div class="h4 layer__item item_1">بازگشت</div></a>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}

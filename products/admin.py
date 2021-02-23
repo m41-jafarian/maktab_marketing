@@ -1,7 +1,7 @@
 from django.contrib.admin.sites import site
 from django.contrib import admin
 from .models import Product, Brand, Category, GalleryImage, Comment, ShopProduct, ProductMeta, CommentLike, \
-    CategoryMeta, CategoryMetaValue
+    CategoryMeta, CategoryMetaValue, Favorite
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -64,3 +64,7 @@ class categoryMetaAdmin(admin.ModelAdmin):
 @admin.register(CommentLike)
 class commentAdmin(admin.ModelAdmin):
     list_display = ('user', 'comment', 'id', 'condition')
+
+@admin.register(Favorite)
+class commentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'shop_product', 'id', 'favorite')

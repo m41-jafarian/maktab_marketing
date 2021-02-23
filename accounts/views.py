@@ -28,7 +28,7 @@ class ProfileView(ListView):
         context['profile'] = Profile.objects.get(user=self.request.user)
         context['category_list'] = Category.objects.all()
         context['addresses'] = Address.objects.filter(user=self.request.user)
-        context['payments'] = Payment.objects.filter(user=self.request.user)[:10]
+        context['payments'] = Payment.objects.filter(user=self.request.user)
         print("context======",context)
         form = ProfileForm()
         context["form"]: form

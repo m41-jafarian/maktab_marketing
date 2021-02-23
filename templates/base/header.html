@@ -134,6 +134,15 @@
 .moving-block.color-two { background-color: #6fa2ff; }
 
 .moving-block.color-three { background-color: #fffb8f; }
+
+                    .catdiv {
+            display: none;
+        }
+
+        .cat:hover + .catdiv {
+            display: block;
+
+        }
 </style>
 
 <div class=" mw-100 justify-content-between">
@@ -146,9 +155,9 @@
                 <img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="100%" height="100%" >
             </a>
         </div>
-        <div class="container mw-100 col-sm-12 col-md-8 col-lg-6 justify-content-center">
-            <form class="form-inline my-1 my-lg-4 " type="get" action="{% url 'search_what' %}">
-                <input class="form-control rounded mw-100" required id="search_box" name="search_box" type="text" placeholder="اینجا دنبال کالایی که دنبالشید بگردید" style="width: 80%;margin-left: -15px" >
+        <div class="container mw-100 mh-100 col-sm-12 col-md-8 col-lg-6 justify-content-center ">
+            <form class="d-flex mw-100 form-inline " type="get" action="{% url 'search_what' %}">
+                <input class="form-control py-4 rounded mw-100" required id="search_box" name="search_box" type="text" placeholder="اینجا دنبال کالایی که دنبالشید بگردید" style="width: 80%;margin-left: -20px;padding-top: 15px; background-color: #d4d4d4" >
                    <label>
                        <input type="submit" style="display: none;">
                        <svg  style="cursor: pointer; margin: 5px -50px;" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search text-info" viewBox="0 0 16 16">
@@ -204,53 +213,53 @@
                 <h6 id="sub-menu1">کالا و محصولات</h6>
             </div>
             <div class="menu-item">
-                <h6>تماس با ما</h6>
+                <a href="{% url 'aboutus' %}"><h6>تماس با ما</h6></a>
             </div>
         </div>
-        <div class="shadow" id="sub-menu1-contain" style="position: absolute;display: none; z-index:2000;"> گروه بندیها
+        <div class="container rounded bg-light shadow" id="sub-menu1-contain" style="width: 50%; position: absolute;display: none; z-index:2000;"> گروه بندیها
 
 
-    <div class="wrapper">
-        <ul class="nav-container row">
-  <li class="col-sm-4 list-item active bg1">
-  </li>
-  <li class="col-sm-4 list-item bg1">
-  </li>
-  <li class="col-sm-4 list-item bg1">
-  </li>
-  <div class="menu-wrapper">
-    <ul>
-        {% for category in category_list %}
-            {% if forloop.counter <= 3 %}
-        <li class="menu-block">
-            <div class="link">
-               {% if 0 < category.child.count  %}
-                   {% if forloop.counter == 1 %}
-                        <ul class="menu color-one">
-                                {% for sub in category.child.all %}
-                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
-                                {% endfor %}
-                        </ul>
-                    {% endif %}
-                   {% if forloop.counter == 2 %}
-                        <ul class="menu color-two">
-                                {% for sub in category.child.all %}
-                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
-                                {% endfor %}
-                        </ul>
-                    {% endif %}
-                   {% if forloop.counter == 3 %}
-                        <ul class="menu color-three">
-                                {% for sub in category.child.all %}
-                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
-                                {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endif %}
+{#    <div class="wrapper">#}
+{#        <ul class="nav-container row">#}
+{#  <li class="col-sm-4 list-item active bg1">#}
+{#  </li>#}
+{#  <li class="col-sm-4 list-item bg1">#}
+{#  </li>#}
+{#  <li class="col-sm-4 list-item bg1">#}
+{#  </li>#}
+{#  <div class="menu-wrapper">#}
+{#    <ul>#}
+{#        {% for category in category_list %}#}
+{#            {% if forloop.counter <= 3 %}#}
+{#        <li class="menu-block">#}
+{#            <div class="link">#}
+{#               {% if 0 < category.child.count  %}#}
+{#                   {% if forloop.counter == 1 %}#}
+{#                        <ul class="menu color-one">#}
+{#                                {% for sub in category.child.all %}#}
+{#                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>#}
+{#                                {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
+{#                   {% if forloop.counter == 2 %}#}
+{#                        <ul class="menu color-two">#}
+{#                                {% for sub in category.child.all %}#}
+{#                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>#}
+{#                                {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
+{#                   {% if forloop.counter == 3 %}#}
+{#                        <ul class="menu color-three">#}
+{#                                {% for sub in category.child.all %}#}
+{#                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>#}
+{#                                {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
+{#                {% endif %}#}
 {#                <a href="#" class="navigation-header">Category 1</a>#}
-                <a class="navigation-header" href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
-            </div>
-        </li>
+{#                <a class="navigation-header" href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>#}
+{#            </div>#}
+{#        </li>#}
 {#        <li class="menu-block">#}
 {#            <div class="link">#}
 {#                <ul class="menu color-two">#}
@@ -273,36 +282,38 @@
 {#                <a href="#" class="navigation-header">Category 3</a>#}
 {#            </div>#}
 {#        </li>#}
-            {% endif %}
-        {% endfor %}
-    </ul>
-    <div class="moving-block"></div>
-  </div>
-</ul>
-    </div>
-{##}
-{#            <ul>#}
-{#                {% for category in category_list %}#}
-{#                    {% if category.parent is None %}#}
-{#                        <li class="card-title">#}
-{#                            <a href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>#}
-{##}
-{#                        {% if 0 < category.child.count  %}#}
-{#                            <ul>#}
-{#                                {% for sub in category.child.all %}#}
-{#                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>#}
-{#                                {% endfor %}#}
-{#                            </ul>#}
-{#                        {% endif %}#}
-{#                        </li>#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        {% for category in category_list %}#}
-{#            <div id="cat_image{{ category.id }}" class="bg-danger" style="width: 50%;height: 100%; position: absolute; top: 0;left: 0;display: none">#}
-{#                <img src="{{ category.image.url }}" alt="{{ category.name }}"  width="100%" height="100%">#}
-{#            </div>#}
+{#            {% endif %}#}
 {#        {% endfor %}#}
+{#    </ul>#}
+{#    <div class="moving-block"></div>#}
+{#  </div>#}
+{#</ul>#}
+{#    </div>#}
+{##}{#                ----------------     ta inja un mene aks avaz shodaniyas   -------------------  #}
+            <div class="container d-flex col-12 ">
+                {% for category in category_list %}
+                    {% if category.parent is None %}
+                        <div class="">
+                            <a class="cat border-left border-danger" href="{% url 'category_slug' category.slug %}">{{ category.name }}</a>
+                        <div class="catdiv">
+                        {% if 0 < category.child.count  %}
+
+                                {% for sub in category.child.all %}
+                                    <li class="pr-2"><a href="{% url 'category_slug' sub.slug %}">{{ sub.name }}</a></li>
+                                {% endfor %}
+
+                        {% endif %}
+                        <img src="{{ category.image.url }}" alt="{{ category }}">
+                        </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% for category in category_list %}
+            <div id="cat_image{{ category.id }}" class="bg-danger" style="width: 50%;height: 100%; position: absolute; top: 0;left: 0;display: none">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}"  width="100%" height="100%">
+            </div>
+        {% endfor %}
         </div>
     </div>
 </div>

@@ -4,17 +4,20 @@ from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 import json
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, DetailView, ListView, CreateView
+from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView
+from django.views.generic.edit import FormMixin
+
+from accounts.forms import ProfileForm, ShopForm
 from accounts.models import Shop, Profile
 from orders.models import BasketItems
 from products.forms import CommentForm, ProductCreateForm, ShopProductCreateForm, CategoryCreateForm, BrandCreateForm, \
-    ShopCreateForm, ProductMetaCreateForm
+    ShopCreateForm, ProductMetaCreateForm, CategoryMetaFrom, CategoryValueForm, CategoryMetaValueSet
 from products.models import Category, Product, ShopProduct, GalleryImage, Comment, Brand, ProductMeta, Favorite, \
     CommentLike, CategoryMeta, CategoryMetaValue
 from django.contrib.auth import get_user_model
@@ -34,15 +37,19 @@ class ProductView(DetailView):
         context['shops'] = Shop.objects.filter(shop__product=product)
         context['gallery'] = GalleryImage.objects.filter(product=product)
         context["comments"] = product.comments.all()
+        context['cat_meta_vale_form'] = CategoryValueForm()
         comments = product.comments.all()
         comment_ids = []
         total_rate = 0
         for comment in comments:
             comment_ids.append(comment.user.id)
             total_rate += comment.rate
-        print("===================  comments  =========================",comments)
+        print("===================  comments  =========================",comments.count())
         commentlikes = CommentLike.objects.filter(comment__in=comments)
-        print("===================  commentlikes  =========================",commentlikes)
+        print("===================  commentlikes 1 =========================",commentlikes.count())
+        # commentlikes_id = commentlikes.values_list('comment', flat=True)
+        # commentlikes = CommentLike.objects.filter(id__in=commentlikes_id)
+        print("===================  commentlikes 2 =========================",commentlikes.count())
         context['commentlikes'] = commentlikes
         if comments.count() > 0:
             average_rate = total_rate / comments.count()
@@ -53,21 +60,23 @@ class ProductView(DetailView):
         context['form'] = CommentForm()
         shops = ShopProduct.objects.filter(product=product)
         context['shops_product'] = ShopProduct.objects.filter(product=product)
+        context['similar_shop_products'] = ShopProduct.objects.filter(product__category=product.category)[:8]
         min_price = 9999999999
         for shop in shops:
-            net_price = shop.net_price
-            if net_price < min_price:
-                min_shop = shop
-                min_price = net_price
-                shp_id = shop.id
-                if self.request.user.is_authenticated:
-                    try:
-                        favorite = Favorite.objects.get(user=self.request.user, shop_product=min_shop)
-                    except Favorite.DoesNotExist:
-                        favorite = Favorite.objects.create(user=self.request.user, shop_product=min_shop,
-                                                           favorite=False)
-                else:
-                    favorite = ""
+            if shop.quantity > 0:
+                net_price = shop.net_price
+                if net_price < min_price:
+                    min_shop = shop
+                    min_price = net_price
+                    shp_id = shop.id
+                    if self.request.user.is_authenticated:
+                        try:
+                            favorite = Favorite.objects.get(user=self.request.user, shop_product=min_shop)
+                        except Favorite.DoesNotExist:
+                            favorite = Favorite.objects.create(user=self.request.user, shop_product=min_shop,
+                                                               favorite=False)
+                    else:
+                        favorite = ""
         if min_shop is not None:
             context['min_shop'] = min_shop
             context['min_price'] = min_price
@@ -111,25 +120,27 @@ class Reviews(ListView):
     context_object_name = 'products'
     paginate_by = 6
     template_name = "components/category.html"
-    queryset = ShopProduct.objects.all().order_by('price')
+    # queryset = ShopProduct.objects.all().order_by('price')
 
-    def get_queryset(self):
-        ordering = self.request.GET.get('sort', None)
-        # validate ordering here
-        print(ordering)
-        queryset = ShopProduct.objects.all().order_by(ordering)
-        print(queryset)
-        return queryset
+    def get_ordering(self):
+        return self.request.GET.get('sort', None)
+
+    # def get_queryset(self):
+    #     ordering = self.request.GET.get('sort', None)
+    #     # validate ordering here
+    #     print(ordering)
+    #     if ordering:
+    #         queryset = ShopProduct.objects.all().order_by(ordering)
+    #         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['current_order'] = self.get_ordering()
         context['category_list'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['shops'] = Shop.objects.all()
         if self.request.user.is_authenticated:
             context['profile'] = Profile.objects.get(user=self.request.user)
-        context['min_val'] = 0
-        context['max_val'] = 300000
         context2 = get_all_context(self.request)
         context2.update(context)
         return context2
@@ -174,8 +185,7 @@ class CategorySingle(ListView):
         context['shops'] = Shop.objects.all()
         if self.request.user.is_authenticated:
             context['profile'] = Profile.objects.get(user=self.request.user)
-        context['min_val'] = 0
-        context['max_val'] = 300000
+
 
         context2 = get_all_context(self.request)
         context2.update(context)
@@ -401,15 +411,64 @@ class ProductMetaCreateView(CreateView):
     template_name = 'components/create.html'
     success_url = reverse_lazy('create')
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context2 = get_all_context(self.request)
         context2.update(context)
         return context2
 
+class CategotyMetaCreateView(CreateView):
+    model = CategoryMeta
+    form_class = CategoryMetaFrom
+    template_name = 'components/create.html'
+    success_url = reverse_lazy('create')
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        categorymetavalue_form = CategoryValueForm
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  categorymetavalue_form=categorymetavalue_form,
+                                  ))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        categorymetavalue_form = CategoryMetaValueSet(self.request.POST)
+        if form.is_valid():
+            return self.form_valid(form, categorymetavalue_form)
+        else:
+            return self.form_invalid(form, categorymetavalue_form)
+
+    def form_valid(self, form, categorymetavalue_form):
+        self.object = form.save()
+        categorymetavalue_form.instance = self.object
+        categorymetavalue_form.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, categorymetavalue_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  categorymetavalue_form=categorymetavalue_form,
+                                  ))
+
+class CategoryMetaVAlueView(CreateView):
+    model = CategoryMetaValue
+    form_class = CategoryValueForm
+    template_name = 'components/create.html'
+    success_url = reverse_lazy('create')
 
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context2 = get_all_context(self.request)
+        context2.update(context)
+        return context2
 
 @login_required
 def createproduct(request):
@@ -497,3 +556,44 @@ def createshopproduct(request):
     else:
         print("----------------------------------Get")
         return render(request, 'components/createshopproduct.html', context)
+
+
+class EditCategory(UpdateView,FormMixin):
+    form_class = CategoryCreateForm
+    model = Category
+    template_name = 'components/create.html'
+
+class EditBrand(UpdateView):
+    form_class = BrandCreateForm
+    model = Brand
+    template_name = 'components/create.html'
+
+class EditProduct(UpdateView):
+    form_class = ProductCreateForm
+    model = Product
+    template_name = 'components/create.html'
+
+class EditProfile(UpdateView):
+    form_class = ProfileForm
+    model = Profile
+    template_name = 'components/create.html'
+
+class EditShop(UpdateView):
+    form_class = ShopForm
+    model = Shop
+    template_name = 'components/create.html'
+
+class EditShopProduct(UpdateView):
+    form_class = ShopProductCreateForm
+    model = ShopProduct
+    template_name = 'components/create.html'
+
+class EditView(ListView):
+    model = Product
+    template_name = 'components/update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context2 = get_all_context(self.request)
+        context2.update(context)
+        return context2

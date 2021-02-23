@@ -13,7 +13,7 @@
             has_icon:true,
             sticky:false,
             border_radius:6,
-            has_progress:false,
+            has_progress:true,
             rtl:true
         }
 

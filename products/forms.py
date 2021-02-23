@@ -1,13 +1,13 @@
 from django import forms
+from django.contrib.admin import TabularInline
 from django.db.models import fields
 from django.forms import widgets
 from django.forms.widgets import PasswordInput, TextInput
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
-
 from accounts.models import Shop
-from products.models import Comment, Product, ShopProduct, Category, Brand, ProductMeta
+from products.models import Comment, Product, ShopProduct, Category, Brand, ProductMeta, CategoryMetaValue, CategoryMeta
 
 User = get_user_model()
 
@@ -100,8 +100,29 @@ class ProductMetaCreateForm(forms.ModelForm):
         model = ProductMeta
         fields = ['product','label','value']
 
+
     def __init__(self, *args, **kwargs):
         super(ProductMetaCreateForm, self).__init__(*args, **kwargs)
         self.fields['product'].widget.attrs.update({'class': 'shadow border border-info rounded w-100'})
         self.fields['label'].widget.attrs.update({'class': 'shadow border border-info rounded w-100'})
         self.fields['value'].widget.attrs.update({'class': 'shadow border border-info rounded w-100'})
+
+
+from django.forms import inlineformset_factory
+class CategoryValueForm(forms.ModelForm):
+    class Meta:
+        model = CategoryMetaValue
+        fields = ['label', 'value',]
+
+class CategoryMetaFrom(forms.ModelForm):
+    class Meta:
+        model = CategoryMeta
+        fields = ['category','label']
+
+CategoryMetaValueSet = inlineformset_factory(CategoryMeta, CategoryMetaValue,fk_name='label',fields=['value',])
+
+    # def __init__(self, *args, **kwargs):
+    #     super(ProductMetaCreateForm, self).__init__(*args, **kwargs)
+    #     self.fields['category'].widget.attrs.update({'class': 'shadow border border-info rounded w-100'})
+    #     self.fields['label'].widget.attrs.update({'class': 'shadow border border-info rounded w-100'})
+

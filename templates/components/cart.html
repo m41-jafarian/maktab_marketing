@@ -56,9 +56,9 @@
 {% block javascript %}
  <script>
             $( "#target" ).click(function(e) {
-                alert( "Handler for .click() called." );
+                {#alert( "Handler for .click() called." );#}
                  e.preventDefault();
-                alert("سبد خرید خالی شد.");
+                {#alert("سبد خرید خالی شد.");#}
                 const del = "delete";
                 const data = JSON.stringify({del});
                 $.ajax({
@@ -68,6 +68,7 @@
                     success: function (response) {
                         const data = JSON.parse(response)
                         console.log(data)
+                        $.Toast("kalabuy","سبد شما خالی شد","success");
                         $('#cart-div').html( `<div>سبد شما خالی است. </div>`
                         );
                     },
@@ -87,8 +88,9 @@
                     {#const cell2 = $('#dislike_count_container' + data.commentID);#}
                     {#$(cell1).text(data.like_count);#}
                     {#$(cell2).text(data.dislike_count);#}
-                    alert("کالا به سبد خرید اضاقه شد")
+                    {#alert("کالا به سبد خرید اضاقه شد")#}
                     window.location.reload();
+                    $.Toast("kalabuy","کالا به سبد خرید اضاقه شد","success");
                     {% comment %} $('"#like_count_container').text(data.like_count);
                     $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
                 }
@@ -109,8 +111,11 @@
                     {#const cell2 = $('#dislike_count_container' + data.commentID);#}
                     {#$(cell1).text(data.like_count);#}
                     {#$(cell2).text(data.dislike_count);#}
-                    alert("کالا حذف شد");
+                    {#alert("کالا حذف شد");#}
                     window.location.reload();
+                    $.Toast("kalabuy","کالا حذف شد","success");
+
+
                     {% comment %} $('"#like_count_container').text(data.like_count);
                     $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
                 }

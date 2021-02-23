@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <html lang="en" dir="rtl">
 <head>
@@ -13,11 +14,13 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.default.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
 {#    <link rel="stylesheet" href="{% static 'css/owl.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/chart.css' %}">
     <link rel="stylesheet" href="{% static 'css/chart.min.css' %}">
     <link href="{% static 'css/toast.style.min.css' %}" rel="stylesheet">
+
 
     {% block css %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
@@ -35,14 +38,14 @@
 
 @keyframes textgrowth {
     0% {
-    font-size: 20px;
+    font-size: 10px;
         color: #ff0000;
     }
     50% {
-    font-size: 45px;
+    font-size: 25px;
     }
     100% {
-    font-size: 70px;
+    font-size: 45px;
         color: #fdfdfd;
     }
 }
@@ -62,30 +65,41 @@ div.sticky {
         color: grey;
     }
 .pointer {cursor: pointer;}
+
+    .rounded_50 {
+    border-radius: 50px;
+}
 </style>
 </head>
     <body>
         {% block header %}
             {% include 'base/header.html' %}
         {% endblock %}
-
         {% block body %}
         {% endblock %}
 
         {% if request.user.is_authenticated %}
-            <div id="profile_contain" class="bg-light card-body border shadow" style=" position: fixed; bottom: 110px; right: 20px;width: 15%; z-index: 100;display: none; ">
-                <div class="col-12">
-                      {{ profile.first_name }}<br>
+            <div id="profile_contain" class="bg-light bg-dark card-body border shadow" style=" position: fixed; bottom: 110px; right: 20px;width: 15%; z-index: 100;display:none; ">
+                <div class="container col-12 bg-light d-flex flex-wrap align-items-center justify-content-between">
+
+                    {% if profile.avatar.url is not null %}
+                                <img class="d-flex align-items-center col-6 border-info border-info border-2" src="{{ profile.avatar.url }}" width="50%" height="auto">
+                        {% else %}
+                                <img class="d-flex align-items-center col-6 border-info border-info border-2" src="{% static '/personal.png' %}" alt="personal">
+                        {% endif %}
+                    <div class="col-6">
+                       {{ profile.first_name }}<br>
                       {{ profile.last_name }}<br>
-                      <a class="nav-link" href="{% url 'logout' %}"> خروج </a>
+                    </div>
+                      <a class="nav-link col-6" href="{% url 'logout' %}"> خروج </a>
                 </div>
-                <div id="foo" style=" position: fixed; bottom: 20px; right: 20px; z-index: 1000">
+            </div>
+            <div id="foo"  style=" position: fixed; bottom: 20px; right: 20px;display: block; z-index: 2000">
                     <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"></path>
-                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
-                    <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
+                        <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"></path>
+                        <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+                        <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
                     </svg>
-                </div>
             </div>
         {% endif %}
         {% block footer %}

@@ -1,4 +1,4 @@
-from .models import Profile
+from .models import Profile, Shop
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import fields
@@ -34,4 +34,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields =('avatar',)
 
-
+class ShopForm(forms.ModelForm):
+    class Meta:
+        model = Shop
+        fields =('__all__')

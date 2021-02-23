@@ -57,17 +57,21 @@
                 <div class="col-12">
                     <div>{{ profile }}</div>
                     <div class="col-12"> آدرس محل تحویل:  </div>
-                    <select class="address">
-                    {% for address in addresses %}
-                        <option value="{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}">{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}</option>
-                    {% endfor %}
-                    </select>
+                    {% if addresses %}
+                        <select class="address">
+                        {% for address in addresses %}
+                            <option value="{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}">{{ address.city }} خیابان {{ address.street }} کوچه {{ address.allay }} کدپستی {{ address.zip_code }}</option>
+                        {% endfor %}
+                        </select>
+                     {% else %}
+                        <div class="text-danger">لطفا برای ادامه ابتدا در قسمت <a href="{% url 'profile' profile.user.id %}">پروفایل</a>  آدرس خود را وارد نمایید</div>
+                     {% endif %}
                 </div>
                 {% for item in basketitems %}
                     <div class="d-flex align-items-center justify-content-between bg-light shadow border col-12 d-flex my-1">
-                        <div class="col-3 border" style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
-                        <div class="col-5 border" style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
-                        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+                        <div class="col-3 " style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
+                        <div class="col-5 " style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
+                        <div class="col-3 " style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
                      </div>
                 {% endfor %}
                 <div>زمان تحویل از دو روز کاری</div>
@@ -99,7 +103,7 @@
         </div>
         <div class="container col-sm-12 col-md-3 border  align-items-center " style="height: 100%">تعداد کالا: {{ goods_count }} <br>
             <div id="total" class="d-flex justify-content-around">مبلغ کل :{{ total|intcomma }} تومان</div>
-            <div onclick="openCity(event, 'Paris')" class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">
+            <div {% if addresses %} onclick="openCity(event, 'Paris')" {% endif %} class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">
     {#        <a href="{% url 'payment' %}">ادامه فرایند خرید</a>#}
                 ادامه فرایند خرید
             </div>
@@ -121,8 +125,9 @@
     <div class="container d-flex flex-wrap mw-100 border border-info">
 <div id="info2-div" class="col-sm-12 col-md-9 container row d-flex justify-content-between align-items-end" style="height: 100%">
 {% if basketitems %}
-    <div class="col-12">
-        <div>{{ profile }}</div>
+    <div class="d-flex flex-wrap justify-content-center col-12">
+        <div class="h2 row"> اطلاعات نهایی برای تکمیل خرید:</div>
+        <div class="h3 row col-12">خریدار: {{ profile }}</div>
         <div class="col-12 text-warning h4"> آدرس محل تحویل انتخاب شده:  </div>
     <div id="selected_address" class="text-success h4">
 
@@ -136,9 +141,9 @@
 
     {% for item in basketitems %}
      <div class="d-flex align-items-center justify-content-between bg-light shadow border col-12 d-flex my-1">
-        <div class="col-3 border" style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
-        <div class="col-5 border" style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
-        <div class="col-3 border" style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
+        <div class="col-3 " style="height: 15%"> <img src="{{item.shop_product.product.image.url }}" alt="{{ item.product_url }}"  height="80px" width="100px"></div>
+        <div class="col-5 " style="height: 100%">نام محصول:{{ item.shop_product.product.name }}<br>تعداد: {{ item.count }} <br></div>
+        <div class="col-3 " style="height: 100%"><br>فروشنده: {{ item.shop_product.shop.name }}<br> قیمت:{{ item.shop_product.net_price|intcomma }}  <br></div>
      </div>
     {% endfor %}
     {% else %}
@@ -189,7 +194,9 @@ document.getElementById("defaultOpen").click();
 $(document).ready(function(){
     $("select.address").change(function(){
         var selectedAddress = $(this).children("option:selected").val();
-        alert("You have selected the country - " + selectedAddress);
+        {#alert("You have selected the country - " + selectedAddress);#}
+        $.Toast("kalabuy","آدرس انتخابی: " + selectedAddress,"success");
+
         $('#selected_address').html(selectedAddress)
     });
 });
@@ -201,7 +208,7 @@ $(document).ready(function(){
         var tomorrow = new Date(todayDate.setDate(todayDate .getDate() + 1));
         var tomorrow2 = new Date(todayDate.setDate(todayDate .getDate() + 1));
         var tomorrow3 = new Date(todayDate.setDate(todayDate .getDate() + 1));
-        var tomorrow = tomorrow.getFullYear() + '-' +('0' + (tomorrow.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow.getDate()).slice(-2) + '-' + ('0' + tomorrow.getUTCDay()).slice(-2);
+        var tomorrow = tomorrow.getFullYear() + '-' +('0' + (tomorrow.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow.getDate()).slice(-2);
         var tomorrow2 = tomorrow2.getFullYear() + '-' +('0' + (tomorrow2.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow2.getDate()).slice(-2);
         var tomorrow3 = tomorrow3.getFullYear() + '-' +('0' + (tomorrow3.getMonth()+1)).slice(-2)+ '-' +  ('0' + tomorrow3.getDate()).slice(-2);
         console.log(tomorrow,tomorrow2,tomorrow3)

@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block body %}
+    <style>
+        .btun {
+            color: #4c4b4b;
+            background-color: #aef883;
+            border: solid 1px darkgoldenrod;
+            border-radius: 5px;
+            padding: 4px;
+            margin-top: 28px;
+            margin-inside: 15px;
+            margin-right: 5px;
+        }
+        .btun:hover {
+            color: #000000;
+            background-color: #38ee06;
+            border: solid 1px gold;
+            border-radius: 5px;
+            padding: 4px;
+            animation: ease-in-out;
+            transition: ease-in-out;
+        }
+    </style>
+<div class="container d-flex flex-wrap my-2 mx-3 border mw-100 border-danger">
+<div class="h2">ویرایش اطلاعات</div>
+<div class="col-12 row"><div class="col-2">گروه ها({{ category_list.count }}) </div>
+                    <div class="d-flex flex-wrap col-10 align-items-center">
+                      {% for cat in category_list %}
+                          <img src="{{ cat.image.url }}" width="35px" height="35px">
+                        <a class="btun col-1" href="{% url 'updateCategory' cat.slug %}"> {{ cat.name }} </a>
+                    {% endfor %}
+                    </div>
+</div>
+<div class="col-12 row "><div class="col-2">برندها({{ brand_list.count }})</div>
+                    <div class="d-flex flex-wrap col-10 align-items-center">
+                        {% for cat in brand_list %}
+                            <img src="{{ cat.image.url }}" width="35px" height="35px">
+                            <a class="btun col-1" href="{% url 'updateBrand' cat.slug %}"> {{ cat.name }} </a>
+                        {% endfor %}
+                    </div>
+</div>
+<div class="col-12 row "><div class="col-2">محصولات فروشگاهی({{ shop_products.count }})</div>
+                    <div class="d-flex flex-wrap col-10 align-items-center">
+                      {% for cat in shop_products %}
+                          <img src="{{ cat.product.image.url }}" width="35px" height="35px">
+                        <a class="btun col-1" href="{% url 'updateShopProduct' cat.id %}"> {{ cat }} </a>
+                    {% endfor %}
+                    </div>
+</div>
+<div class="col-12 row ">    <div class="col-2">مغازه ها({{ shop_list.count }})</div>
+                    <div class="d-flex flex-wrap col-10 align-items-center">
+                      {% for cat in shop_list %}
+                          <img src="{{ cat.image.url }}"  width="35px" height="35px">
+                        <a class="btun col-1" href="{% url 'updateShop' cat.id %}"> {{ cat }} </a>
+                    {% endfor %}
+                    </div>
+</div>
+<div class="col-12 row"><div class="col-2">محصولات({{ product_list.count }})</div>
+                    <div class="d-flex flex-wrap col-10 align-items-center">
+                      {% for cat in product_list %}
+                          <img src="{{ cat.image.url }}" width="35px" height="35px">
+                        <a class="btun col-1" href="{% url 'updateProduct' cat.id %}"> {{ cat }} </a>
+                    {% endfor %}
+                    </div>
+</div>
+</div>
+{% endblock %}

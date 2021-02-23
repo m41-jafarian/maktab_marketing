@@ -23,7 +23,7 @@
 }
 </style>
 <div class="container d-flex justify-content-around mw-100">
-        <div class="mw-100 col-8 m-5 border d-flex justify-content-center align-content-center" >
+        <div class="mw-100 col-8 m-5 d-flex justify-content-center align-content-center" >
             <form method="post" action="#" enctype="multipart/form-data" >
                 {% csrf_token %}
                 {% comment %} {{ form.as_ul }} {% endcomment %}
@@ -40,7 +40,6 @@
                             {{ field.errors }}
                     {% endfor %}
                 </div>
-
                 {{ form.non_field_errors }}
                 <div class="d-flex justify-content-center shadow">
                     <input class="d-flex w-50 p-2 justify-content-center btn-info " type="submit" value="      ثبت اطلاعات      "></input>
@@ -54,6 +53,10 @@
             <a href="{% url 'createBrand' %}"><div class="card-link btnn"> اضافه کردن برند جدید</div></a>
             <a href="{% url 'createShop' %}"><div class="card-link btnn"> اضافه کردن مفازه جدید</div></a>
             <a href="{% url 'createProductMeta' %}"><div class="card-link btnn"> اضافه کردن ویژگی محصول جدید</div></a>
+            <a href="{% url 'createCategoryMeta' %}"><div class="card-link btnn"> اضافه کردن ویژگی گروه</div></a>
+            <a href="{% url 'createCategoryMetaValue' %}"><div class="card-link btnn"> اضافه کردن مقادیر ویژگی گروه</div></a>
+            <a href="{% url 'edit' %}"><div class="card-link btnn"> ویرایش گروه بندی </div></a>
+
         </div>
     </div>
 

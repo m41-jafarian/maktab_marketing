@@ -223,13 +223,17 @@ class ResultView(ListView):
         context = super().get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         order = Order.objects.filter(user=self.request.user).last()
-        orderitems =  OrderItems.objects.filter(order=order)
+        orderitems = OrderItems.objects.filter(order=order)
         context['orderitems'] = orderitems
         total=0
         goods_count = 0
         for item in orderitems:
             total += item.shop_product.net_price * item.count
             goods_count += 1 * item.count
+            shopproduct_dec_count = ShopProduct.objects.get(id=item.shop_product.id)
+            shopproduct_dec_count.quantity -= item.count
+            shopproduct_dec_count.save()
+
         context['total'] = total
         context['goods_count'] = goods_count
         if self.request.user.is_authenticated:

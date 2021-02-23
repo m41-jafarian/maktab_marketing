@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.forms.models import inlineformset_factory
 User= get_user_model()
 # Create your models here.
 class Product(models.Model):
@@ -190,8 +191,8 @@ class CategoryMeta(models.Model):
 
 
 class CategoryMetaValue(models.Model):
-    label = models.ForeignKey("CategoryMeta", verbose_name=_("Product"),related_name="label_category_meta" ,on_delete=models.CASCADE)
-    value = models.CharField(_("Label"), max_length=50)
+    label = models.ForeignKey("CategoryMeta", verbose_name=_("label"),related_name="label_meta" ,on_delete=models.CASCADE)
+    value = models.CharField(_("value"), max_length=50)
 
     class Meta:
         verbose_name = _("CategoryMetaValue")
@@ -202,6 +203,7 @@ class CategoryMetaValue(models.Model):
 
     def get_absolute_url(self):
         return reverse("CategoryMetaValue_detail", kwargs={"pk": self.pk})
+
 
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(

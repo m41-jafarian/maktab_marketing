@@ -3,7 +3,7 @@
 
 {% block css %}
 {#    <link rel="stylesheet" href="range<a href="https://www.jqueryscript.net/slider/">Slider</a>.css" />#}
-    <link rel="stylesheet" href="{% static 'css/range-style.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/range-style.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/rangeSlider.css' %}">
 <style>
 .divsel {
@@ -89,7 +89,7 @@
 }
 
 /* Style the buttons */
-.btn {
+.btnn {
   border: none;
   outline: none;
   background-color: #f1f1f1;
@@ -97,19 +97,19 @@
 }
 
 /* Add a light grey background on mouse-over */
-.btn:hover {
+.btnn:hover {
   background-color: #ddd;
 }
 
 /* Add a dark background to the active button */
-.btn.active {
+.btnn.active {
   background-color: #666;
   color: white;
 }
 
-.btn.actived {
-  background-color: #2bc403;
-  color: #fa0000;
+.btn.active {
+  background-color: #666;
+  color: white;
 }
 </style>
 {% endblock %}
@@ -159,7 +159,7 @@
     {#                            {% if '{{ brand.slug }}' in 'brands' %} checked {% else %} هیچی {% endif %}#}
                            </div>
                         {% endfor %}
-                        <div class="d-flex mw-100 btn-secondary py-3 px-2 justify-content-center"><input type="submit" value="فیلتر"></div>
+                        <div ><input class="d-flex mw-100 btn-secondary w-100 rounded-pill justify-content-center" type="submit" value="فیلتر"></div>
                 </div>
             </form>
         <hr>
@@ -168,15 +168,15 @@
 <div id="product-contain" class="container col-10 d-flex flex-wrap" >
             <div>
                 <div id="myBtnContainer">
-                  <button class="btn active" onclick="filterSelection('all')"> همه</button>
+                  <button class="btn btnn" onclick="filterSelection('all')"> همه</button>
             {% for category in sub_categories %}
-                  <button class="btn" onclick="filterSelection('{{ category.slug }}')">{{ category.name }}</button>
+                  <button class="btn btnn" onclick="filterSelection('{{ category.slug }}')">{{ category.name }}</button>
             {% endfor %}
 {#                مرتب سازی:#}
 {#            <button class="btn" onclick="order_by('product')" >براساس نام</button>#}
 {#            <button class="btn" onclick="order_by('created_at')">براساس تاریخ </button>#}
 {#            <button class="btn" onclick="order_by('price')">براساس قیمت</button>#}
-            <div>
+            <div >
                 <form  class="container d-flex col-12 justify-content-center  pt-3" method="get" action="{% url 'sort' %}">
                  مرتب سازی بر اساس:
                     <label {% if '-created_at' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault1" >جدیدترین</label>
@@ -193,22 +193,19 @@
     <div class="col-12 container d-flex flex-wrap mw-100">
             {% if products is not None %}
                 {% for product in products %}
-{#                   {% if product.net_price > min_val and product.net_price < max_val %}#}
                     <div id="productCard{{ forloop.counter }}" class=" col-sm-12 col-md-4 col-lg-3 bg-light border shadow m-1 filterDiv {{ product.product.category.slug }}">
                         <a href="{% url 'product_id' product.id %}">
                         <div class="d-inline">
                         <div><img src="{{ product.product.image.url }}" alt="{{ product.product.name }}" width="100%"  ></div>
                         {{ product.product.name }}<br>
                         برند: {{ product.product.brand }}
-                         <br>  فروشگاه {{ product.shop.name }}
-                            قیمت:{{ product.price }} تخفیف: %{{ product.discount }} قیمت {{ product.net_price }}
-                        </div>
+                         <br>  فروشگاه {{ product.shop.name }}<br>
+                        </div>قیمت:
                              <span class="product-price">
                                    {{ product.net_price }}
                              </span>
                         </a>
                     </div>
-{#                    {% endif %}#}
                 {% endfor %}
             {% else %}
                 <div>موردی یافت نشد</div>
@@ -220,7 +217,7 @@
                   <ul class="pagination">
                       {% if page_obj.has_previous %}
                           <li class="page-item">
-                            <a class="page-link" href="?page={{page_obj.previous_page_number}}">&laquo;</a>
+                            <a class="page-link" href="?sort={{ current_order }}&page={{page_obj.previous_page_number}}">&laquo;</a>
                           </li>
                       {% else %}
                           <li class="page-item disabled">
@@ -232,13 +229,13 @@
                             <li class="page-item"><a class="page-link active">{{ i }}</a></li>
                           {% else %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                <a class="page-link" href="?sort={{ current_order }}&page={{ i }}">{{ i }}</a>
                             </li>
                           {% endif %}
                       {% endfor %}
                       {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a href="?page={{page_obj.next_page_number}}" class="page-link">&raquo;</a>
+                                <a href="?sort={{ current_order }}&page={{page_obj.next_page_number}}" class="page-link">&raquo;</a>
                             </li>
                       {% else %}
                             <li class="page-item disabled">
@@ -275,12 +272,12 @@
     <script src="{% static 'js/rangeSlider.js'%}"></script>
 <script>
 $('#example').rangeSlider(
-  {    // or 'vertical'horizontal
+{    // or 'vertical'
     direction:"horizontal",
-    // or 'interval'single
+    // or 'interval'
     type:"interval",
-    // or 'red'green
-    skin:"red",
+    // or 'red'
+    skin:"green",
     // shows settings panel
     settings:false,
     // shows range bar
@@ -288,20 +285,19 @@ $('#example').rangeSlider(
     // shows labels
     tip:true,
     // shows scales
-    scale:true,
+    scale:true
   },
   {
     // slider settings here
         // min value
         min: 0,
         // max value
-        max: 50000000,
+        max: 20000000,
         // step size
-        step: 100,
+        step: 100000,
         // predefined range
-        values: [0, 300000]
+        values: [100000, 2000000]
   }
-
 );
 </script>
 {#<script>#}

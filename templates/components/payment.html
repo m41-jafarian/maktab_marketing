@@ -13,7 +13,7 @@
         }
         #mainBody
         {
-            background-color:lightgray;
+            {#background-color:lightgray;#}
             border-radius: 15px;
             width: 800px;
             height: 100%;
@@ -31,7 +31,7 @@
         }
         h1
         {
-            font-family: "Tahoma";
+            {#font-family: "Tahoma";#}
             font-size:  50px;
             color:crimson;
             Text-decoration : underline;
@@ -41,7 +41,7 @@
         }
         #title
         {
-            font-family: "Tahoma";
+            {#font-family: "Tahoma";#}
             font-size: 20px;
             color: white;
             text-align: left;
@@ -49,7 +49,7 @@
             padding-left: 5px;
             padding-top: 5px;
             padding-bottom: 5px;
-            background-color: gray
+            {#background-color: gray#}
         }
        .btnTable
         {
@@ -149,13 +149,10 @@
         <input class="w-100 m-2 p-2 rounded" type="number" placeholder="عبارت امنیتی">
         <input class="w-100 m-2 p-2 rounded" type="password" id="psword"  disabled  maxlength="10" placeholder="رمز دوم">
         <input class="w-100 m-2 p-2 rounded" type="number" placeholder="ایمیل(اختیاری)">
-
-        <input class="w-25 p-2 rounded btn-danger" type="reset" >
-
-
         <form  class="container d-flex col-12 justify-content-center  pt-3" method="get" action="{% url 'result' %}">
+        <input class="w-25 p-2 rounded btn-danger" type="reset" >
             <input type="hidden" name="result" value="true">
-            <input class="btn-success rounded-pill px-2 py-2" type="submit" value="پرداخت">
+            <input class="btn-success w-25 p-2 rounded" type="submit" value="پرداخت">
         </form>
     </div>
     <div id="number_set" class="container d-flex flex-wrap col-3 ">
@@ -222,13 +219,13 @@
         <div class="col-12 p-2 border">{{ total }}</div>
         <div class="col-6 p-2 border">نوع عملیات</div>
         <div class="col-6 p-2 border">خرید</div>
-        <div class="col-6 p-2 border">نام فروشگاه</div>
-        <div class="col-6 p-2 border">بلالا{{ shop }}</div>
+        <div class="col-6 p-2 border">نام پذیرنده</div>
+        <div class="col-6 p-2 border">کالابای</div>
         <div class="col-6 p-2 border">شماره ترمینال</div>
         <div class="col-6 p-2 border">65765657</div>
         <div class="col-6 p-2 border">شماره پذیرنده</div>
         <div class="col-6 p-2 border">7585853</div>
-        <div class="border">وبسایت</div>
+        <div class="border">وبسایت: www.kalabuy.com</div>
     </div>
 {#     <div onclick="pay_amount(orderID=1,shopProductList=1,amount=1000000)" class="button rounded btn-success shadow p-2 m-1 d-flex justify-content-around btn btn-success" id="target">#}
 {#        پرداخت#}
