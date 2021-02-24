@@ -74,8 +74,8 @@ class Profile(models.Model):
     last_name = models.CharField(_("Last_name"), max_length=50,null=True, blank=True,default="")
     avatar = models.ImageField(_("Avatar"), upload_to="users/avatar", height_field=None, width_field=None, max_length=None,null=True,blank=True)
     address = models.ForeignKey("Address", verbose_name=_("Address"), on_delete=models.CASCADE,null=True, blank=True,default="")
-    phone_number = models.IntegerField(_("Phone_number"),null= True, blank=True,default="")
-    mobile_number = models.IntegerField(_("Mobile_number"),null= True, blank=True,default="")
+    phone_number = models.IntegerField(_("Phone_number"),null= True, blank=True,default="021")
+    mobile_number = models.IntegerField(_("Mobile_number"),null= True, blank=True,default="09")
 
     class Meta:
         verbose_name = _("Profile")
