@@ -25,7 +25,7 @@ SECRET_KEY = '1ss4qwymep4znc_(+-e6m*uvsm&z#2&lr1+agrw4-6t$97n9@$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,7 +132,7 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-LOGOUT_REDIRECT_URL = 'home_index'
+# LOGOUT_REDIRECT_URL = 'home_index'
 
 print("base-dir===",BASE_DIR)
 print("media-root===",MEDIA_ROOT)

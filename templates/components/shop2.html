@@ -172,24 +172,12 @@
             {% for category in sub_categories %}
                   <button class="btn" onclick="filterSelection('{{ category.slug }}')">{{ category.name }}</button>
             {% endfor %}
-            <div>
-                <form  class="container d-flex col-12 justify-content-center  pt-3" method="get" action="{% url 'sort' %}">
-                 مرتب سازی بر اساس:
-                    <label {% if '-created_at' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault1" >جدیدترین</label>
-                    <input type="radio" style="visibility: hidden" id="flexRadioDefault1" name="sort" value="-created_at">
-                    <label {% if '=-price' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault2" >گران ترین</label>
-                    <input type="radio" style="visibility: hidden" id="flexRadioDefault2" name="sort" value="-price">
-                    <label {% if '=price' in request.get_full_path %} class="btn active" {% endif %} class="btn" for="flexRadioDefault3" >ارزان ترین</label>
-                    <input type="radio" style="visibility: hidden" id="flexRadioDefault3" name="sort" value="price">
-                    <input class="btn-success rounded-pill px-2 py-2" type="submit" value="مرتب سازی">
-                </form>
-            </div>
                 </div>
             </div>
     <div class="col-12 container d-flex flex-wrap mw-100">
-        {% if shop.user == request.user %}
-                <div class="d-flex flex-wrap col-12 justify-content-center bg-light border mh-100">
-                    <h1 class="d-flex justify-content-center col-12"> فروشگاه {{ shop.name }}</h1>
+                <div class="d-flex flex-wrap col-12 justify-content-center bg-light mh-100">
+                    <h1 class="d-flex col-12 rounded-pill bg-success justify-content-center "> فروشگاه {{ shop.name }}</h1>
+                    {% if shop.user == request.user %}
                     <div class="col-6 h3">صاحب فروشگاه{{ shop.user }} </div>
                     <a href="{% url 'shop_slug' shop.slug %}">
                     <div class="d-flex col-4">
@@ -201,6 +189,7 @@
                     </a>
 
                 <a class="btn-success rounded-pill d-flex justify-content-center py-2 col-4" href="{% url 'create' %}" >مدیریت فروشگاه</a>
+                {% endif %}
                 </div>
                     {% if products is not None %}
                 {% for product in shop_products %}
@@ -260,27 +249,10 @@
                 {% endif %}
             </nav>
         </div>
-        {% else %}
-                ببخشید شما به این فروشگاه دسترسی ندارید
-        {% endif %}
+
         </div>
     </div>
 
-
-          <div id="category-contain" class="container overflow-auto d-flex col-12 flex-wrap justify-content-center align-content-center" >
-            {% for category in category_list %}
-                <div class=" d-flex col-sm-12 col-md-6 col-lg-3 col-xl-1 justify-content-center border border-danger">
-                    <div class="bg-light align-content-center">
-                        <div class="cat_sel" style="opacity: 0.4; cursor: pointer;">
-                            <a href="{% url 'category_slug' category.slug %}">
-                                <img src="{{ category.image.url }}" alt="category name" height="50%" width="100%" >
-                            </a>
-                        </div>
-                        <div>{{ category.name }} </div>
-                    </div>
-                </div>
-            {% endfor %}
-          </div>
 
 {% endblock %}
 

@@ -12,6 +12,7 @@ from products.models import Category, Product, ShopProduct, Brand, Favorite
 from siteview.forms import UserRegistrationForm
 from siteview.models import SlideShow, AdvertisementSide, SiteSetting
 from django.db.models import Min
+from django.template import RequestContext
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -25,6 +26,7 @@ class HomeView(TemplateView):
         context['category_list'] = Category.objects.all()
         context['products'] = Product.objects.all()[:5]
         context['advertisement'] = AdvertisementSide.objects.filter().first()
+        context['shop_products'] = ShopProduct.objects.all()[:12]
         if self.request.user.is_authenticated:
             try:
                 profile = Profile.objects.get(user=self.request.user)
@@ -134,5 +136,13 @@ def get_all_context(request):
     print(context)
     return context
 
+
 class AboutUs(TemplateView):
     template_name = 'components/about_us.html'
+
+
+def error_400(request, exception):
+    return render(request, '400.html')
+
+def error_404(request, exception):
+    return render(request, '404.html')

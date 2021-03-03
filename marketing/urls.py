@@ -20,15 +20,19 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from orders.views import BasketView, InformatinView, pay_amount, PaymentView
+from siteview.views import LogInView
 from . import settings
 # from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
+handler400 = 'siteview.views.error_400'
+handler404 = 'siteview.views.error_404'
 
 routers = routers.DefaultRouter()
 
 urlpatterns = [
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(r'^admin/login/', LogInView.as_view()),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
     path('accounts/', include('accounts.urls')),

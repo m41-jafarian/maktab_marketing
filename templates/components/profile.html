@@ -70,59 +70,75 @@
     اطلاعات پروفایل
 {% endblock %}
 {% block body %}
-    <div class="container d-flex justify-content-between row mw-100">
-        <div class="d-flex h1 col-12">پروفایل:{{ profile }}</div>
-        <div class="col-sm-12 col-md-6 col-lg-3">
-            {% if profile.avatar.url is not null %}
-                     تصویر : <img src="{{ profile.avatar.url }}" alt="{{ profile }}" height="300px" width="300px" >
-            {% else %}
-                     تصویر : <img src="{% static '/personal.png' %}" alt="{{ profile }}" hei  ght="300px" width="300px" >
-            {% endif %}
-             <form method="post" action="{% url 'update_avatar' %}" enctype="multipart/form-data" >
-                 {% csrf_token %}
-                 <input id="image_url" name="avatar" type="file" accept="image/*">
-            {#                        {{ form }} {{ form.label_tag }}#}
-            {#                        {{ form.errors }} {{ form.help_text| safe}}#}
-                 <input class="btn-info float-left" type="submit" value="     ذخیره عکس     ">
-             </form>
-        </div>
-        <form class="col-lg-8 col-md-6 col-sm-12" id="form_profile" >
-            <div class="d-flex bg-light shadow flex-wrap">
-                <div class="col-6 border">
-                    <svg onclick="enable_field_profile('f_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                    </svg>
-                            نام :{{ profile.first_name }}
-                    <input class="mx-2" id="f_nam" hidden value="{{ profile.first_name }}" type="text" placeholder="first name"></div>
-                <div class="col-6 border">
-                    <svg onclick="enable_field_profile('l_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                    </svg>
-                            نام خانوادگی: {{ profile.last_name }}
-                    <input id="l_nam" hidden value="{{ profile.last_name }}" type="text" placeholder="last name"></div>
-                <div class="col-6 border"> کدملی :
+    <div class="container d-flex justify-content-between row mw-100 bg-light shadow">
+        <div class="d-flex h1 col-12 bg-light shadow mt-2">پروفایل:{{ profile }}</div>
+        <div class="col-lg-8 col-md-6 col-sm-12  bg-light shadow">
+            <form  id="form_profile" >
+                <div class="d-flex bg-light shadow flex-wrap bg-light shadow">
+                    <div class="col-6 border">
+                        <svg onclick="enable_field_profile('f_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                        نام :{{ profile.first_name }}
+                        <input class="mx-2" id="f_nam" hidden value="{{ profile.first_name }}" type="text" placeholder="first name"></div>
+                    <div class="col-6 border">
+                        <svg onclick="enable_field_profile('l_nam')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                        نام خانوادگی:{{ profile.last_name }}
+                        <input id="l_nam" hidden value="{{ profile.last_name }}" type="text" placeholder="last name"></div>
+                    <div class="col-6 border"> کدملی :
+                        </div>
+                    <div class="col-6 border">
+                        <svg onclick="enable_field_profile('ph_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                        شماره تلفن: {{ profile.phone_number }}
+                        <input id="ph_number" hidden value="{{ profile.phone_number }}" type="number" placeholder="phone numer"></div>
+                    <div class="col-6 border">
+                        <svg onclick="enable_field_profile('mob_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                        شماره موبایل : {{ profile.mobile_number }}
+                        <input id="mob_number" hidden value="{{ profile.mobile_number }}" type="number" placeholder="mobile number"></div>
+                    <input class="btn btn-success" id="sub_profile" onclick="edit_profile()" type="submit" hidden value="ذخیره">
                 </div>
-                <div class="col-6 border">
-                    <svg onclick="enable_field_profile('ph_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+            </form>
+                <div class="col-lg-12  bg-light  shadow">
+                    <div class="h4 "> آدرس ها:</div>
+                    {% for address in addresses %}
+                        <form>
+                            <svg onclick="enable_field({{ address.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                            {{ forloop.counter }}- <input class="border-0" id="city{{ address.id }}"     disabled value=" {{ address.city }}" type="text" placeholder="first name">
+                            خیابان <input class="border-0" id="street{{ address.id }}"   disabled value="{{ address.street }}" type="text" placeholder="last name">
+                            کوچه  <input class="border-0" id="allay{{ address.id }}"    disabled value="{{ address.allay }}" type="text" placeholder="phone numer">
+                            کدپستی <input class="border-0" id="zip_code{{ address.id }}" disabled value="{{ address.zip_code }}" type="number" placeholder="mobile number">
+                            <input class="btn btn-success" id="sub{{ address.id }}" onclick="edit_address({{ address.id }})" type="submit" hidden value="ذخیره">
+                        </form>
+                    {% endfor %}
+                    <svg onclick="open_new_address()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                     </svg>
-                            شماره تلفن: : {{ profile.phone_number }}
-                    <input id="ph_number" hidden value="{{ profile.phone_number }}" type="number" placeholder="phone numer"></div>
-                <div class="col-6 border">
-                    <svg onclick="enable_field_profile('mob_number')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                    </svg>
-                          شماره موبایل : {{ profile.mobile_number }}
-                    <input id="mob_number" hidden value="{{ profile.mobile_number }}" type="number" placeholder="mobile number"></div>
-                <input id="sub_profile" onclick="edit_profile()" type="submit" hidden value="ثبت اطلاعات">
-            </div>
+                    آدرس جدید:
+                    <div id="new_address" style="display: none">
+                        <form>
+                            - <input id="city0" value="" type="text"  placeholder="city">
+                            خیابان <input id="street0" value="" type="text" placeholder="street">
+                            کوچه<input id="allay0" value="" type="text" placeholder="allay">
+                            کدپستی <input id="zip_code0" value="" type="number" placeholder="zip code">
+                            <input class="btn btn-success" onclick="edit_address(0)" type="submit" value="ذخیره">
+                        </form>
+                    </div>
+                </div>
             <div class="col-12 d-flex justify-content-center"> لیست خریدها</div>
-                <div class="container d-flex flex-wrap cols-sm-12 col-md-8 col-lg-12 bg-light shadow">
-                    <div class="col-2 border border-success d-flex justify-content-center">ردیف</div>
-                    <div class="col-4 border border-success d-flex justify-content-center">تاریخ خرید</div>
-                    <div class="col-2 border border-success d-flex justify-content-center">تعداد اقلام</div>
-                    <div class="col-2 border border-success d-flex justify-content-center">مبلغ کل</div>
-                    <div class="col-2 border border-success d-flex justify-content-center">نتیجه تراکنش</div>
+            <div class="container d-flex flex-wrap cols-sm-12 col-md-8 col-lg-12 bg-light shadow">
+                <div class="col-2 border border-success d-flex justify-content-center h4">ردیف</div>
+                <div class="col-4 border border-success d-flex justify-content-center h4">تاریخ خرید</div>
+                <div class="col-2 border border-success d-flex justify-content-center h4">تعداد اقلام</div>
+                <div class="col-2 border border-success d-flex justify-content-center h4">مبلغ کل</div>
+                <div class="col-2 border border-success d-flex justify-content-center h4">نتیجه تراکنش</div>
                 {% for payment in payments %}
                     <div class="col-2 border border-success d-flex justify-content-center">{{ forloop.counter }}</div>
                     <div class="col-4 border border-success d-flex justify-content-center">{{ payment.create_at }}</div>
@@ -137,36 +153,35 @@
                     </div>
                 {% endfor %}
             </div>
-        </form>
-        <div class="col-lg-12 border bg-light  shadow">آدرس ها:
-            {% for address in addresses %}
-                <form>
-                    <svg onclick="enable_field({{ address.id }})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                    </svg>
-                    {{ forloop.counter }}- <input class="border-0" id="city{{ address.id }}"     disabled value=" {{ address.city }}" type="text" placeholder="first name">
-                    خیابان <input class="border-0" id="street{{ address.id }}"   disabled value="{{ address.street }}" type="text" placeholder="last name">
-                     کوچه  <input class="border-0" id="allay{{ address.id }}"    disabled value="{{ address.allay }}" type="text" placeholder="phone numer">
-                    کدپستی <input class="border-0" id="zip_code{{ address.id }}" disabled value="{{ address.zip_code }}" type="number" placeholder="mobile number">
-                           <input id="sub{{ address.id }}" onclick="edit_address({{ address.id }})" type="submit" hidden value="ثبت اطلاعات">
-                    <div>
-                    </div>
-                </form>
-            {% endfor %}
-            <svg onclick="open_new_address()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-            </svg>
-                        آدرس جدید:
-            <div id="new_address" style="display: none">
-                <form>
-                                  - <input id="city0" value="" type="text"  placeholder="city">
-                             خیابان <input id="street0" value="" type="text" placeholder="street">
-                                کوچه<input id="allay0" value="" type="text" placeholder="allay">
-                             کدپستی <input id="zip_code0" value="" type="number" placeholder="zip code">
-                                   <input onclick="edit_address(0)" type="submit" value="ثبت اطلاعات">
-                    <div>
-                    </div>
-                </form>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3  bg-light shadow">
+            {% if profile.avatar.url is not null %}
+                تصویر : <img class="rounded-circle border border-info shadow" src="{{ profile.avatar.url }}" alt="{{ profile }}" height="300px" width="300px" >
+            {% else %}
+                تصویر : <img src="{% static '/personal.png' %}" alt="{{ profile }}" hei  ght="300px" width="300px" >
+            {% endif %}
+            <form class="shadow" method="post" action="{% url 'update_avatar' %}" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <input id="image_url" name="avatar" type="file" accept="image/*">
+                        {#                        {{ form }} {{ form.label_tag }}#}
+                        {#                        {{ form.errors }} {{ form.help_text| safe}}#}
+                <input class="btn-info float-left" type="submit" value="     ذخیره عکس     ">
+            </form>
+            <div class="col-12 mt-2">
+                {% if myShop %}
+                    فروشگاه شما:
+                    {% for shop in myShop %}
+                       <a href="{% url 'shop_slug' shop.slug %}">{{ shop }},</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-12">
+                {% if favorite_list %}
+                    تعداد محصولات مورد علاقه شما {{ favorite_list.count }}عدد می باشد شامل: <br>
+                    {% for item in favorite_list %}
+                      <a href="{% url 'product_id' item.id %}">{{ item }} , </a>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -185,6 +200,7 @@
             const l_name = $('#l_nam').val()
             const ph_number = $('#ph_number').val()
             const mob_number = $('#mob_number').val()
+            if (f_name != '' || l_name != '' || ph_number != '' || mob_number != '' ) {
             console.log(f_name,l_name,ph_number,mob_number)
             const data = JSON.stringify({f_name,l_name,ph_number,mob_number})
             $('#f_nam').prop('hidden', true);
@@ -207,7 +223,9 @@
                     $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
                 }
             });
-        }
+        } else {
+            $.Toast("kalabuy","لطفا فیلد را پرنمایید","warning");
+        }}
     </script>
 
           <script>
@@ -224,7 +242,7 @@
             const allay = $(cell3).val()
             const zip_code = $(cell4).val()
             const data = JSON.stringify({address_id,city,street,allay,zip_code})
-
+            if (city != '' && street != '' && allay != '' && zip_code != '' ) {
             $(cell1).prop('disabled', true);
             $(cell2).prop('disabled', true);
             $(cell3).prop('disabled', true);
@@ -237,16 +255,12 @@
                 data: data,
                 success: function (response) {
                     const data = JSON.parse(response)
-                    {#const cell1 = $('#like_count_container' + data.commentID);#}
-                    {#const cell2 = $('#dislike_count_container' + data.commentID);#}
-                    {#$(cell1).text(data.like_count);#}
-                    {#$(cell2).text(data.dislike_count);#}
-
-                    {% comment %} $('"#like_count_container').text(data.like_count);
-                    $('#dislike_count_container').text(data.dislike_count); {% endcomment %}
+                    $.Toast("kalabuy","اطلاعات ذخیره شد","success");
                 }
             });
-        }
+        } else {
+            $.Toast("kalabuy","لطفا تمام فیلدها را تکمیل کنید","warning");
+        }}
     </script>
     <script>
         function enable_field(addressId) {

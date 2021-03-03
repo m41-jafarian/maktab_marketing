@@ -135,19 +135,28 @@ svg:hover {
 <div class="container d-flex  mw-100 border">
     <div class="container bg-light shadow border row mw-100 d-flex flex-wrap justify-content-between" style="height: 100%">
         <div class="">
-            <div id="favorite">
-               {% if favorite %}
-                   <svg onclick="favorite_add({{ min_shop.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                   </svg>
-                   {{ min_shop.favorite_count }}
-               {% else %}
-                   <svg onclick="favorite_add({{ min_shop.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                        <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                   </svg>
-               {% endif %}
-            </div>
-            <a href="{% url 'home_index' %}">
+            {% if user.is_authenticated %}
+                <div id="favorite">
+                   {% if favorite %}
+                       <svg onclick="favorite_add({{ min_shop.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                       </svg>
+{#                       {{ min_shop.favorite_count }}#}
+                   {% else %}
+                       <svg onclick="favorite_add({{ min_shop.id }})" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                       </svg>
+                   {% endif %}
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                       </svg>
+                </a>
+            {% endif %}
+            <br>
+             <a href="{% url 'home_index' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
                     <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
                 </svg>
@@ -159,7 +168,7 @@ svg:hover {
         </div>
         <div class="col-md-11 col-lg-4 border" style="height: 75%"> <img  class="example" src="{{ product.image.url }}" alt="{{ product.image.url }}" width="100%">
         </div>
-        <div class="container d-flex flex-wrap col-sm-12 col-md-6 col-lg-4 mh-100 align-items-center h5">
+        <div class="container d-flex flex-wrap col-sm-12 col-md-6 col-lg-4 mh-100 align-items-start h5">
             <div class="col-12"><i class="bi bi-globe"></i>  {{ product.name }}</div>
             <div class="col-12"><i class="bi bi-upc-scan"></i>  {{ product.brand }}</div>
             <div class="col-12"><i class="bi bi-diagram-3-fill"></i>  {{ product.category }}</div>
@@ -167,7 +176,7 @@ svg:hover {
             {% for catmeta in categorymeta %}
                  <label class="col-4" for="meta{{ forloop.counter }}">{{ catmeta }}</label>
                     <form class="col-8 d-flex " id="meta{{ forloop.counter }}">
-                    {% csrf_token %}
+{#                    {% csrf_token %}#}
                       {% for val in categoryvalues %}
                           {% if val.label == catmeta %}
                               <label for="{{ val.id }}">{{ val.value }}</label>
@@ -178,18 +187,18 @@ svg:hover {
             {% endfor %}
         </div>
         <div class="d-flex flex-wrap col-sm-12 col-md-6 col-lg-3 h5">
-            <div class="col-12 h4 text-info">اطلاعات خرید</div>
+            <div class="d-flex col-12 h4 text-info justify-content-center">اطلاعات خرید</div>
             <div class="col-12"><i class="bi bi-shop"></i> فروشگاه {{ min_shop.shop.name }} </div>
             <div class="col-12"><i class="bi bi-award-fill"></i> گارانتی اصالت و سلامت</div>
             {% if discount > 0 %}
                 <div class="text-black-50 col-9"> قیمت فروشنده:<del>{{ price|intcomma }}</del></div>
-                <div class="bg-danger col-3 px-4 d-flex rounded-pill text-light justify-content-center align-items-center"> %{{ discount }}</div>
+                <div class="bg-danger col-2 px-5 d-flex rounded-pill text-light justify-content-center align-items-center my-5"> %{{ discount }}</div>
             {% endif %}
             <div class="counter col-12 text-info" data-number="34534543"> مبلغ : {{ min_price|intcomma }} تومان</div>
             {% if user.is_authenticated %}
-                <button class="col-12 w-75 btn-danger rounded-pill" onclick= "add_product({{ shp_id }})">اضافه کردن به سبد کالا</button>
+                <div class="d-flex btn col-12 w-75 my-5 btn-danger rounded-pill align-items-center justify-content-center" onclick= "add_product({{ shp_id }})">اضافه کردن به سبد کالا</div>
             {% else %}
-                <div class="disabled-link"><button onclick= "add_product({{ shp_id }})" class="w-75 btn-success">اضافه کردن به سبد کالا</button></div>
+                <a class="d-flex btn col-12 w-75 btn-warning rounded-pill align-items-center justify-content-center" href="{% url 'login' %}">اضافه کردن به سبد کالا</a>
                 <div class="h6 text-warning"> * برای اضافه کردن کالا وارد حساب کاربری شوید.</div>
             {% endif %}
         </div>
@@ -416,20 +425,20 @@ svg:hover {
     </div>
 </div>
 <div id="Paris" class="tabcontent">
-  <h3>مشخصات</h3>
-  <p></p>
-<div>
-{% if productmeta is not none %}
-    {% for item in productmeta %}
-        <div class="container d-flex justify-content-center border">
-            <div class="col-4 border d-flex justify-content-center bg-primary text-white h4">{{ item.label }} :</div>
-            <div class="col-8 border justify-content-center h4 bg-light">{{ item.value }}</div>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>برای این کالا مشخصاتی وارد نشده است.</p>
-{% endif %}
-</div>
+      <h3>مشخصات</h3>
+      <p></p>
+    <div>
+        {% if productmeta %}
+            {% for item in productmeta %}
+                    <div class="container d-flex justify-content-center border">
+                        <div class="col-4 border d-flex justify-content-center bg-primary text-white h4">{{ item.label }} :</div>
+                        <div class="col-8 border justify-content-center h4 bg-light">{{ item.value }}</div>
+                    </div>
+            {% endfor %}
+        {% else %}
+            <div class="container d-flex h5">برای این کالا مشخصاتی وارد نشده است.</div>
+        {% endif %}
+    </div>
 </div>
 
 <div id="Tokyo" class="tabcontent">
@@ -711,7 +720,7 @@ function scrollCity(evt, cityName) {
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
       $('html,body').animate({
-        scrollTop: $("#Paris").offset().top-280},
+        scrollTop: $("#Paris").offset().top-350},
         'slow');
 }
 

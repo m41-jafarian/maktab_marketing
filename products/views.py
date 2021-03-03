@@ -125,17 +125,70 @@ class Reviews(ListView):
     def get_ordering(self):
         return self.request.GET.get('sort', None)
 
-    # def get_queryset(self):
-    #     ordering = self.request.GET.get('sort', None)
-    #     # validate ordering here
-    #     print(ordering)
-    #     if ordering:
-    #         queryset = ShopProduct.objects.all().order_by(ordering)
-    #         return queryset
+    def get_queryset(self):
+        # qs = qs.filter(product__category__slug=self.request.GET.getlist('cate', None))
+        order = self.request.GET.get('sort', None)
+        search_what = self.request.GET.get('search_box', None)
+        search_brand = self.request.GET.getlist('brands', None)
+        search_shop = self.request.GET.getlist('shops', None)
+        search_cate = self.request.GET.getlist('cate', None)
+        if search_cate:
+            search_cate = ''.join(map(str, search_cate))
+            print(search_cate)
+            cat= Category.objects.get(slug=search_cate)
+
+
+        if order:
+            qs = ShopProduct.objects.order_by(order).all()
+        else:
+            qs = ShopProduct.objects.all()
+
+        print("order==",order,"search_what==", search_what,"search_brand==", search_brand,"search_shop==", search_shop,"search_cate==", search_cate)
+        if search_cate and order:
+            if cat.child.count() == 0:
+                print('cat child == 0')
+                qs = ShopProduct.objects.order_by(order).filter(product__category=cat)
+            else:
+                qs = ShopProduct.objects.order_by(order).filter(product__category__in=cat.child.all())
+
+
+
+        if search_what:
+            qs = qs.filter(Q(product__name__icontains=search_what) | Q(
+                product__brand__name__icontains=search_what) | Q(product__category__name__icontains=search_what))
+        if search_brand:
+            qs = qs.filter(Q(product__brand__slug__in=search_brand))
+        if search_shop:
+            qs = qs.filter(Q(shop__slug__in=search_shop))
+        if search_shop and search_brand:
+            qs = qs.filter(
+                Q(product__brand__slug__in=search_brand) & Q(shop__slug__in=search_shop))
+        print("qs qs qs qs qs qs qs qs qs qs qs qs qs qs qs qs qs qs qs = ",qs)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_order'] = self.get_ordering()
+        context['current_search'] = self.request.GET.get('search_box', None)
+        search_cate = self.request.GET.getlist('cate', None)
+        if search_cate:
+            search_cate = ''.join(map(str, search_cate))
+            cat= Category.objects.get(slug=search_cate)
+            context['brands'] = Brand.objects.filter(category=cat)
+            context['cat'] = cat.slug
+            if cat.child.count() > 0:
+                context['sub_categories'] = Category.objects.filter(parent=cat.id)
+        search_brand = self.request.GET.getlist('brands', None)
+        search_shop = self.request.GET.getlist('shops', None)
+        if search_brand:
+            search_brands = '&'+'brands='.join(map(str, search_brand))
+            context['current_brands'] = search_brands
+        if search_shop:
+            # search_shops = ''.join(map(str, search_shop))
+            search_shops=''
+            for serch in search_shop:
+                search_shops = serch+'shops='
+            context['current_shops'] = search_shops
         context['category_list'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['shops'] = Shop.objects.all()
@@ -152,10 +205,13 @@ class CategorySingle(ListView):
     context_object_name = 'products'
     template_name = 'components/category.html'
 
-    def post(self, *args, **kwargs):
-        if self.request.is_ajax and self.request.method == "POST":
-            order = self.request.GET.get['orderItem']
-            print(order)
+    def get_ordering(self):
+        return self.request.GET.get('sort', None)
+
+    # def post(self, *args, **kwargs):
+    #     if self.request.is_ajax and self.request.method == "POST":
+    #         order = self.request.GET.get['orderItem']
+    #         print(order)
 
 
     def get_queryset(self):
@@ -175,6 +231,8 @@ class CategorySingle(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['cat'] = self.kwargs['slug']
+        context['current_order'] = self.get_ordering()
         context['category_list'] = Category.objects.all()
         print("tttttttttttttttttttttttttt  kwargs slug  ttttttttttttttttttttttttttttt", self.kwargs['slug'])
         cat = self.kwargs['slug']

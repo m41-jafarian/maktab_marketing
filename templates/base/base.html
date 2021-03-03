@@ -1,7 +1,7 @@
 {% load static %}
 {% load humanize %}
 
-<html lang="en" dir="rtl">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,14 +38,14 @@
 
 @keyframes textgrowth {
     0% {
-    font-size: 10px;
+    font-size: 1px;
         color: #ff0000;
     }
     50% {
-    font-size: 25px;
+    font-size: 5px;
     }
     100% {
-    font-size: 45px;
+    font-size: 25px;
         color: #fdfdfd;
     }
 }
@@ -69,14 +69,20 @@ div.sticky {
     .rounded_50 {
     border-radius: 50px;
 }
+    .btn:hover {
+  background-color: #eee209;
+}
 </style>
 </head>
     <body>
         {% block header %}
             {% include 'base/header.html' %}
         {% endblock %}
+        <div class="container mw-100">
+        {% block content %}{% endblock %}
         {% block body %}
         {% endblock %}
+        </div>
 
         {% if request.user.is_authenticated %}
             <div id="profile_contain" class="bg-light bg-dark card-body border shadow" style=" position: fixed; bottom: 110px; right: 20px;width: 15%; z-index: 100;display:none; ">
@@ -94,7 +100,7 @@ div.sticky {
                       <a class="nav-link col-6" href="{% url 'logout' %}"> خروج </a>
                 </div>
             </div>
-            <div id="foo"  style=" position: fixed; bottom: 20px; right: 20px;display: block; z-index: 2000">
+            <div id="foo" class="d-none d-md-block"  style=" position: fixed; bottom: 20px; right: 20px;display: block; z-index: 2000">
                     <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"></path>
                         <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
@@ -147,16 +153,20 @@ div.sticky {
             <script>
                 $(window).scroll(function() {
                     var scroll = $(window).scrollTop();
-                    if (scroll >= 150 && scroll<200) {
-                        $("#main_bar").css("display","none")}
+                    {#console.log('scrole=',scroll)#}
+                    {#if (scroll >= 150 && scroll<200) {#}
+                    {#    $("#main_bar").css("display","none")}#}
+
                     if (scroll >= 200) {
                         $("#main_bar").css("position","fixed");
                         {#$("#main_bar").delay(1000).show();#}
-                        $("#basket_contain").css("top","110px");
+                        $("#basket_contain").css("top","155px");
                     } else {
                         $("#main_bar").css("position","relative");
-                        $("#basket_contain").css("top","210px");
+                        $("#basket_contain").css("top","200px");
                     }
+                    if (scroll <= 150) {
+                        $("#basket_contain").css("top",200-scroll);}
                 });
             </script>
 
@@ -177,7 +187,7 @@ div.sticky {
                 $('#sub-menu1').hover(function() {
                     var left = $(this).offset().left - this_pos
                     console.log(this_width,this_pos)
-                    $('#sub-menu1-contain').css({'left': this_pos - this_width/4});
+                    $('#sub-menu1-contain').css({'left': this_pos - this_width/2});
                     $('#sub-menu1-contain').show('#sub-menu1-contain');
                     }
                     );

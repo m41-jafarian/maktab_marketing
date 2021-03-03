@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %} Kalabuy site admin | {{ site_title|default:_('Kalabuy site admin') }}Kalabuy site admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Kalabuy {{ site_header|default:_('Kalabuy administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}<img src="{% static 'kalabuy.png' %}" alt="{% static 'kalabuy.png' %}" width="20%" height="70%" >{% endblock %}

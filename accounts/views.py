@@ -29,6 +29,8 @@ class ProfileView(ListView):
         context['category_list'] = Category.objects.all()
         context['addresses'] = Address.objects.filter(user=self.request.user)
         context['payments'] = Payment.objects.filter(user=self.request.user)
+        context['myShop'] = Shop.objects.filter(user=self.request.user)
+        context['favorite_list'] = ShopProduct.objects.filter(shop_favorite__user=self.request.user)
         print("context======",context)
         form = ProfileForm()
         context["form"]: form

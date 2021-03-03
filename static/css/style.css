@@ -11,14 +11,15 @@ body {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
  .menu .menu-item {
   position: relative;
   cursor: pointer;
+     font-size: 15px;
 }
  .menu .menu-item .wee {
-  height: 2px;
+  height: 4px;
   width: 100%;
   background-color: #ee0000;
   position: absolute;

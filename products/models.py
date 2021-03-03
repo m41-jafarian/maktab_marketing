@@ -25,6 +25,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("Product_detail", kwargs={"pk": self.pk})
 
+
 class Brand(models.Model):
     name = models.CharField(_("Name"), max_length=50)
     detail = models.TextField(_("Detail"))
